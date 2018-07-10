@@ -1,0 +1,16 @@
+.metricDropDown {
+    width: 100% !important;
+    text-align: left;
+}
+
+.textField {
+    padding-left: 20px;
+}
+
+.userDrop {
+    width: 100%;
+}
+
+.hidden {
+    display: none;
+}

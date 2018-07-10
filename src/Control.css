@@ -1,0 +1,8 @@
+.DateRangePicker__picker, .SingleDatePicker__picker {
+    z-index: 4501;
+    pointer-events: all;
+}
+.tether-element {
+    z-index: 450;
+    pointer-events: none;
+}

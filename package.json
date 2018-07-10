@@ -1,0 +1,39 @@
+{
+  "name": "data-app",
+  "version": "0.1.0",
+  "private": true,
+  "proxy": "http://localhost:2112/",
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "csv-express": "^1.2.2",
+    "d3": "^4.12.0",
+    "express": "^4.16.2",
+    "fetch": "^1.1.0",
+    "js-file-download": "^0.4.1",
+    "material-expansion-panel": "^1.0.0",
+    "material-ui": "^0.19.4",
+    "moment": "^2.20.1",
+    "papaparse": "^4.3.6",
+    "rc-datepicker": "^5.0.10",
+    "react": "^16.1.1",
+    "react-c3js": "^0.1.20",
+    "react-dates": "^16.7.0",
+    "react-dom": "^16.1.1",
+    "react-form-validator-core": "^0.4.1",
+    "react-handsontable": "^0.3.1",
+    "react-loading": "^1.0.3",
+    "react-material-ui-form-validator": "^1.0.7",
+    "react-router": "^4.2.0",
+    "react-scripts": "1.0.17",
+    "semantic-ui-react": "^0.78.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.1"
+  }
+}

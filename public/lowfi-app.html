@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="lowfi-app.css" />
+    <!-- following dependencies need to be made proper haha -->
+    <!--<script src="calendar.min.js"></script>-->
+    <!--<link type="text/css" src="calendar.min.css"></script>-->
+    <link href="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.js"></script>
+</head>
+<body>
+    <div class="app">
+        <div class="main-view">
+            <div class="ui container intro-container"><!-- Container for intro / control bar -->
+                <div class="app-intro"> 
+                    <div class="title-bar">
+                        <h1><strong>GC</strong>collab Group Stats Page</h1>
+                    </div>
+                    <div class="control-group">
+                        <div class="date-pickers">
+                            <span style="vertical-align: middle;">
+                                <!-- insert datepickers here. Semantic ui maybe? -->
+                                <div class="ui form">
+                                    <div class="two fields">
+                                        <div class="field">
+                                            <label>Start Date</label>
+                                            <div class="ui calendar" id="rangestart">
+                                                <div class="ui input left icon">
+                                                    <i class="calendar icon"></i>
+                                                    <input type="text" placeholder="Start">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <label>End Date</label>
+                                            <div class="ui calendar" id="rangeend">
+                                                <div class="ui input left icon">
+                                                    <i class="calendar icon"></i>
+                                                    <input type="text" placeholder="End">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </span>
+                        </div>
+                        <div class="ui action input search-bar">
+                            <input type="text" placeholder="Paste group URL">
+                            <button class="ui icon button">
+                                <i class="search icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="welcome-message" style="padding-bottom: 10px; display: block">
+                        Paste the group URL above and set your desired start and end dates to retrieve relevant statistics.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    $('#rangestart').calendar({type:'date'});
+    $('#rangeend').calendar({type:'date'});
+</script>

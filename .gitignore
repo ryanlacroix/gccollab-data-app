@@ -1,0 +1,11 @@
+node_modules/*
+!node_modules/react-c3js/
+node_modules/react-c3js/node_modules/
+*.pyc
+client_secrets.json
+ga-client-secret.txt
+db-creds-secret.txt
+kubernetes_commands.txt
+creds.pkl
+creds_collab.pkl
+__pycache__

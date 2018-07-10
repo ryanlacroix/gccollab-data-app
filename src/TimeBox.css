@@ -1,0 +1,20 @@
+.datePickers {
+    text-align: left !important;
+    margin-left: 20px;
+    width: 100%;
+}
+
+.box-content {
+    margin-bottom: 0px;
+}
+
+.interval-label {
+    font-size: 13px;
+    vertical-align: middle;
+    border-bottom: 10px;
+}
+
+.allTime {
+    width: 150px !important;
+    vertical-align: middle;
+}

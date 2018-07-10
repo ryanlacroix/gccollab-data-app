@@ -1,0 +1,74 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f9f9f9;
+    line-height: 1;
+}
+
+svg {
+    position: absolute !important;
+    /* may not be necessary, check later*/
+}
+
+html {
+    background-color: #f9f9f9;
+    background-size: cover;
+
+}
+
+.app {
+    background-color: rgb(249, 249, 249);
+    height: 100%;
+    max-width: 100%;
+}
+
+.main-view {
+    max-width: 1200px;
+    margin: 0px auto;
+    margin-top: 30px;
+}
+
+.intro-container {
+    background-color: rgb(243, 243, 243);
+    border-radius: 5px;
+}
+
+.app-intro {
+   box-shadow: rgba(0, 0, 0, 0.31) 0px -1px 80px -4px;
+   display: block;
+}
+
+.title-bar {
+    font-family: Helvetica, Arial, sans-serif; 
+    text-shadow: rgb(85, 85, 85) 2px 2px; 
+    background-color: rgb(70, 36, 106); 
+    color: white; 
+    border-top-left-radius: 5px; 
+    border-top-right-radius: 5px;
+    padding-left: 10px;
+}
+
+.control-group {
+    height: 50px;
+    width: 95%;
+    margin: 10px auto 5px;
+}
+
+.date-pickers {
+    float: left;
+    display: inline;
+    width: 410px;
+    padding-top: 5px;
+    vertical-align: middle;
+}
+
+.search-bar {
+    float: right; 
+    width: 500px; 
+    margin-top: 20px;
+}
+
+.welcome-message {
+    font-size: 19px;
+    text-align: center;
+    padding-top: 20px;
+}

@@ -1,0 +1,63 @@
+body{
+  font-family: 'Roboto', sans-serif;
+  background-image: "url(https://gccollab.ca//mod/gc_splash_page_collab/graphics/Peyto_Lake-Banff_NP-Canada.jpg)";
+background-color: #f9f9f9;
+  background-size: cover;
+  height: 100%;
+}
+
+svg { position: absolute !important }
+
+root {
+  background-image: "url(https://gccollab.ca//mod/gc_splash_page_collab/graphics/Peyto_Lake-Banff_NP-Canada.jpg)";
+  background-size: cover;
+  overflow: hidden;
+}
+html {
+  background-color: #f3f3f3;
+  background-size: cover;
+  height: 100%;
+}
+
+.App {
+  text-align: center;
+  /*text-align: center;*/
+  /*background-color: black;*/
+  /*background-image: "url(https://gccollab.ca//mod/gc_splash_page_collab/graphics/Peyto_Lake-Banff_NP-Canada.jpg)";*/
+  /*font-family: 'Roboto', sans-serif*/
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 0px;
+  padding: 0px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+  margin-top: 0px;
+  transition-duration: 200;
+}
+
+.ind-content-box {
+  margin-top: 10px;
+}
+
+.title-box-heading {
+  background-color: #047177;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
