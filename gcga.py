@@ -17,6 +17,8 @@ import pandas as pd
 import code
 from numpy import sum
 
+import os
+
 
 class gcga:
     """ Object for interacting with the Analytics API """
@@ -41,10 +43,18 @@ class gcga:
         self.analytics = self._initialize_API()
     
     def _initialize_API(self):
+        # If the API key has not yet been turned into a file, do that now
+        credentials = {}
+        if !os.path.isfile('client_secrets.json'):
+            # Create the file from the env
+            with open('client_secrets.json', 'w') as f:
+                f.write(os.environ['ga-client'])
+        
         """ Initialize the Analytics API object """
         credentials = ServiceAccountCredentials.from_json_keyfile_name(
           gcga._KEY_FILE_LOCATION, gcga._SCOPES)
         
+        ServiceAccountCredentials.from_json
         # Build the service object.
         analytics = build('analyticsreporting', 'v4', credentials=credentials)
         return analytics

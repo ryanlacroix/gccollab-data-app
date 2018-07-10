@@ -319,16 +319,16 @@ if __name__ == '__main__':
     inStr = '{"stepIndex":4,"reqType":{"category":1,"filter":"https://gccollab.ca/groups/profile/85014/the-policy-community-la-communaute-des-politiques"},"metric":1,"metric2":0,"time":{"startDate":"2017-01-12","endDate":"2018-02-23","allTime":false}}'
     
     # Group members by department
-    inStr = '{"stepIndex":4,"reqType":{"category":1,"filter":"https://gccollab.ca/groups/profile/29660/canada-beyond-150-canada-au-dela-de-150"},"metric":4,"metric2":0,"time":{"startDate":"2017-01-12","endDate":"2018-01-12","allTime":false}}'
+    #inStr = '{"stepIndex":4,"reqType":{"category":1,"filter":"https://gccollab.ca/groups/profile/29660/canada-beyond-150-canada-au-dela-de-150"},"metric":4,"metric2":0,"time":{"startDate":"2017-01-12","endDate":"2018-01-12","allTime":false}}'
 
     # Number of group members
     #inStr = '{"stepIndex":4,"reqType":{"category":1,"filter":"https://gccollab.ca/groups/profile/110891/gctools-team-private-group-groupe-prive-de-lequipe-des-outilsgc"},"metric":3,"metric2":0,"time":{"startDate":"2017-02-12","endDate":"2018-02-12","allTime":true},"errorFlag":false}'
     
     # Top group content
-    inStr = '{"stepIndex":4,"reqType":{"category":1,"filter":"https://gccollab.ca/groups/profile/718/canada-indigenous-relations-creating-awareness-fostering-reconciliation-and-contributing-to-a-shared-future-relations-canada-et-peuples-indigenes-promouvoir-la-sensibilisation-favoriser-la-reconciliation-et-contribuer-a-un-avenir-partager"},"metric":2,"metric2":0,"time":{"startDate":"2017-02-12","endDate":"2018-02-12","allTime":true},"errorFlag":false}'
+    #inStr = '{"stepIndex":4,"reqType":{"category":1,"filter":"https://gccollab.ca/groups/profile/718/canada-indigenous-relations-creating-awareness-fostering-reconciliation-and-contributing-to-a-shared-future-relations-canada-et-peuples-indigenes-promouvoir-la-sensibilisation-favoriser-la-reconciliation-et-contribuer-a-un-avenir-partager"},"metric":2,"metric2":0,"time":{"startDate":"2017-02-12","endDate":"2018-02-12","allTime":true},"errorFlag":false}'
     
     # Broken group membership
-    inStr = '{"stepIndex":4,"reqType":{"category":1,"filter":"https://gccollab.ca/groups/profile/11735/immigration-canadienne-et-integration-en-milieu-de-travail"},"metric":3,"metric2":0,"time":{"startDate":"2018-03-30","endDate":"2018-06-28","allTime":true},"errorFlag":false}'
+    #inStr = '{"stepIndex":4,"reqType":{"category":1,"filter":"https://gccollab.ca/groups/profile/11735/immigration-canadienne-et-integration-en-milieu-de-travail"},"metric":3,"metric2":0,"time":{"startDate":"2018-03-30","endDate":"2018-06-28","allTime":true},"errorFlag":false}'
     
     # Broken top content
     #inStr = '{"stepIndex":4,"reqType":{"category":1,"filter":"https://gccollab.ca/groups/profile/11735/immigration-canadienne-et-integration-en-milieu-de-travail"},"metric":2,"metric2":0,"time":{"startDate":"2017-02-12","endDate":"2018-02-12","allTime":true},"errorFlag":false}'

@@ -21,6 +21,10 @@ import pickle
 
 import code
 
+import os
+
+import json
+
 server= {} # Placeholder for server object created on connect_to_database()
 
 
@@ -49,7 +53,13 @@ def connect_to_database():
     global conn
     global server
 
-    creds = pickle.load(open('creds_collab.pkl', 'rb'))
+    creds = {}
+    try:
+        # If running locally, grab the creds from a file
+        creds = pickle.load(open('creds_collab.pkl', 'rb'))
+    except:
+        # If running from within a kubernetes environment, use an env variable
+        creds = json.loads(os.environ['db-secrets'])
     
     # Set up SSH tunnel for db connection
     server = SSHTunnelForwarder(
