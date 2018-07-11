@@ -21,16 +21,13 @@ app.use( bodyParser.json() );
 app.post('/getData/:type', (req, res) => {
     var py;
     var dataString = '';
-    switch(req.params.type) {
-        case 'request':
-            console.log('Data request received!');
-            py = spawn('python', ['data_fetch.py'])
-            break;
-        case 'resample':
-            // This should be removed.
-            console.log('Resample request received!');
-            py = spawn('python', ['resample_data.py'])
-            break;
+    console.log('Data request received!');
+
+    // Account for containerized & non-containerized environment
+    try {
+        py = spawn('python3', ['data_fetch.py']);
+    } catch (e) {
+        py = spawn('python', ['data_fetch.py']);
     }
     
     console.log(JSON.stringify(req.body));
