@@ -45,6 +45,8 @@ class LineChart2 extends Component {
                 }
             },
             interval: 'daily',
+            frinterval: 'Daily',
+            frinterval2: 'Monthly',
             dataBackup: {
                 // This is only here to prevent errors from changing interval before data is loaded
                 monthly: {
@@ -58,6 +60,11 @@ class LineChart2 extends Component {
             },
             loaderClass: '',
             contentClass: 'hidden',
+            title: 'Page Views',
+            header1: 'Date',
+            header2: 'Views',
+            downloadCSVmessage: "Download Data as CSV",
+            intervalWord: "Interval"
         }
     }
 
@@ -99,7 +106,7 @@ class LineChart2 extends Component {
             data[this.state.interval].pageviews = data[this.state.interval].pageviews.map(Number)
             data[this.state.interval].pageviews.unshift('pageviews');
             data[this.state.interval].dates.unshift('date');
-            
+
             // Update the state
             this.setState({
                 data: {
@@ -116,7 +123,81 @@ class LineChart2 extends Component {
 
     // Repopulate graphs both on creation and on time changes
     componentWillReceiveProps(nextProps) {
-        this.requestData(nextProps);
+        if(nextProps.language !== this.props.language){
+            if(nextProps.language == 'EN'){
+                if (nextProps.interval == 'daily'){
+                    this.setState({
+                        title: "Page Views",
+                        header1: "Date",
+                        header2: "Views",
+                        frinterval: "Daily",
+                        frinterval2: "Monthly",
+                        downloadCSVmessage: "Download Data as CSV",
+                        intervalWord: "Interval"
+                    });
+                }
+                if (nextProps.interval == 'monthly'){
+                    this.setState({
+                        title: "Page Views",
+                        header1: "Date",
+                        header2: "Views",
+                        frinterval: "Monthly",
+                        frinterval2: "Daily",
+                        downloadCSVmessage: "Download Data as CSV",
+                        intervalWord: "Interval"
+                    });
+                }
+                else{
+                    this.setState({
+                        title: "Page Views",
+                        header1: "Date",
+                        header2: "Views",
+                        frinterval: "Daily",
+                        frinterval2: "Monthly",
+                        downloadCSVmessage: "Download Data as CSV",
+                        intervalWord: "Interval"
+                    });
+                }
+            }
+            if(nextProps.language == 'FR'){
+                if (nextProps.interval == 'daily'){
+                    this.setState({
+                        title: "Pages consultées",
+                        header2: "Date",
+                        header2: "Pages consultées",
+                        frinterval: "Quotidien",
+                        frinterval2: "Mensuel",
+                        downloadCSVmessage: "Télécharger les données au format CSV",
+                        intervalWord: "Intervalle"
+                    });
+                }
+                if (nextProps.interval == 'montly'){
+                    this.setState({
+                        title: "Pages consultées",
+                        header2: "Date",
+                        header2: "Pages consultées",
+                        frinterval: "Mensuel",
+                        frinterval2: "Quotidien",
+                        downloadCSVmessage: "Télécharger les données au format CSV",
+                        intervalWord: "Intervalle"
+                    });
+                }
+                else{
+                    this.setState({
+                        title: "Pages consultées",
+                        header2: "Date",
+                        header2: "Pages consultées",
+                        frinterval: "Quotidien",
+                        frinterval2: "Mensuel",
+                        downloadCSVmessage: "Télécharger les données au format CSV",
+                        intervalWord: "Intervalle"
+                    });
+                }
+            }
+        }
+        else{
+            this.requestData(nextProps);
+        }
     }
     componentDidMount() {
         // Turn on the loading indicator
@@ -203,17 +284,17 @@ class LineChart2 extends Component {
                 <table className="content-box-heading" style={{width: '100%'}}>
                     <tr>
                         <td>
-                            <span style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.props.title}
-                                <IconButton tooltip="Download data as CSV" style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
+                            <span style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.state.title}
+                                <IconButton tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
                             </span>
                             
                         </td>
                         <td>
-                            <SelectField onChange={this.handleIntervalChange} floatingLabelText="Interval" style={{width: 150, float: 'right'}} value={this.state.interval}>
-                                <MenuItem value={'monthly'} primaryText="Monthly" />
-                                <MenuItem value={'daily'} primaryText="Daily" />
+                            <SelectField onChange={this.handleIntervalChange} floatingLabelText={this.state.intervalWord} style={{width: 150, float: 'right'}} value={this.state.interval}>
+                                <MenuItem value={'monthly'} primaryText={this.state.frinterval2} />
+                                <MenuItem value={'daily'} primaryText={this.state.frinterval} />
                             </SelectField>
                         </td>
                     </tr>
@@ -233,7 +314,7 @@ class LineChart2 extends Component {
                 <DataTable
                     data={spreadsheetData}
                     className={this.state.contentClass + ' ' + scrollTable}
-                    headers={['Date','Views']}
+                    headers={[this.state.header1,this.state.header2]}
                 />
             </Segment>
         );
