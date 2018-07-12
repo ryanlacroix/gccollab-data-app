@@ -1,0 +1,206 @@
+.c3-axis-x > .tick {
+    fill:none
+}
+
+.hide {
+    display: none;
+}
+.c3chart{
+    /* height: 2400px !important; */
+}
+#chart3{
+    /* display: inline-block !important;  */
+    width: 500px !important; 
+    height: 200px !important; 
+    padding: 5px !important;
+}
+.outercsv{
+    /* background-color: brown; */
+    position: absolute;
+    left: 10px;
+    top: 0px;
+}
+.topBar{
+    margin-bottom: 35px;
+    width: 100%;
+}
+#table3{
+    margin-bottom: 5px;
+}
+#showAllg3{
+    /* position: absolute; */
+    margin-top: 0px;
+    bottom: 0px;
+    left: 70%;
+}
+@media only screen and (max-width: 1175px) and (min-width: 990px){
+    #chart3{
+        /* float: None;
+        margin-top: 10px !important; 
+        display: block !important; 
+        width: 70% !important; 
+        height: 200px !important; 
+        padding: 5px !important;
+        margin-right: 5px !important;
+        margin-top: 5% !important;
+        margin: 0 auto !important; */
+        /* display: inline-block !important;  */
+        width: 500px !important; 
+        height: 200px !important; 
+        padding: 5px !important;
+        margin-right: 18% !important;
+        margin-left: 18% !important; 
+    }
+    #table3{
+        margin-right: 20% !important;
+        margin-left: 16% !important;
+    }
+    #showAllg3{
+        /* position: absolute; */
+        margin-top: 0px;
+        bottom: 5px;
+        left: 43%;
+    }
+}
+@media only screen and (max-width: 990px) and (min-width: 690px){
+    #chart3{
+        /* float: None;
+        margin-top: 10px !important; 
+        display: block !important; 
+        width: 70% !important; 
+        height: 200px !important; 
+        padding: 5px !important;
+        margin-right: 5px !important;
+        margin-top: 5% !important;
+        margin: 0 auto !important; */
+        /* display: inline-block !important;  */
+        width: 500px !important; 
+        height: 200px !important; 
+        padding: 5px !important;
+        margin-right: 18% !important;
+        margin-left: 8% !important; 
+    }
+    #showAllg3{
+        /* position: absolute; */
+        bottom: 5px;
+        left: 40%;
+    }
+}
+@media only screen and (max-width: 990px) and (min-width: 790px){
+    #table3{
+        margin-right: 12% !important;
+        margin-left: 14% !important;
+    }
+}
+@media only screen and (max-width: 790px) and (min-width: 690px){
+    #table3{
+        margin-right: 10% !important;
+        margin-left: 10% !important;
+        width: 80% !important;
+    }
+}
+@media only screen and (max-width: 690px) and (min-width: 560px){
+    #chart3{
+        /* display: inline-block !important;  */
+        width: 95% !important; 
+        height: 200px !important; 
+        padding: 5px !important;
+        margin-right: 5px !important;
+    }
+    #table3{
+        margin-left: 5px !important;
+        margin-left: 5px !important;
+        display: inline-block !important; 
+        width: 100% !important; 
+        height: 200px !important;
+        /* padding: 5px !important; */
+    }
+    #showAllg3{
+        /* position: absolute; */
+        margin-top: -15px !important;
+        bottom: 5px;
+        left: 37%;
+    }
+    #memberBox{
+        /* background-color: black !important; */
+        height: 490px !important;
+    }
+}
+
+@media only screen and (max-width: 559px) and (min-width: 475px){
+    #chart3{
+        /* display: inline-block !important;  */
+        width: 95% !important; 
+        height: 200px !important; 
+        padding: 5px !important;
+        margin-right: 5px !important;
+        /* background-color: black !important; */
+    }
+    #table3{
+        margin-left: 5px !important;
+        margin-left: 5px !important;
+        display: inline-block !important; 
+        width: 100% !important; 
+        height: 200px !important;
+        /* padding: 5px !important; */
+    }
+    #showAllg3{
+        position: absolute;
+        bottom: 0px;
+        left: 35%;
+    }
+    #memberBox{
+        /* background-color: black !important; */
+        height: 480px !important;
+    }
+}
+
+@media only screen and (max-width: 475px) and (min-width: 375px){
+    #chart3{
+        /* display: inline-block !important;  */
+        width: 95% !important; 
+        height: 200px !important; 
+        padding: 5px !important;
+        margin-right: 5px !important;
+    }
+    #table3{
+        margin-left: 5px !important;
+        margin-left: 5px !important;
+        display: inline-block !important; 
+        width: 100% !important; 
+        height: 200px !important;
+        /* padding: 5px !important; */
+    }
+    #showAllg3{
+        position: absolute;
+        bottom: 5px;
+        left: 30%;
+    }
+    #memberBox{
+        /* background-color: black !important; */
+        height: 485px !important;
+    }
+}
+
+@media only screen and (max-width: 375px){
+    #chart3{
+        /* display: inline-block !important;  */
+        width: 95% !important; 
+        height: 200px !important; 
+        padding: 5px !important;
+        margin-right: 5px !important;
+    }
+    #table3{
+        margin-left: 5px !important;
+        margin-left: 5px !important;
+        display: inline-block !important; 
+        width: 100% !important; 
+        height: 200px !important;
+        /* padding: 5px !important; */
+    }
+    #showAllg3{
+        position: absolute;
+        bottom: 5px;
+        left: 30%;
+    }
+}

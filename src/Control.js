@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Button, Input, Popup } from 'semantic-ui-react';
 
 import './Content.css';
+import './Control.css';
 
 import moment from 'moment';
 
@@ -74,7 +75,7 @@ class Control extends Component {
             opacity: this.state.validURL ? "0" : "1"
         }
         return (
-            <div style={{ height: '50px', width: '95%', margin: '0 auto', marginBottom: '5px', marginTop: '10px' }}>
+            <div className="controlDiv" style={{ height: '50px', width: '95%', margin: '0 auto', marginBottom: '5px', marginTop: '10px' }}>
                 <div style={{ float: 'left', display: 'inline', width: '410px', paddingTop: '5px', verticalAlign: 'middle' }}>
                     <span style={{ verticalAlign: 'middle' }}>
                         <DatePickerInput
@@ -112,7 +113,7 @@ class Control extends Component {
                         />
                     </span>
                 </div>
-                <Input action={
+                <Input className="searchBar" action={
                     <Popup trigger={
                         <Button content='Get stats'
                         onClick={

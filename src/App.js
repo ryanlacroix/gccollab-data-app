@@ -112,7 +112,7 @@ class App extends Component {
               language={this.state.language}
             />
           </div>
-          <div className={this.state.onIntro ? '' : 'hidden'} style={{paddingBottom: '10px'}}>
+          <div className={this.state.onIntro ? '' : 'hidden'} style={{paddingBottom: '10px'}} id="container2">
             Paste the group URL above and set your desired start and end dates to retrieve relevant statistics.
           </div>
         </div>

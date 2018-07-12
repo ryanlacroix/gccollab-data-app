@@ -118,6 +118,8 @@ class LineChart2 extends Component {
                 loaderClass: 'hidden',
                 contentClass: '',
             });
+            this.handleIntervalChange(true, 561651, 'daily');
+            this.handleIntervalChange(true, 561651, 'daily');
         });
     }
 
@@ -284,8 +286,13 @@ class LineChart2 extends Component {
                 <table className="content-box-heading" style={{width: '100%'}}>
                     <tr>
                         <td>
+<<<<<<< HEAD
                             <span style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.state.title}
                                 <IconButton tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
+=======
+                            <span className='outercsv0' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.props.title}
+                                <IconButton tooltip="Download data as CSV" style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
+>>>>>>> origin/master
                                     <FileFileDownload />
                                 </IconButton> 
                             </span>
@@ -302,10 +309,11 @@ class LineChart2 extends Component {
                 
                 <Loader style={{}} size='huge' active className={this.state.loaderClass} >Loading</Loader>
 
-                <div className={this.state.contentClass} style={{float: 'left'}}>
+                <div className={this.state.contentClass} style={{float: 'left'}} onChange={this.handleIntervalChange} id="lineChartPageviews">
                     <C3Chart data={this.state.data}
+                        className='chartss'
+                        id="linechartviews"
                         axis={this.state.axis}
-                        size={sz}
                         unloadBeforeLoad={true}
                         point={{show: false}}
                         zoom={{enabled: true}}
@@ -313,6 +321,7 @@ class LineChart2 extends Component {
                 </div>
                 <DataTable
                     data={spreadsheetData}
+                    id="tablePageviews"
                     className={this.state.contentClass + ' ' + scrollTable}
                     headers={[this.state.header1,this.state.header2]}
                 />

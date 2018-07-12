@@ -1,3 +1,101 @@
 .scrollTable {
     overflow: hidden;
 }
+
+.chartss{
+    height: 240px;
+    width: 500px;
+}
+/* #weew{
+    background-color: black !important;
+    width: 100px !important;
+} */
+.outercsv0{
+    position: absolute;
+    left: 0px;
+    top: 35px;
+}
+.content-box-heading{
+    width: 100%;
+    margin-bottom: 0px;
+}
+.title{
+    font-family: Roboto, sans-serif;
+    font-size: 1.7em;
+    margin-top: 15px;
+    width: 90%;
+    margin-left: 5%;
+}
+@media only screen and (max-width: 1175px) and (min-width: 990px){
+    #lineChartPageviews{
+        float: right !important;
+        margin-right: 200px !important;
+    }
+    .chartss{
+        float: none !important;
+        margin-right: 00px !important;
+    }
+  }
+
+  @media only screen and (max-width: 990px) and (min-width: 680px){
+    #lineChartPageviews{
+        float: right !important;
+        margin-right: 15% !important;
+    }
+    .chartss{
+        float: none !important;
+        margin-left: auto !important;
+    }
+  }
+  
+  @media only screen and (max-width: 689px) and (min-width: 560px){
+    #lineChartPageviews{
+        float: none !important;
+        margin-right: 75px !important;
+    }
+    .chartss{
+        width: 112% !important;
+        float: none !important;
+        margin-left: auto !important;
+    }
+    .title{
+        font-size: 23px;
+    }
+  }
+  
+  @media only screen and (max-width: 559px) and (min-width: 475px){
+    #lineChartPageviews{
+        float: none !important;
+        
+    }
+    .chartss{
+        width: 95% !important;
+    }
+    .title{
+        font-size: 18px;
+    }
+  }
+  
+  @media only screen and (max-width: 475px) and (min-width: 375px){
+    #lineChartPageviews{
+        float: none !important;
+    }
+    .chartss{
+        width: 95% !important;
+    }
+    .title{
+        font-size: 14px;
+    }
+  }  
+  
+  @media only screen and (max-width: 375px){
+    #lineChartPageviews{
+        float: none !important;
+    }
+    .chartss{
+        width: 95% !important;
+    }
+    .title{
+        font-size: 13px;
+    }
+  }

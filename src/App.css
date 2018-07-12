@@ -6,7 +6,7 @@ background-color: #f9f9f9;
   height: 100%;
 }
 
-svg { position: absolute !important }
+/* svg { position: absolute !important } */
 
 root {
   background-image: "url(https://gccollab.ca//mod/gc_splash_page_collab/graphics/Peyto_Lake-Banff_NP-Canada.jpg)";
@@ -68,4 +68,48 @@ a:hover{
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+@media only screen and (max-width: 1175px) and (min-width: 680px){
+  #container2{
+    /* margin-left: 10px !important; */
+    margin-top: 50px !important;
+  }
+}
+
+@media only screen and (max-width: 1175px) and (min-width: 990px){
+  /* .App-intro{
+    width: 700px !important;
+  } */
+  .container{
+    /* width: 700px !important; */
+  }
+}
+
+@media only screen and (max-width: 689px) and (min-width: 560px){
+  #container2{
+    /* margin-left: 28px !important; */
+    margin-top: 50px !important;
+  }
+}
+
+@media only screen and (max-width: 559px) and (min-width: 475px){
+  #container2{
+    /* margin-left: 33px !important; */
+    margin-top: 45px !important;
+  }
+}
+
+@media only screen and (max-width: 475px) and (min-width: 375px){
+  #container2{
+    /* margin-left: 28px !important; */
+    margin-top: 80px !important;
+  }
+}  
+
+@media only screen and (max-width: 375px){
+  #container2{
+    /* margin-left: 28px !important; */
+    margin-top: 78px !important;
+  }
 }

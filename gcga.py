@@ -48,7 +48,7 @@ class gcga:
         if os.path.isfile('client_secrets.json') == False:
             # Create the file from the env
             with open('client_secrets.json', 'w') as f:
-                f.write(os.environ['ga-client'])
+                f.write(os.environ['GA-CLIENT-SECRETS'])
         
         """ Initialize the Analytics API object """
         credentials = ServiceAccountCredentials.from_json_keyfile_name(

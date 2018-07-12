@@ -191,6 +191,12 @@ class MemberDepChart extends Component {
                 fulldatafr: fulldatafr,
                 fulldataen: fulldataen
             });
+            this.setState({
+                showAll: this.state.showAll
+            });
+            this.setState({
+                showAll: this.state.showAll
+            });
         });
     }
 
@@ -254,7 +260,7 @@ class MemberDepChart extends Component {
     }
 
     render() {
-        let sz = { height: 240, width: 500 };
+        let sz = { height: 200, width: 500 };
         
         // 'Unzip' data into c3 format
         var chartData = ['Department']
@@ -266,12 +272,17 @@ class MemberDepChart extends Component {
         //this.state.data
     
         return (
-            <Segment className="ind-content-box" style={{marginTop: '10px', padding:'0 0', display: 'inline-block', width: '98%', align: 'center', borderRadius: '5px', backgroundColor: '#f9f9f9', border: '2px solid lightgray'}}>
-                <table style={{width: '100%'}}>
+            <Segment className="ind-content-box" id="memberBox" style={{marginTop: '10px', padding:'0 0', display: 'inline-block', width: '98%', align: 'center', borderRadius: '5px', backgroundColor: '#f9f9f9', border: '2px solid lightgray'}}>
+                <table className = 'topBar' style={{width: '100%'}}>
                     <tr>
                         <td>
+<<<<<<< HEAD
                             <span style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.state.title}
                                 <IconButton tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
+=======
+                            <span className = 'outercsv' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.props.title}
+                                <IconButton tooltip="Download data as CSV" style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
+>>>>>>> origin/master
                                     <FileFileDownload />
                                 </IconButton> 
                             </span>
@@ -284,7 +295,7 @@ class MemberDepChart extends Component {
                 <div>
                     <Loader style={{}} size='huge' active className={this.state.loaderClass} >Loading</Loader>
                 </div>
-                <div className={this.state.barChartClass} style={{float: 'left'}}>
+                <div id = 'chart3' className={this.state.barChartClass} style={{float: 'left'}}>
                     <C3Chart data={{columns: [chartData], labels: true, type: 'bar'}}
                         tooltip={{
                             grouped: false,
@@ -296,13 +307,14 @@ class MemberDepChart extends Component {
                             }}
                         legend={{show: false}}
                         type="bar"
-                        size={sz}
+                        className = 'c3chart'
+                        // size={sz}
                         unloadBeforeLoad={true}
                         bar={{width: { ratio: 0.9}}}
                         grid={{focus: { show: false}}}
                     />
                 </div>
-                <div style={{width: '500px', float: 'right'}} >
+                <div id = 'table3' style={{width: '500px', float: 'right'}} >
                     <DataTable data={this.state.showAll ? this.state.fullData : this.state.partialData}
                         className={this.state.dataTableClass}
                         style={{borderBottom: '20px'}}
@@ -310,6 +322,7 @@ class MemberDepChart extends Component {
                     />
                     <div className={this.state.dataTableClass}>
                     <Button
+                        id = 'showAllg3'
                         primary={true}
                         onClick={() => {
                             this.setState({
