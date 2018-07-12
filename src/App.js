@@ -34,20 +34,22 @@ class App extends Component {
     // Create temporary time objects
     const date1 = new Date();
     const date2 = new Date();
-    //date1.setFullYear(date1.getFullYear() - 1);
-    date1.setDate(date1.getDate() - 90);
+    const language = 'EN';
+    date1.setFullYear(date1.getFullYear() - 1);
     let m1 = moment(date1);
     let m2 = moment(date2);
     // Bind the state setter
     this.setMainState = this.setMainState.bind(this);
     this.setStartDate = this.setStartDate.bind(this);
     this.setGroupUrl = this.setGroupUrl.bind(this);
+    this.setLanguage = this.setLanguage.bind(this);
 
     this.state = {
       // Populate this with stuff from control
+      language: 'EN',
       startDate: m1,
       endDate: m2,
-      groupURL: '',
+      groupURL: 'https://gccollab.ca/groups/profile/85014/the-policy-community-la-communaute-des-politiques',
       onIntro: true
     }
   }
@@ -69,12 +71,17 @@ class App extends Component {
       groupURL: url,
       onIntro: false
     });
-
+  }
+  setLanguage = (l) => {
+    this.setState({language: l});
   }
 
   render() {
     return (
       <div className="App" style={{/*backgroundImage: "url(https://gccollab.ca//mod/gc_splash_page_collab/graphics/Peyto_Lake-Banff_NP-Canada.jpg)",*/backgroundColor: '#f9f9f9', height: "100%", maxWidth: '100%', align: "center"}}>
+        <div id="lang-toggle">
+            <a id="eng-toggle" class="lang" onClick={() => this.setState({language: "EN"})}>en</a> | <a id="fr-toggle" class="lang" onClick={() => this.setState({language: "FR"})}>fr</a>
+        </div>
         <div style={{height: '15px', width: '1px'}}></div>
         <div style={{maxWidth: '1200px', margin: '0 auto'}}>
         <MuiThemeProvider>
@@ -94,6 +101,7 @@ class App extends Component {
             setStartDate={this.setStartDate}
             setEndDate={this.setEndDate}
             setGroupUrl={this.setGroupUrl}
+            setLanguage ={this.setLanguage}
           />
           <div className={this.state.onIntro ? 'hidden' : ''}>
             <Content
@@ -101,6 +109,7 @@ class App extends Component {
               startDate={this.state.startDate}
               endDate={this.state.endDate}
               groupURL={this.state.groupURL}
+              language={this.state.language}
             />
           </div>
           <div className={this.state.onIntro ? '' : 'hidden'} style={{paddingBottom: '10px'}}>

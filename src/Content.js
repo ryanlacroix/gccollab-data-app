@@ -28,6 +28,7 @@ class Content extends Component {
                         endDate={this.props.endDate}
                         groupURL={this.props.groupURL}
                         superState={this.props.endDate}
+                        language={this.props.language}
                     />
                 </div>
                 <div className="membership" style={{width: '100%'}}>
@@ -36,7 +37,8 @@ class Content extends Component {
                         superState={this.props.superState}
                         startDate={this.props.startDate}
                         endDate={this.props.endDate}
-                        groupURL={this.props.groupURL}    
+                        groupURL={this.props.groupURL}  
+                        language={this.props.language}  
                     />
                 </div>
                 <div className="deps" style={{width: '100%'}}>
@@ -46,6 +48,7 @@ class Content extends Component {
                         startDate={this.props.startDate}
                         endDate={this.props.endDate}
                         groupURL={this.props.groupURL} 
+                        language={this.props.language}
                     />
                 </div>
                 <div className="top-content" style={{width: '100%'}}>
@@ -55,6 +58,7 @@ class Content extends Component {
                         startDate={this.props.startDate}
                         endDate={this.props.endDate}
                         groupURL={this.props.groupURL}
+                        language={this.props.language}
                     />
                 </div>
             </div>

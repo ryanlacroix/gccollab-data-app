@@ -45,7 +45,7 @@ class gcga:
     def _initialize_API(self):
         # If the API key has not yet been turned into a file, do that now
         credentials = {}
-        if !os.path.isfile('client_secrets.json'):
+        if os.path.isfile('client_secrets.json') == False:
             # Create the file from the env
             with open('client_secrets.json', 'w') as f:
                 f.write(os.environ['ga-client'])

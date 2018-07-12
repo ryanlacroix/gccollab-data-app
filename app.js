@@ -25,7 +25,7 @@ app.post('/getData/:type', (req, res) => {
 
     // Account for containerized & non-containerized environment
     try {
-        py = spawn('python3', ['data_fetch.py']);
+        py = spawn('python', ['data_fetch.py']);
     } catch (e) {
         py = spawn('python', ['data_fetch.py']);
     }

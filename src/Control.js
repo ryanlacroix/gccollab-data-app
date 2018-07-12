@@ -26,7 +26,8 @@ class Control extends Component {
             currUrl: '',
             validURL: false,
             showError: false,
-            errorMessage: "URLs should be of the format https://gcollab.ca/groups/profile..."
+            errorMessage: "URLs should be of the format https://gcollab.ca/groups/profile...",
+            language: ''
         }
     }
 

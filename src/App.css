@@ -19,6 +19,14 @@ html {
   height: 100%;
 }
 
+#lang-toggle{
+  margin-left: 80%;
+  margin-top: 10px;
+}
+a:hover{
+  color: blue;
+  cursor: pointer;
+}
 .App {
   text-align: center;
   /*text-align: center;*/
