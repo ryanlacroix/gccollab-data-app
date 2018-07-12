@@ -332,9 +332,9 @@ if __name__ == '__main__':
     
     # Broken top content
     #inStr = '{"stepIndex":4,"reqType":{"category":1,"filter":"https://gccollab.ca/groups/profile/11735/immigration-canadienne-et-integration-en-milieu-de-travail"},"metric":2,"metric2":0,"time":{"startDate":"2017-02-12","endDate":"2018-02-12","allTime":true},"errorFlag":false}'
-    
+    #wooooooo
     main()
-    # If collab db was used be sure to close the tunnel properly
+    # If collab db was used8 be sure to close the tunnel properly
     try:
         gc.close_tunnel()
     except:

@@ -147,6 +147,12 @@ class ContentBarChart extends Component {
                 loaderClass: 'hidden',
                 contentClass: ''
             });
+            this.setState({
+                showAll: this.state.showAll
+            });
+            this.setState({
+                showAll: this.state.showAll
+            });
         });
     }
 
@@ -181,8 +187,8 @@ class ContentBarChart extends Component {
                 <table style={{width: '100%'}}>
                     <tr>
                         <td>
-                            <span style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.props.title}
-                                <IconButton tooltip="Download data as CSV" style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
+                            <span className = 'outercsv' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.props.title}
+                                <IconButton className = 'innercsv' tooltip="Download data as CSV" style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
                             </span>
@@ -196,7 +202,7 @@ class ContentBarChart extends Component {
                 <div>
                     <Loader size='huge' active className={this.state.loaderClass} >Loading</Loader>
                 </div>
-                <div className={this.state.barChartClass} style={{float: 'left'}}>
+                <div id = 'chart4' className={this.state.barChartClass} style={{float: 'left'}}>
                     <C3Chart data={{columns: [chartData], labels: true, type: 'bar'}}
                         tooltip={{
                             grouped: false,
@@ -206,15 +212,16 @@ class ContentBarChart extends Component {
                                 }
                             }
                         }}
+                        className = 'c3chart'
                         legend={{show: false}}
                         type="bar"
-                        size={sz}
+                        // size={sz}
                         unloadBeforeLoad={true}
                         bar={{width: { ratio: 0.9}}}
                         grid={{focus: { show: false}}}
                     />
                 </div>
-                <div style={{width: '500px', float: 'right'}}>
+                <div id = 'table4' style={{width: '500px', float: 'right'}}>
                     <DataTable data={this.state.showAll ? this.state.fullData : this.state.partialData}
                         className={this.state.contentClass}
                         style={{borderBottom: '20px'}}
@@ -222,6 +229,7 @@ class ContentBarChart extends Component {
                     />
                     <div className={this.state.dataTableClass}>
                         <Button
+                            id = 'showAll'
                             primary={true}
                             onClick={() => {
                                 this.setState({

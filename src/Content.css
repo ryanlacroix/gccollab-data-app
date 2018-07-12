@@ -1,3 +1,64 @@
 .c3-line {
     stroke-width: 2px; 
 }
+@media only screen and (max-width: 1175px) and (min-width: 680px){
+    .bigBox{
+        margin-top: 50px !important;
+        /* width: 700px !important; */
+      }
+  } 
+/* 
+  @media only screen and (max-width: 1175px) and (min-width: 990px){
+    .bigBox{
+        width: 700px !important;
+      }
+    .pageviews{
+        margin-right: auto !important;
+        margin-left: auto !important; 
+        display: inline-block !important; 
+        width: 97% !important;
+        border-radius: 5px !important; 
+        background-color: rgb(249, 249, 249) !important; 
+        border: 2px solid lightgray !important;
+        position: relative !important;
+    }
+  }
+   */
+  @media only screen and (max-width: 689px) and (min-width: 560px){
+    .bigBox{
+        margin-top: 50px !important;
+      }
+  }
+  
+  @media only screen and (max-width: 559px) and (min-width: 475px){
+    .bigBox{
+        margin: 5px !important; 
+        background-color: rgb(249, 249, 249) !important; 
+        border: 2px solid lightgray !important; 
+        border-radius: 5px !important; 
+        width: 95% !important;
+        margin-top: 50px !important;
+      }
+  }
+  
+  @media only screen and (max-width: 475px) and (min-width: 375px){
+    .bigBox{
+        margin: 5px !important; 
+        background-color: rgb(255, 255, 255) !important; 
+        border: 2px solid lightgray !important; 
+        border-radius: 5px !important; 
+        width: 95% !important;
+        margin-top:70px !important;
+      }
+  }
+  
+  @media only screen and (max-width: 375px){
+    .bigBox{
+        margin: 5px !important; 
+        background-color: rgb(255, 255, 255) !important; 
+        border: 2px solid lightgray !important; 
+        border-radius: 5px !important; 
+        width: 95% !important;
+        margin-top: 70px !important;
+      }
+  }
