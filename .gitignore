@@ -9,3 +9,4 @@ kubernetes_commands.txt
 creds.pkl
 creds_collab.pkl
 __pycache__
+data_fetch_planned.py
