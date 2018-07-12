@@ -15,6 +15,9 @@ import 'c3/c3.css';
 
 import './MemberDepChart.css';
 
+import enDict from './dict/en_dict.json'
+import frDict from './dict/fr_dict.json'
+
 class MemberDepChart extends Component {
     /* Call each time step changes. Inserts correct component accordingly*/
     constructor(props) {
@@ -32,7 +35,18 @@ class MemberDepChart extends Component {
             barChartClass: 'hide',
             dataTableClass: 'hide',
             loaderClass: '',
-            showAll: false
+            showAll: false,
+            title: 'Group Membership',
+            header1: 'Date',
+            header2: 'Members',
+            downloadCSVmessage: "Download Data as CSV",
+            contentButton: "Show all content",
+            contentButton2: "Show less content",
+            deptsfr: [],
+            deptsen: [],
+            fullfr: {},
+            fullen: {}
+
         }
     }
 
@@ -43,7 +57,7 @@ class MemberDepChart extends Component {
             return typeStr;
         } else {
             return 'unknown'
-        }
+        } 
     }
 
     fixDuplicateEntries (data) {
@@ -128,8 +142,39 @@ class MemberDepChart extends Component {
                 groupName = data.group_name;
             }
 
-            console.log(fixed_data);
+            console.log("ICCCCCCCCCCIIIIII");
+
+            var deptsfr = this.copy(fixed_data);
+            var deptsen = this.copy(fixed_data);
+            var fulldatafr = this.copy(fullData);
+            var fulldataen = this.copy(fullData);
+            console.log(fulldataen);
+            console.log(fulldataen[0][0])
+
+            var inversefrDict = {};
+            for(var key in frDict){
+                inversefrDict[frDict[key]] = key;
+            }
             
+            var inverseEnDict = {};
+            for(var key in enDict){
+                inverseEnDict[enDict[key]] = key;
+            }
+
+            for(var i = 0; i < fixed_data; i++){
+                deptsfr[i][0] = frDict[inverseEnDict[deptsfr[i][0]]];
+                if (deptsfr[i][0]===undefined){
+                    deptsfr[i][0] = fixed_data[i][0]
+                }
+            }
+            for(var i = 0; i < fulldatafr.length; i++){
+                fulldatafr[i][0] = frDict[inverseEnDict[fulldatafr[i][0]]];
+                if (fulldatafr[i][0]===undefined){
+                    fulldatafr[i][0] = fullData[i][0]
+                }
+            }
+            console.log(deptsfr);
+            console.log(fulldatafr);
             // Update the state
             this.setState({
                 data: {
@@ -140,13 +185,61 @@ class MemberDepChart extends Component {
                 partialData: fullData.slice(0,20),
                 barChartClass: '',
                 dataTableClass: '',
-                loaderClass: 'hidden'
+                loaderClass: 'hidden',
+                deptsfr: deptsfr,
+                deptsen: deptsen,
+                fulldatafr: fulldatafr,
+                fulldataen: fulldataen
             });
         });
     }
 
+    copy(o) { //reference https://www.codementor.io/avijitgupta/deep-copying-in-js-7x6q8vh5d
+        var output, v, key;
+        output = Array.isArray(o) ? [] : {};
+        for (key in o) {
+            v = o[key];
+            output[key] = (typeof v === "object") ? this.copy(v) : v;
+        }
+        return output;
+     }
+
     componentWillReceiveProps(nextProps) {
-        this.requestData(nextProps);
+        if(nextProps.language !== this.props.language){
+            if(nextProps.language == 'EN'){
+                this.setState({
+                    title: "Group Members by Department",
+                    header1: "Department",
+                    header2: "Group Members",
+                    downloadCSVmessage: "Download Data as CSV",
+                    contentButton2: "Show less content",
+                    contentButton: "Show all content",
+                    data: {
+                        columns: this.state.deptsen
+                    },
+                    fullData: this.state.fulldataen,
+                    partialData: this.state.fulldataen.slice(0, 20)
+                });
+            }
+            if(nextProps.language == 'FR'){
+                this.setState({
+                    title: "Membres du groupe par département",
+                    header1: "Département",
+                    header2: "Membres du groupe",
+                    downloadCSVmessage: "Télécharger les données au format CSV",
+                    contentButton2: "Montrer moins de contenu",
+                    contentButton: "Montrer tout le contenu",
+                    data: {
+                        columns: this.state.fulldatafr.slice(0, 20)
+                    },
+                    fullData: this.state.fulldatafr,
+                    partialData: this.state.fulldatafr.slice(0, 20)
+                });
+            }
+        }
+        else{
+            this.requestData(nextProps);
+        }
     }
     componentDidMount() {
         this.setState({loaderClass: '', contentClass: 'hidden'});
@@ -177,8 +270,8 @@ class MemberDepChart extends Component {
                 <table style={{width: '100%'}}>
                     <tr>
                         <td>
-                            <span style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.props.title}
-                                <IconButton tooltip="Download data as CSV" style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
+                            <span style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.state.title}
+                                <IconButton tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
                             </span>
@@ -213,7 +306,7 @@ class MemberDepChart extends Component {
                     <DataTable data={this.state.showAll ? this.state.fullData : this.state.partialData}
                         className={this.state.dataTableClass}
                         style={{borderBottom: '20px'}}
-                        headers={['Department', 'Group members']}
+                        headers={[this.state.header1, this.state.header2]}
                     />
                     <div className={this.state.dataTableClass}>
                     <Button
@@ -223,7 +316,7 @@ class MemberDepChart extends Component {
                                 showAll: !this.state.showAll
                             });
                         }}
-                    > {this.state.showAll ? 'Show less content' : 'Show all content'} </Button>
+                    > {this.state.showAll ? this.state.contentButton2 : this.state.contentButton} </Button>
                     </div>
                 </div>
             </Segment>
