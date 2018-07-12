@@ -31,7 +31,13 @@ class ContentBarChart extends Component {
             barChartClass: 'hide',
             dataTableClass: 'hide',
             loaderClass: '',
-            showAll: false
+            showAll: false,
+            title: 'Top Group Content',
+            header1: 'Title',
+            header2: 'Views',
+            downloadCSVmessage: "Download Data as CSV",
+            contentButton: "Show all content",
+            contentButton2: "Show less content"
         }
     }
 
@@ -151,7 +157,31 @@ class ContentBarChart extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.requestData(nextProps);
+        if(nextProps.language !== this.props.language){
+            if(nextProps.language == 'EN'){
+                this.setState({
+                    title: "Top Group Content",
+                    header1: "Title",
+                    header2: "Views",
+                    downloadCSVmessage: "Download Data as CSV",
+                    contentButton2: "Show less content",
+                    contentButton: "Show all content"
+                });
+            }
+            if(nextProps.language == 'FR'){
+                this.setState({
+                    title: "Top contenu du groupe",
+                    header1: "Titre",
+                    header2: "Pages consultées",
+                    downloadCSVmessage: "Télécharger les données au format CSV",
+                    contentButton2: "Montrer moins de contenu",
+                    contentButton: "Montrer tout le contenu"
+                });
+            }
+        }
+        else{
+            this.requestData(nextProps);
+        }
     }
     componentDidMount() {
         this.setState({loaderClass: '', contentClass: 'hidden'});
@@ -181,8 +211,8 @@ class ContentBarChart extends Component {
                 <table style={{width: '100%'}}>
                     <tr>
                         <td>
-                            <span style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.props.title}
-                                <IconButton tooltip="Download data as CSV" style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
+                            <span style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.state.title}
+                                <IconButton tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
                             </span>
@@ -218,7 +248,7 @@ class ContentBarChart extends Component {
                     <DataTable data={this.state.showAll ? this.state.fullData : this.state.partialData}
                         className={this.state.contentClass}
                         style={{borderBottom: '20px'}}
-                        headers={['Title', 'Views']}
+                        headers={[this.state.header1, this.state.header2]}
                     />
                     <div className={this.state.dataTableClass}>
                         <Button
@@ -228,7 +258,7 @@ class ContentBarChart extends Component {
                                     showAll: !this.state.showAll
                                 });
                             }}
-                        > {this.state.showAll ? 'Show less content' : 'Show all content'} </Button>
+                        > {this.state.showAll ? this.state.contentButton2 : this.state.contentButton} </Button>
                     </div>
                 </div>
             </Segment>
