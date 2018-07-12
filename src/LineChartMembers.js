@@ -227,7 +227,7 @@ class LineChartMembers extends Component {
                 <DataTable
                     data={spreadsheetData}
                     className={this.state.contentClass + scrollTable}
-                    headers={['Date','Views']}
+                    headers={['Date','Members']}
                 />
             </Segment>
         );

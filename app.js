@@ -2,7 +2,7 @@ var express = require('express');
 var fs = require('fs');
 var bodyParser = require('body-parser');
 var path = require('path');
-
+var os = require('os');
 // Allow launching of Python scripts
 var spawn = require('child_process').spawn
 
@@ -24,12 +24,9 @@ app.post('/getData/:type', (req, res) => {
     console.log('Data request received!');
 
     // Account for containerized & non-containerized environment
-    try {
-        py = spawn('python3', ['data_fetch.py']);
-    } catch (e) {
-        py = spawn('python', ['data_fetch.py']);
-    }
-    
+    pyName = (os.platform() === 'win32' ? 'python' : 'python3');
+    py = spawn(pyName, ['data_fetch.py']);
+
     console.log(JSON.stringify(req.body));
     // Start the python process
     dataString = '';

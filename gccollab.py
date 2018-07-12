@@ -59,7 +59,7 @@ def connect_to_database():
         creds = pickle.load(open('creds_collab.pkl', 'rb'))
     except:
         # If running from within a kubernetes environment, use an env variable
-        creds = json.loads(os.environ['db-secrets'])
+        creds = json.loads(os.environ['DB-SECRETS'])
     
     # Set up SSH tunnel for db connection
     server = SSHTunnelForwarder(
