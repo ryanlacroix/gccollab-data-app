@@ -1,0 +1,84 @@
+.chartsss{
+    height: 240px;
+    width: 500px;
+}
+.outercsv{
+    /* background-color: brown; */
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+.topBar2{
+    width: 100%;
+    margin-bottom: 0px !important;
+}
+@media only screen and (max-width: 1175px) and (min-width: 990px){
+    #lineChartMembers{
+        float: right !important;
+        margin-right: 200px !important;
+    }
+    .chartsss{
+        float: none !important;
+        margin-right: 00px !important;
+    }
+  } 
+
+  @media only screen and (max-width: 990px) and (min-width: 680px){
+    #lineChartMembers{
+        float: right !important;
+        margin-right: 15% !important;
+    }
+    .chartsss{
+        float: none !important;
+        /* margin-left: auto !important; */
+        display: inline-block !important; 
+    }
+  } 
+  
+  @media only screen and (max-width: 689px) and (min-width: 560px){
+    #lineChartMembers{
+        float: none !important;
+        margin-right: 75px !important;
+    }
+    .chartsss{
+        width: 420px !important;
+        float: none !important;
+        margin-left: auto !important;
+        width: 112% !important;
+    }
+    /* #tablePageviews{
+        width: 275px !important;
+        
+    } */
+  }
+  
+  @media only screen and (max-width: 559px) and (min-width: 475px){
+    #lineChartMembers{
+        float: none !important;
+        /* width: 95% !important; */
+        
+    }
+    .chartsss{
+        width: 375px !important;
+        width: 95% !important;
+    }
+  }
+  
+  @media only screen and (max-width: 475px) and (min-width: 375px){
+    #lineChartMembers{
+        float: none !important;
+        width: 100% !important;
+    }
+    .chartsss{
+        width: 95% !important;
+    }
+  }  
+  
+  @media only screen and (max-width: 375px){
+    #lineChartMembers{
+        float: none !important;
+    }
+    .chartsss{
+        width: 95% !important;
+    }
+  }

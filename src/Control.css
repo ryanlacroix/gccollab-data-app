@@ -6,3 +6,88 @@
     z-index: 450;
     pointer-events: none;
 }
+
+.searchBar{
+    width: 480px !important;
+}
+@media only screen and (max-width: 1175px) and (min-width: 680px){
+    .searchBar{
+        margin-left: auto !important;
+        margin-right: auto !important;
+        
+        /* width: 50px !important; */
+    }
+  }
+
+  @media only screen and (max-width: 1175px) and (min-width: 983px){
+    .datePickerss{
+        margin-left: 192px !important;
+    }
+    .searchBar{
+        width:400px !important;
+    }
+  }
+  @media only screen and (max-width: 982px) and (min-width: 680px){
+  .datePickerss{
+    margin-left: 92px !important;
+  }
+  .searchBar{
+    float: left !important;
+  }
+  
+}
+  @media only screen and (max-width: 689px) and (min-width: 560px){
+    .searchBar{
+        margin-left: auto !important;
+        margin-right: auto !important;
+        float: left !important;
+    }
+    .datePickerss{
+        margin-left: 50px !important;
+      }
+  }
+  
+  @media only screen and (max-width: 559px) and (min-width: 475px){
+    .searchBar{
+        width: 95% !important;
+        height: 41px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        float: left !important;
+    }
+    .datePickerss{
+        margin-left: 40px !important;
+      }
+    .my-react-component{
+        width: 150px !important;
+        margin-right: 50px !important;
+    }
+  }
+  
+  @media only screen and (max-width: 475px) and (min-width: 375px){
+    .searchBar{
+        width: 95% !important;
+        height: 40px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        float: left !important;
+    }
+    .my-react-component{
+        width: 50px !important;
+        margin-right: 360px !important;
+    }
+  }
+  
+  @media only screen and (max-width: 375px){
+    .searchBar{
+        width: 90px !important;
+        height: 35px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        float: left !important;
+    }
+    .my-react-component{
+        width: 50px !important;
+        margin-right: 360px !important;
+    }
+  }
