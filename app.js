@@ -3,11 +3,9 @@ var fs = require('fs');
 var bodyParser = require('body-parser');
 var path = require('path');
 var os = require('os');
-// Allow launching of Python scripts
 var spawn = require('child_process').spawn
 
 var app = express();
-//var ROOT = './public';
 var PORT = 2112;
 
 // Write all incoming requests to the terminal
@@ -16,18 +14,23 @@ app.use("*", (req, res, next) => {
     next();
 });
 
+app.use(express.static(path.join(__dirname, 'build'), {
+    index: false,
+    maxage: '1s'
+}));
+
 // Route for data requests
 app.use( bodyParser.json() );
-app.post('/getData/:type', (req, res) => {
+app.post('/api', (req, res) => {
     var py;
     var dataString = '';
     console.log('Data request received!');
+    console.log(JSON.stringify(req.body));
 
     // Account for containerized & non-containerized environment
     pyName = (os.platform() === 'win32' ? 'python' : 'python3');
     py = spawn(pyName, ['data_fetch.py']);
 
-    console.log(JSON.stringify(req.body));
     // Start the python process
     dataString = '';
 
@@ -50,12 +53,8 @@ app.post('/getData/:type', (req, res) => {
     py.stdin.end();
 });
 
-app.use(express.static(path.join(__dirname, 'build')));
-
 // Prod server
 app.get('/', (req, res) => {
-    //res.type('text/html');
-    //res.send(fs.readFileSync('index.html'));
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
