@@ -183,7 +183,7 @@ class LineChartMembers extends Component {
     }
 
     render() {
-        let sz = { height: 240, width: 500 };
+        // let sz = { height: 240, width: 500 };
         let spreadsheetData = this.reformatForSpreadsheet(this.state.data.columns);
         // Check if the table is oversize, if so add a scrollbar
         let scrollTable = '';

@@ -6,7 +6,7 @@ import MetricBox from './MetricBox';
 import TimeBox from './TimeBox';
 import ResultBox from './ResultBox';
 
-import './ContentBox.css'
+// import './ContentBox.css'
 
 class ContentBox extends Component {
     /* Call each time step changes. Inserts correct component accordingly*/

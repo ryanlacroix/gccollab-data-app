@@ -80,12 +80,12 @@ class ContentBarChart extends Component {
         if (nextProps) {
             // Do not send request if no query is present
             if (nextProps.groupURL == '') return;
-            var startDate = nextProps.startDate.format("YYYY-MM-DD");
-            var endDate = nextProps.endDate.format("YYYY-MM-DD");
+            // var startDate = nextProps.startDate.format("YYYY-MM-DD");
+            // var endDate = nextProps.endDate.format("YYYY-MM-DD");
             var groupURL = nextProps.groupURL;
         } else {
-            var startDate = this.props.startDate.format("YYYY-MM-DD");
-            var endDate = this.props.endDate.format("YYYY-MM-DD");
+            // var startDate = this.props.startDate.format("YYYY-MM-DD");
+            // var endDate = this.props.endDate.format("YYYY-MM-DD");
             var groupURL = this.props.groupURL;
         }
         // Create a deep copy of the state
@@ -147,12 +147,27 @@ class ContentBarChart extends Component {
                 loaderClass: 'hidden',
                 contentClass: ''
             });
-            this.setState({
-                showAll: this.state.showAll
-            });
-            this.setState({
-                showAll: this.state.showAll
-            });
+            // this.setState({
+            //     showAll: this.state.showAll
+            // });
+            // this.setState({
+            //     showAll: this.state.showAll
+            // });
+            // this.setState({
+            //     showAll: this.state.showAll
+            // });
+            setTimeout(() => {
+                console.log("timing outtttt");
+                this.setState({
+                    showAll: this.state.showAll
+                })
+                setTimeout(() => {
+                    console.log("wneoenwf");
+                    this.setState({
+                        showAll: this.state.showAll
+                    })
+                }, 250)
+              }, 250);
         });
     }
 
@@ -172,7 +187,7 @@ class ContentBarChart extends Component {
     }
 
     render() {
-        let sz = { height: 240, width: 500 };
+        // let sz = { height: 240, width: 500 };
 
         // 'Unzip' data into c3 format
         var chartData = ['Content']

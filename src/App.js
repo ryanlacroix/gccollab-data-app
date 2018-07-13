@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import 'react-dates/initialize';
-import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+// import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 // Refactor these ^ later.
 
 // Result views
