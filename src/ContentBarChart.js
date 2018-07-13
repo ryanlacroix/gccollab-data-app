@@ -147,12 +147,18 @@ class ContentBarChart extends Component {
                 loaderClass: 'hidden',
                 contentClass: ''
             });
-            this.setState({
-                showAll: this.state.showAll
-            });
-            this.setState({
-                showAll: this.state.showAll
-            });
+            setTimeout(() => {
+                console.log("timing outtttt");
+                this.setState({
+                    showAll: this.state.showAll
+                })
+                setTimeout(() => {
+                    console.log("wneoenwf");
+                    this.setState({
+                        showAll: this.state.showAll
+                    })
+                }, 250)
+              }, 250);
         });
     }
 
