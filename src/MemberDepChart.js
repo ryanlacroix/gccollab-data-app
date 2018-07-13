@@ -91,12 +91,18 @@ class MemberDepChart extends Component {
         let state = JSON.parse('{"stepIndex":4,"reqType":{"category":1,"filter":"'+ groupURL +'"},"metric":4,"metric2":0,"time":{"startDate":"2017-02-12","endDate":"2018-02-12","allTime":true},"errorFlag":false}');
 
         // Send a request for the data
-        fetch('/getData/request', {
+        fetch('/api', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(state)
+            body: JSON.stringify({
+                type: 'groups',
+                stat: 'membersByDepartment',
+                url: groupURL,
+                start_date: startDate,
+                end_date: endDate
+            })
         }).then(response => {
             return response.json();
         }).then(data => {

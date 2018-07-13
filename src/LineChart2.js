@@ -83,12 +83,18 @@ class LineChart2 extends Component {
         state.time.startDate = moment(state.time.startDate).format('YYYY-MM-DD');
         state.time.endDate = moment(state.time.endDate).format('YYYY-MM-DD');
 
-        fetch('/getData/request', {
+        fetch('/api', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(state)
+            body: JSON.stringify({
+                type: 'groups',
+                stat: 'pageviews',
+                url: groupURL,
+                start_date: startDate,
+                end_date: endDate
+            })
         }).then(response => {
             return response.json();
         }).then(data => {
