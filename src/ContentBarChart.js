@@ -80,24 +80,22 @@ class ContentBarChart extends Component {
         if (nextProps) {
             // Do not send request if no query is present
             if (nextProps.groupURL == '') return;
-            var startDate = nextProps.startDate.format("YYYY-MM-DD");
-            var endDate = nextProps.endDate.format("YYYY-MM-DD");
             var groupURL = nextProps.groupURL;
         } else {
-            var startDate = this.props.startDate.format("YYYY-MM-DD");
-            var endDate = this.props.endDate.format("YYYY-MM-DD");
             var groupURL = this.props.groupURL;
         }
-        // Create a deep copy of the state
-        let state = JSON.parse('{"stepIndex":4,"reqType":{"category":1,"filter":"'+ groupURL +'"},"metric":2,"metric2":0,"time":{"startDate":"2017-02-12","endDate":"2018-02-12","allTime":true},"errorFlag":false}');
         
         // Send a request for the data
-        fetch('/getData/request', {
+        fetch('/api', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(state)
+            body: JSON.stringify({
+                type: 'groups',
+                stat: 'topContent',
+                url: groupURL
+            })
         }).then(response => {
             return response.json();
         }).then(data => {

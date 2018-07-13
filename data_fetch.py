@@ -24,7 +24,7 @@ def get_group_pageviews(req_obj):
     ga = gcga()
     ga.set_platform('gccollab')
     # Request a dataframe containing pageviews and corresponding dates
-    ret = ga.pageviews([req_obj['url'], 'NOToffset'], intervals=True, req_obj['start_date']=req_obj['req_obj['start_date']'], req_obj['end_date']=req_obj['req_obj['end_date']'])
+    ret = ga.pageviews([req_obj['url'], 'NOToffset'], intervals=True, start_date=req_obj['start_date'], end_date=req_obj['end_date'])
     print(json.dumps(ret))
 
 def get_group_top_content(req_obj):
@@ -33,6 +33,7 @@ def get_group_top_content(req_obj):
             gc.create_session()
 
             # Figure out group guid from url
+            url = req_obj['url']
             url2 = url[url.find('profile/'):]
             url3 = url2[url2.find('/')+1:]
             group_guid = url3[:url3.find('/')]
@@ -70,7 +71,7 @@ def get_group_members_over_time(req_obj):
     gc.create_session()
     
     # Determine group guid
-    group_guid = get_group_guid(url)
+    group_guid = get_group_guid(req_obj['url'])
 
     # Query the database
     group_members = gc.groups.get_group_members(group_guid, cleaned=False)
@@ -147,7 +148,7 @@ def get_group_members_by_department(req_obj):
     gc.create_session()
     
     # Determine group guid
-    group_guid = get_group_guid(url)
+    group_guid = get_group_guid(req_obj['url'])
 
     members = gc.groups.get_group_members(group_guid)
     
@@ -180,12 +181,9 @@ def main(testing=False):
         else:
             print('Query incorrectly formed.')
 
-#start process
+# Start process
 if __name__ == '__main__':
-    # Testing
-    inStr = '{"type":"groups","stat":"pageviews","url":"http://www.google.com","start_date":"2018-03-30","end_date":"2018-06-28"}'
-    
-    main(inStr)
+    main()
     # If collab db was used be sure to close the tunnel properly
     try:
         gc.close_tunnel()

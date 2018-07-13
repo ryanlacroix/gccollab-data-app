@@ -21,10 +21,11 @@ app.use(express.static(path.join(__dirname, 'build'), {
 
 // Route for data requests
 app.use( bodyParser.json() );
-app.get('/api', (req, res) => {
+app.post('/api', (req, res) => {
     var py;
     var dataString = '';
     console.log('Data request received!');
+    console.log(JSON.stringify(req.body));
 
     // Account for containerized & non-containerized environment
     pyName = (os.platform() === 'win32' ? 'python' : 'python3');
