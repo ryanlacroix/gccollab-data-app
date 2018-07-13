@@ -72,17 +72,19 @@ class LineChartMembers extends Component {
             var endDate = this.props.endDate.format("YYYY-MM-DD");
             var groupURL = this.props.groupURL;
         }
-        // Create a deep copy of the state
-        let state = JSON.parse('{"stepIndex":4,"reqType":{"category":1,"filter":"'+ groupURL +'"},"metric":3,"metric2":0,"time":{"startDate":"'+ startDate +'","endDate":"'+ endDate +'","allTime":true},"errorFlag":false}');
-        state.time.startDate = moment(state.time.startDate).format('YYYY-MM-DD');
-        state.time.endDate = moment(state.time.endDate).format('YYYY-MM-DD');
 
-        fetch('/getData/request', {
+        fetch('/api', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(state)
+            body: JSON.stringify({
+                type: 'groups',
+                stat: 'membersOverTime',
+                url: groupURL,
+                start_date: startDate,
+                end_date: endDate
+            })
         }).then(response => {
             return response.json();
         }).then(data => {
