@@ -79,12 +79,12 @@ class MemberDepChart extends Component {
         if (nextProps) {
             // Do not send request if no query is present
             if (nextProps.groupURL == '') return;
-            // var startDate = nextProps.startDate.format("YYYY-MM-DD");
-            // var endDate = nextProps.endDate.format("YYYY-MM-DD");
+            var startDate = nextProps.startDate.format("YYYY-MM-DD");
+            var endDate = nextProps.endDate.format("YYYY-MM-DD");
             var groupURL = nextProps.groupURL;
         } else {
-            // var startDate = this.props.startDate.format("YYYY-MM-DD");
-            // var endDate = this.props.endDate.format("YYYY-MM-DD");
+            var startDate = this.props.startDate.format("YYYY-MM-DD");
+            var endDate = this.props.endDate.format("YYYY-MM-DD");
             var groupURL = this.props.groupURL;
         }
         // Create a deep copy of the state
