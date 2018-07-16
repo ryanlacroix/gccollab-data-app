@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import 'react-dates/initialize';
-import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+// import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 // Refactor these ^ later.
 
 // Result views
@@ -18,8 +18,6 @@ import Content from './Content';
 import Control from './Control';
 
 import './App.css';
-
-import MainView from './MainView'
 
 import { Container } from 'semantic-ui-react';
 

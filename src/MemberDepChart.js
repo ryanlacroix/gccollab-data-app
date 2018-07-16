@@ -179,7 +179,7 @@ class MemberDepChart extends Component {
     }
 
     render() {
-        let sz = { height: 200, width: 500 };
+        // let sz = { height: 200, width: 500 };
         
         // 'Unzip' data into c3 format
         var chartData = ['Department']
