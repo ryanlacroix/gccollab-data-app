@@ -188,10 +188,10 @@ class ContentBarChart extends Component {
 
         return (
             <Segment className="ind-content-box" style={{marginTop: '10px',padding:'0 0', display: 'inline-block', width: '98%', align: 'center', borderRadius: '5px', backgroundColor: '#f9f9f9', border: '2px solid lightgray'}}>
-                <table style={{width: '100%'}}>
+                <table className="topBar" style={{width: '100%'}}>
                     <tr>
                         <td>
-                            <span className = 'outercsv' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.props.title}
+                            <span className = 'outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h2> {this.props.title} </h2>
                                 <IconButton className = 'innercsv' tooltip="Download data as CSV" style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
@@ -199,7 +199,6 @@ class ContentBarChart extends Component {
                             
                         </td>
                         <td>
-                            {this.state.groupName}
                         </td>
                     </tr>
                 </table>
@@ -223,6 +222,7 @@ class ContentBarChart extends Component {
                         unloadBeforeLoad={true}
                         bar={{width: { ratio: 0.9}}}
                         grid={{focus: { show: false}}}
+                        color={{pattern: ['#467B8D']}}                       
                     />
                 </div>
                 <div id = 'table4' style={{width: '500px', float: 'right'}}>
@@ -233,7 +233,7 @@ class ContentBarChart extends Component {
                     />
                     <div className={this.state.dataTableClass}>
                         <Button
-                            id = 'showAll'
+                            id='showAll'
                             primary={true}
                             onClick={() => {
                                 this.setState({

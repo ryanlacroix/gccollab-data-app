@@ -195,7 +195,7 @@ class MemberDepChart extends Component {
                 <table className = 'topBar' style={{width: '100%'}}>
                     <tr>
                         <td>
-                            <span className = 'outercsv' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.props.title}
+                            <span className = 'outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h2> {this.props.title} </h2>
                                 <IconButton tooltip="Download data as CSV" style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
@@ -226,6 +226,7 @@ class MemberDepChart extends Component {
                         unloadBeforeLoad={true}
                         bar={{width: { ratio: 0.9}}}
                         grid={{focus: { show: false}}}
+                        color={{pattern: ['#467B8D']}}                        
                     />
                 </div>
                 <div id = 'table3' style={{width: '500px', float: 'right'}} >

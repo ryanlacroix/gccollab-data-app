@@ -4,9 +4,9 @@ Browser based self-serve data app for GCcollab, the GoC's outward facing network
 <p align="center">
     <img src="images/data-app-screens.png?raw=true">
 </p>
+ This application gives users a web interface for retrieving statistics on their groups.
+ Web visualizations are created using C3. Front end is built on React. Back end runs on Node.js with calls to Python scripts for data gathering / munging.
 
-Presents users with a wizard-style interface for building specific data requests on the platform. Web visualizations are created using combination of the fantastic D3 and C3 libraries. Front end is built on React. Back end runs on Node.js with calls to Python scripts for data gathering / munging.
-
-The current interface relies heavily on Semantic-UI, however this will be replaced with the release of the upcoming GCTools design system.
+Statistics are currently limited to groups, however support for many other types of pages and content is planned.
 
 This project is currently a work in progress.
