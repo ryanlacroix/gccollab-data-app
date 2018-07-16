@@ -6,15 +6,13 @@
     height: 240px;
     width: 500px;
 }
-/* #weew{
-    background-color: black !important;
-    width: 100px !important;
-} */
+
 .outercsv0{
     position: absolute;
     left: 0px;
-    top: 35px;
+    top: 20px;
 }
+
 .content-box-heading{
     width: 100%;
     margin-bottom: 0px;

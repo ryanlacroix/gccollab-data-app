@@ -211,7 +211,7 @@ class LineChart2 extends Component {
                 <table className="content-box-heading" style={{width: '100%'}}>
                     <tr>
                         <td>
-                            <span className='outercsv0' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.props.title}
+                            <span className='outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h2> {this.props.title} </h2>
                                 <IconButton tooltip="Download data as CSV" style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
@@ -237,6 +237,7 @@ class LineChart2 extends Component {
                         unloadBeforeLoad={true}
                         point={{show: false}}
                         zoom={{enabled: true}}
+                        color={{pattern: ['#467B8D']}}
                     />
                 </div>
                 <DataTable

@@ -60,9 +60,9 @@ html {
   background-color: #047177;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.cell-title h2 {
+  font-family: 'Rubik', sans-serif;
+  display: inline-block!important;
 }
 
 @media only screen and (max-width: 1175px) and (min-width: 680px){
