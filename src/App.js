@@ -19,8 +19,6 @@ import Control from './Control';
 
 import './App.css';
 
-import MainView from './MainView'
-
 import { Container } from 'semantic-ui-react';
 
 import moment from 'moment';
