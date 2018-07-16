@@ -40,13 +40,15 @@ class App extends Component {
     this.setMainState = this.setMainState.bind(this);
     this.setStartDate = this.setStartDate.bind(this);
     this.setGroupUrl = this.setGroupUrl.bind(this);
+    this.setURLType = this.setURLType.bind(this);
 
     this.state = {
       // Populate this with stuff from control
       startDate: m1,
       endDate: m2,
       groupURL: '',
-      onIntro: true
+      onIntro: true,
+      URLType: 'collab-group'
     }
   }
 
@@ -67,7 +69,9 @@ class App extends Component {
       groupURL: url,
       onIntro: false
     });
-
+  }
+  setURLType = (URLType) => {
+    this.setState({URLType: URLType});
   }
 
   render() {
@@ -92,6 +96,7 @@ class App extends Component {
             setStartDate={this.setStartDate}
             setEndDate={this.setEndDate}
             setGroupUrl={this.setGroupUrl}
+            setURLType={this.setURLType}
           />
           <div className={this.state.onIntro ? 'hidden' : ''}>
             <Content
@@ -99,6 +104,7 @@ class App extends Component {
               startDate={this.state.startDate}
               endDate={this.state.endDate}
               groupURL={this.state.groupURL}
+              URLType={this.state.URLType}
             />
           </div>
           <div className={this.state.onIntro ? '' : 'hidden'} style={{paddingBottom: '10px', fontFamily: "'Nunito Sans', sans-serif"}} id="container2">

@@ -19,47 +19,63 @@ class Content extends Component {
         this.state = {}
     }
     render() {
-        return (
-            <div class="bigBox" style={{margin: '0 auto', backgroundColor: '#fff', border: '2px solid lightgray', borderRadius: '5px', width: '95%'}}>
-                <div className="pageviews" style={{width: '100%'}}>
-                    <LineChart2
-                        title="Page views"
-                        className='linechart1'
-                        startDate={this.props.startDate}
-                        endDate={this.props.endDate}
-                        groupURL={this.props.groupURL}
-                        superState={this.props.endDate}
-                    />
+        if (this.props.URLType === 'collab-group')
+            return (
+                <div class="bigBox" style={{margin: '0 auto', backgroundColor: '#fff', border: '2px solid lightgray', borderRadius: '5px', width: '95%'}}>
+                    <div className="pageviews" style={{width: '100%'}}>
+                        <LineChart2
+                            title="Page views"
+                            className='linechart1'
+                            startDate={this.props.startDate}
+                            endDate={this.props.endDate}
+                            groupURL={this.props.groupURL}
+                            superState={this.props.endDate}
+                        />
+                    </div>
+                    <div className="membership" style={{width: '100%'}}>
+                        <LineChartMembers
+                            title="Group Membership"
+                            superState={this.props.superState}
+                            startDate={this.props.startDate}
+                            endDate={this.props.endDate}
+                            groupURL={this.props.groupURL}
+                        />
+                    </div>
+                    <div className="deps" style={{width: '100%'}}>
+                        <MemberDepChart
+                            title="Group Members by Department"
+                            superState={this.props.superState}
+                            startDate={this.props.startDate}
+                            endDate={this.props.endDate}
+                            groupURL={this.props.groupURL}
+                        />
+                    </div>
+                    <div className="top-content" style={{width: '100%'}}>
+                        <ContentBarChart
+                            title="Top Group Content"
+                            superState={this.props.superState}
+                            startDate={this.props.startDate}
+                            endDate={this.props.endDate}
+                            groupURL={this.props.groupURL}
+                        />
+                    </div>
                 </div>
-                <div className="membership" style={{width: '100%'}}>
-                    <LineChartMembers
-                        title="Group Membership"
-                        superState={this.props.superState}
-                        startDate={this.props.startDate}
-                        endDate={this.props.endDate}
-                        groupURL={this.props.groupURL}    
-                    />
+            );
+        if (this.props.URLType === 'collab-page')
+            return (
+                <div class="bigBox" style={{margin: '0 auto', backgroundColor: '#fff', border: '2px solid lightgray', borderRadius: '5px', width: '95%'}}>
+                    <div className="pageviews" style={{width: '100%'}}>
+                        <LineChart2
+                            title="Page views"
+                            className='linechart1'
+                            startDate={this.props.startDate}
+                            endDate={this.props.endDate}
+                            groupURL={this.props.groupURL}
+                            superState={this.props.endDate}
+                        />
+                    </div>
                 </div>
-                <div className="deps" style={{width: '100%'}}>
-                    <MemberDepChart
-                        title="Group Members by Department"
-                        superState={this.props.superState}
-                        startDate={this.props.startDate}
-                        endDate={this.props.endDate}
-                        groupURL={this.props.groupURL} 
-                    />
-                </div>
-                <div className="top-content" style={{width: '100%'}}>
-                    <ContentBarChart
-                        title="Top Group Content"
-                        superState={this.props.superState}
-                        startDate={this.props.startDate}
-                        endDate={this.props.endDate}
-                        groupURL={this.props.groupURL}
-                    />
-                </div>
-            </div>
-        );
+            );
     }
 }
 
