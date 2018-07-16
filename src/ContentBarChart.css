@@ -32,6 +32,14 @@
     left: 70%;
     background-color: #467B8D;
 }
+#showAll:hover{
+    position: absolute;
+    bottom: 5px;
+    left: 70%;
+    background-color: #467B8D;
+    opacity: 0.8!important;
+}
+
 #table4{
     margin-bottom: 45px;
 }

@@ -35,6 +35,14 @@
     left: 70%;
     background-color: #467B8D;
 }
+#showAllg3:hover{
+    /* position: absolute; */
+    margin-top: 0px;
+    bottom: 0px;
+    left: 70%;
+    background-color: #467B8D;
+    opacity: 0.8!important;
+}
 @media only screen and (max-width: 1175px) and (min-width: 990px){
     #chart3{
         /* float: None;
