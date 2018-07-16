@@ -216,7 +216,8 @@ class MemberDepChart extends Component {
                             format: {
                                 name:  (name, ratio, id, index) => {
                                     return this.state.data.columns[index][0];
-                                }
+                                },
+                                title: () => {return 'Department'}
                             }
                             }}
                         legend={{show: false}}
