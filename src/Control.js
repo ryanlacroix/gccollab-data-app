@@ -9,7 +9,7 @@ import * as moment from 'moment';
 import 'moment/locale/fr';
 import 'moment/locale/en-ca';
 
-import { DatePicker, DatePickerInput } from 'rc-datepicker';
+import { DatePickerInput } from 'rc-datepicker';
 import 'rc-datepicker/lib/style.css';
 
 
@@ -19,7 +19,7 @@ class Control extends Component {
         super(props);
         // This should instead be passed down from props
         const date1 = new Date();
-        const date2 = new Date();
+
         //date1.setFullYear(date1.getFullYear() - 1);
         date1.setDate(date1.getDate() - 90);
         this.state = {

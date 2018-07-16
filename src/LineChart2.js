@@ -92,12 +92,18 @@ class LineChart2 extends Component {
         state.time.startDate = moment(state.time.startDate).format('YYYY-MM-DD');
         state.time.endDate = moment(state.time.endDate).format('YYYY-MM-DD');
 
-        fetch('/getData/request', {
+        fetch('/api', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(state)
+            body: JSON.stringify({
+                type: 'groups',
+                stat: 'pageviews',
+                url: groupURL,
+                start_date: startDate,
+                end_date: endDate
+            })
         }).then(response => {
             return response.json();
         }).then(data => {
@@ -281,7 +287,7 @@ class LineChart2 extends Component {
     }
 
     render() {
-        let sz = { height: 240, width: 500 };
+        // let sz = { height: 240, width: 500 };
         let spreadsheetData = this.reformatForSpreadsheet(this.state.data.columns);
         // Check if the table is oversize, if so add a scrollbar
         let scrollTable = '';
@@ -295,7 +301,7 @@ class LineChart2 extends Component {
                 <table className="content-box-heading" style={{width: '100%'}}>
                     <tr>
                         <td>
-                            <span style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.state.title}
+                            <span className='outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h2> {this.state.title} </h2>
                                 <IconButton tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
@@ -321,6 +327,7 @@ class LineChart2 extends Component {
                         unloadBeforeLoad={true}
                         point={{show: false}}
                         zoom={{enabled: true}}
+                        color={{pattern: ['#467B8D']}}
                     />
                 </div>
                 <DataTable

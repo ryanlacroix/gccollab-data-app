@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import 'react-dates/initialize';
-import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+// import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 // Refactor these ^ later.
 
 // Result views
@@ -18,8 +18,6 @@ import Content from './Content';
 import Control from './Control';
 
 import './App.css';
-
-import MainView from './MainView'
 
 import { Container } from 'semantic-ui-react';
 
@@ -99,7 +97,7 @@ class App extends Component {
         </header>
         <div className="App-intro" style={{align: 'center', boxShadow: '0px -1px 80px -4px rgba(0,0,0,0.31)'}}>
           <div className="title-bar" >
-            <h1 style={{fontFamily: 'Helvetica,Arial,sans-serif', textShadow: '2px 2px #555' , backgroundColor: '#46246a', color: 'white', borderTopLeftRadius: '5px', borderTopRightRadius: '5px'}}>{this.state.title}</h1>
+            <h1 style={{fontFamily: "'Rubik', sans-serif", fontSize: '2em', backgroundColor: '#467B8D', color: 'white', borderTopLeftRadius: '5px', borderTopRightRadius: '5px'}}>{this.state.title}</h1>
           </div>
           <Control
             superState={this.state}
@@ -124,7 +122,7 @@ class App extends Component {
               initLang={this.state.initLang}
             />
           </div>
-          <div className={this.state.onIntro ? '' : 'hidden'} style={{paddingBottom: '10px'}} id="container2">
+          <div className={this.state.onIntro ? '' : 'hidden'} style={{paddingBottom: '10px', fontFamily: "'Nunito Sans', sans-serif"}} id="container2">
             {this.state.helpmessage}
           </div>
         </div>

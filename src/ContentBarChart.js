@@ -86,24 +86,22 @@ class ContentBarChart extends Component {
         if (nextProps) {
             // Do not send request if no query is present
             if (nextProps.groupURL == '') return;
-            var startDate = nextProps.startDate.format("YYYY-MM-DD");
-            var endDate = nextProps.endDate.format("YYYY-MM-DD");
             var groupURL = nextProps.groupURL;
         } else {
-            var startDate = this.props.startDate.format("YYYY-MM-DD");
-            var endDate = this.props.endDate.format("YYYY-MM-DD");
             var groupURL = this.props.groupURL;
         }
-        // Create a deep copy of the state
-        let state = JSON.parse('{"stepIndex":4,"reqType":{"category":1,"filter":"'+ groupURL +'"},"metric":2,"metric2":0,"time":{"startDate":"2017-02-12","endDate":"2018-02-12","allTime":true},"errorFlag":false}');
         
         // Send a request for the data
-        fetch('/getData/request', {
+        fetch('/api', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(state)
+            body: JSON.stringify({
+                type: 'groups',
+                stat: 'topContent',
+                url: groupURL
+            })
         }).then(response => {
             return response.json();
         }).then(data => {
@@ -153,12 +151,18 @@ class ContentBarChart extends Component {
                 loaderClass: 'hidden',
                 contentClass: ''
             });
-            this.setState({
-                showAll: this.state.showAll
-            });
-            this.setState({
-                showAll: this.state.showAll
-            });
+            setTimeout(() => {
+                console.log("timing outtttt");
+                this.setState({
+                    showAll: this.state.showAll
+                })
+                setTimeout(() => {
+                    console.log("wneoenwf");
+                    this.setState({
+                        showAll: this.state.showAll
+                    })
+                }, 250)
+              }, 250);
         });
     }
 
@@ -202,7 +206,7 @@ class ContentBarChart extends Component {
     }
 
     render() {
-        let sz = { height: 240, width: 500 };
+        // let sz = { height: 240, width: 500 };
 
         // 'Unzip' data into c3 format
         var chartData = ['Content']
@@ -214,18 +218,17 @@ class ContentBarChart extends Component {
 
         return (
             <Segment className="ind-content-box" style={{marginTop: '10px',padding:'0 0', display: 'inline-block', width: '98%', align: 'center', borderRadius: '5px', backgroundColor: '#f9f9f9', border: '2px solid lightgray'}}>
-                <table style={{width: '100%'}}>
+                <table className="topBar" style={{width: '100%'}}>
                     <tr>
                         <td>
-                            <span style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.state.title}
-                                <IconButton tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
+                            <span className = 'outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h2> {this.state.title} </h2>
+                                <IconButton className = 'innercsv' tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
                             </span>
                             
                         </td>
                         <td>
-                            {this.state.groupName}
                         </td>
                     </tr>
                 </table>
@@ -249,6 +252,7 @@ class ContentBarChart extends Component {
                         unloadBeforeLoad={true}
                         bar={{width: { ratio: 0.9}}}
                         grid={{focus: { show: false}}}
+                        color={{pattern: ['#467B8D']}}                       
                     />
                 </div>
                 <div id = 'table4' style={{width: '500px', float: 'right'}}>
@@ -259,7 +263,7 @@ class ContentBarChart extends Component {
                     />
                     <div className={this.state.dataTableClass}>
                         <Button
-                            id = 'showAll'
+                            id='showAll'
                             primary={true}
                             onClick={() => {
                                 this.setState({

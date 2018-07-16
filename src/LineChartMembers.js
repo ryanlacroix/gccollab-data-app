@@ -79,17 +79,19 @@ class LineChartMembers extends Component {
             var endDate = this.props.endDate.format("YYYY-MM-DD");
             var groupURL = this.props.groupURL;
         }
-        // Create a deep copy of the state
-        let state = JSON.parse('{"stepIndex":4,"reqType":{"category":1,"filter":"'+ groupURL +'"},"metric":3,"metric2":0,"time":{"startDate":"'+ startDate +'","endDate":"'+ endDate +'","allTime":true},"errorFlag":false}');
-        state.time.startDate = moment(state.time.startDate).format('YYYY-MM-DD');
-        state.time.endDate = moment(state.time.endDate).format('YYYY-MM-DD');
 
-        fetch('/getData/request', {
+        fetch('/api', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(state)
+            body: JSON.stringify({
+                type: 'groups',
+                stat: 'membersOverTime',
+                url: groupURL,
+                start_date: startDate,
+                end_date: endDate
+            })
         }).then(response => {
             return response.json();
         }).then(data => {
@@ -265,7 +267,7 @@ class LineChartMembers extends Component {
     }
 
     render() {
-        let sz = { height: 240, width: 500 };
+        // let sz = { height: 240, width: 500 };
         let spreadsheetData = this.reformatForSpreadsheet(this.state.data.columns);
         // Check if the table is oversize, if so add a scrollbar
         let scrollTable = '';
@@ -279,7 +281,7 @@ class LineChartMembers extends Component {
                 <table style={{width: '100%'}}>
                     <tr>
                         <td>
-                            <span className = 'outercsv' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.state.title}
+                            <span className = 'outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h2> {this.state.title} </h2>
                                 <IconButton tooltip={this.props.language=="EN" ? "Download data as CSV" : "Télécharger les données au format CSV"} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
@@ -304,6 +306,7 @@ class LineChartMembers extends Component {
                         unloadBeforeLoad={true}
                         zoom={{enabled: true}}
                         point={{show: false}}
+                        color={{pattern: ['#467B8D']}}                        
                     />
                 </div>
                 <DataTable
