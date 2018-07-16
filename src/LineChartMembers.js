@@ -199,7 +199,7 @@ class LineChartMembers extends Component {
                 <table style={{width: '100%'}}>
                     <tr>
                         <td>
-                            <span className = 'outercsv' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.props.title}
+                            <span className = 'outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h2> {this.props.title} </h2>
                                 <IconButton tooltip="Download data as CSV" style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
@@ -224,6 +224,7 @@ class LineChartMembers extends Component {
                         unloadBeforeLoad={true}
                         zoom={{enabled: true}}
                         point={{show: false}}
+                        color={{pattern: ['#467B8D']}}                        
                     />
                 </div>
                 <DataTable

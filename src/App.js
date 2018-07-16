@@ -84,7 +84,7 @@ class App extends Component {
         </header>
         <div className="App-intro" style={{align: 'center', boxShadow: '0px -1px 80px -4px rgba(0,0,0,0.31)'}}>
           <div className="title-bar" >
-            <h1 style={{fontFamily: 'Helvetica,Arial,sans-serif', textShadow: '2px 2px #555' , backgroundColor: '#46246a', color: 'white', borderTopLeftRadius: '5px', borderTopRightRadius: '5px'}}><strong>GC</strong>collab Group Stats Page</h1>
+            <h1 style={{fontFamily: "'Rubik', sans-serif", fontSize: '2em', backgroundColor: '#467B8D', color: 'white', borderTopLeftRadius: '5px', borderTopRightRadius: '5px'}}>GCcollab Group Stats Page</h1>
           </div>
           <Control
             superState={this.state}
@@ -103,7 +103,7 @@ class App extends Component {
               groupURL={this.state.groupURL}
             />
           </div>
-          <div className={this.state.onIntro ? '' : 'hidden'} style={{paddingBottom: '10px'}} id="container2">
+          <div className={this.state.onIntro ? '' : 'hidden'} style={{paddingBottom: '10px', fontFamily: "'Nunito Sans', sans-serif"}} id="container2">
             Paste the group URL above and set your desired start and end dates to retrieve relevant statistics.
           </div>
         </div>
