@@ -37,7 +37,11 @@ class ContentBarChart extends Component {
             header2: 'Views',
             downloadCSVmessage: "Download Data as CSV",
             contentButton: "Show all content",
-            contentButton2: "Show less content"
+            contentButton2: "Show less content",
+            fixed_data_fr: {},
+            fullDataFR: {},
+            fixed_data_en: {},
+            fullDataEN: {}
         }
     }
 
@@ -79,6 +83,19 @@ class ContentBarChart extends Component {
         });
         return newData
     }
+
+    toFrench (typeStr){
+        let validTypes = ['file','discussion','event_calendar','groups','blog',
+                        'bookmarks','pages',];
+        let validTypesFR = ['fichier','discussion','calendrier des événements','groupes ','blog',
+        'signets','pages',];
+        for(var i=0; i<validTypes.length; i++){
+            if(typeStr == validTypes[i]){
+                typeStr = validTypesFR[i];
+            }
+        }
+        return typeStr;
+    }
     
     requestData = (nextProps=null) => {
         
@@ -86,49 +103,61 @@ class ContentBarChart extends Component {
         if (nextProps) {
             // Do not send request if no query is present
             if (nextProps.groupURL == '') return;
-            var startDate = nextProps.startDate.format("YYYY-MM-DD");
-            var endDate = nextProps.endDate.format("YYYY-MM-DD");
             var groupURL = nextProps.groupURL;
         } else {
-            var startDate = this.props.startDate.format("YYYY-MM-DD");
-            var endDate = this.props.endDate.format("YYYY-MM-DD");
             var groupURL = this.props.groupURL;
         }
-        // Create a deep copy of the state
-        let state = JSON.parse('{"stepIndex":4,"reqType":{"category":1,"filter":"'+ groupURL +'"},"metric":2,"metric2":0,"time":{"startDate":"2017-02-12","endDate":"2018-02-12","allTime":true},"errorFlag":false}');
         
         // Send a request for the data
-        fetch('/getData/request', {
+        fetch('/api', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(state)
+            body: JSON.stringify({
+                type: 'groups',
+                stat: 'topContent',
+                url: groupURL
+            })
         }).then(response => {
             return response.json();
         }).then(data => {
             // Apply final transformations for visualization
             var fixed_data = []
+            var fixed_data_fr = []
             for (var i=0;i<data.urls.length;i++) {
                 fixed_data.push([ '('+ this.validTypeCheck(data.urls[i]) +') ' + data.titles[i], parseInt(data.pageviews[i])]);
+            }
+    
+            for (var i=0;i<data.urls.length;i++) {
+                fixed_data_fr.push([ '('+ this.toFrench(this.validTypeCheck(data.urls[i])) +') ' + data.titles[i], parseInt(data.pageviews[i])]);
             }
 
             // Show error message if no group content found
             if (data.urls.length === 0) {
                 fixed_data.push(['No content found in group', '0'])
             }
+            if (data.urls.length === 0) {
+                fixed_data_fr.push(["Aucun contenu trouvé dans le groupe", '0'])
+            }
 
             // Fix duplicate entries
             fixed_data = this.fixDuplicateEntries(fixed_data);
+            fixed_data_fr = this.fixDuplicateEntries(fixed_data_fr);
+
+            
 
             // Need to create separate data store for table
             // Title | type | pageviews
             let fullData = JSON.parse(JSON.stringify(fixed_data));
-
+            let fullDataFR = JSON.parse(JSON.stringify(fixed_data_fr));
             // Truncate the formatted data if too many content pieces found
             // (For visualization)
             if (fixed_data.length > 10) {
                 fixed_data = fixed_data.slice(0,20);
+            }
+            if (fixed_data_fr.length > 10) {
+                fixed_data_fr = fixed_data_fr.slice(0,20);
             }
 
             // Determine if group name is an object or not
@@ -139,7 +168,6 @@ class ContentBarChart extends Component {
                 console.log(err);
                 groupName = data.group_name;
             }
-
             // Update the state
             this.setState({
                 data: {
@@ -151,37 +179,59 @@ class ContentBarChart extends Component {
                 barChartClass: '',
                 dataTableClass: '',
                 loaderClass: 'hidden',
-                contentClass: ''
+                contentClass: '',
+                fixed_data_fr: fixed_data_fr,
+                fullDataFR: fullDataFR,
+                fixed_data_en: fixed_data,
+                fullDataEN: fullData
             });
-            this.setState({
-                showAll: this.state.showAll
-            });
-            this.setState({
-                showAll: this.state.showAll
-            });
+            setTimeout(() => {
+                console.log("timing outtttt");
+                this.setState({
+                    showAll: this.state.showAll
+                })
+                setTimeout(() => {
+                    console.log("wneoenwf");
+                    this.setState({
+                        showAll: this.state.showAll
+                    })
+                }, 250)
+              }, 250);
         });
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log(this.state.fixed_data_fr);
+        console.log(this.state.fullDataFR)
         if(nextProps.language !== this.props.language){
             if(nextProps.language == 'EN'){
                 this.setState({
+                    data: {
+                        columns: this.state.fixed_data_en,
+                    },
+                    fullData: this.state.fullDataEN,
                     title: "Top Group Content",
                     header1: "Title",
                     header2: "Views",
                     downloadCSVmessage: "Download Data as CSV",
                     contentButton2: "Show less content",
-                    contentButton: "Show all content"
+                    contentButton: "Show all content",
+                    partialData: this.state.fixed_data_en.slice(0, 20)
                 });
             }
             if(nextProps.language == 'FR'){
                 this.setState({
+                    data: {
+                        columns: this.state.fixed_data_fr,
+                    },
+                    fullData: this.state.fullDataFR,
                     title: "Top contenu du groupe",
                     header1: "Titre",
                     header2: "Pages consultées",
                     downloadCSVmessage: "Télécharger les données au format CSV",
                     contentButton2: "Montrer moins de contenu",
-                    contentButton: "Montrer tout le contenu"
+                    contentButton: "Montrer tout le contenu",
+                    partialData: this.state.fixed_data_fr.slice(0, 20)
                 });
             }
         }
@@ -202,30 +252,28 @@ class ContentBarChart extends Component {
     }
 
     render() {
-        let sz = { height: 240, width: 500 };
+        console.log(this.state.data)
+        console.log(this.state.fullData)
+        // let sz = { height: 240, width: 500 };
 
         // 'Unzip' data into c3 format
         var chartData = ['Content']
         for (var i =0; i < this.state.data.columns.length; i++) {
             chartData.push(this.state.data.columns[i][1]);
         }
-        console.log('UNZIPPED');
-        console.log(chartData);
-
         return (
             <Segment className="ind-content-box" style={{marginTop: '10px',padding:'0 0', display: 'inline-block', width: '98%', align: 'center', borderRadius: '5px', backgroundColor: '#f9f9f9', border: '2px solid lightgray'}}>
-                <table style={{width: '100%'}}>
+                <table className="topBar" style={{width: '100%'}}>
                     <tr>
                         <td>
-                            <span style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.state.title}
-                                <IconButton tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
+                            <span className = 'outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h2> {this.state.title} </h2>
+                                <IconButton className = 'innercsv' tooltip="Download data as CSV" style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
                             </span>
                             
                         </td>
                         <td>
-                            {this.state.groupName}
                         </td>
                     </tr>
                 </table>
@@ -249,6 +297,7 @@ class ContentBarChart extends Component {
                         unloadBeforeLoad={true}
                         bar={{width: { ratio: 0.9}}}
                         grid={{focus: { show: false}}}
+                        color={{pattern: ['#467B8D']}}                       
                     />
                 </div>
                 <div id = 'table4' style={{width: '500px', float: 'right'}}>
@@ -259,7 +308,7 @@ class ContentBarChart extends Component {
                     />
                     <div className={this.state.dataTableClass}>
                         <Button
-                            id = 'showAll'
+                            id='showAll'
                             primary={true}
                             onClick={() => {
                                 this.setState({

@@ -105,12 +105,18 @@ class MemberDepChart extends Component {
         let state = JSON.parse('{"stepIndex":4,"reqType":{"category":1,"filter":"'+ groupURL +'"},"metric":4,"metric2":0,"time":{"startDate":"2017-02-12","endDate":"2018-02-12","allTime":true},"errorFlag":false}');
 
         // Send a request for the data
-        fetch('/getData/request', {
+        fetch('/api', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(state)
+            body: JSON.stringify({
+                type: 'groups',
+                stat: 'membersByDepartment',
+                url: groupURL,
+                start_date: startDate,
+                end_date: endDate
+            })
         }).then(response => {
             return response.json();
         }).then(data => {
@@ -168,10 +174,8 @@ class MemberDepChart extends Component {
                     fulldatafr[i][0] = fullData[i][0]
                 }
             }
-            console.log(deptsfr);
-            console.log(fulldatafr);
             // Update the state
-            if(this.props.initLang == "EN"){
+            if(this.props.language == "EN"){
                 this.setState({
                     data: {
                         columns: fixed_data,
@@ -205,12 +209,18 @@ class MemberDepChart extends Component {
                     fulldataen: fulldataen
                 });
             }
-            this.setState({
-                showAll: this.state.showAll
-            });
-            this.setState({
-                showAll: this.state.showAll
-            });
+            setTimeout(() => {
+                console.log("timing outtttt");
+                this.setState({
+                    showAll: this.state.showAll
+                })
+                setTimeout(() => {
+                    console.log("wneoenwf");
+                    this.setState({
+                        showAll: this.state.showAll
+                    })
+                }, 250)
+              }, 250);
         });
     }
 
@@ -279,6 +289,7 @@ class MemberDepChart extends Component {
                         contentButton: "Montrer tout le contenu",
                     });
                 }
+                console.log(this.state.fulldatafr)
             }
         }
         else{
@@ -298,7 +309,7 @@ class MemberDepChart extends Component {
     }
 
     render() {
-        let sz = { height: 200, width: 500 };
+        // let sz = { height: 200, width: 500 };
         
         // 'Unzip' data into c3 format
         var chartData = ['Department']
@@ -314,8 +325,8 @@ class MemberDepChart extends Component {
                 <table className = 'topBar' style={{width: '100%'}}>
                     <tr>
                         <td>
-                            <span className = 'outercsv' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.state.title}
-                                <IconButton tooltip={this.props.language=="EN" ? "Download data as CSV" : "Télécharger les données au format CSV"} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
+                            <span className = 'outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h2> {this.state.title} </h2>
+                                <IconButton tooltip="Download data as CSV" style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
                             </span>
@@ -345,6 +356,7 @@ class MemberDepChart extends Component {
                         unloadBeforeLoad={true}
                         bar={{width: { ratio: 0.9}}}
                         grid={{focus: { show: false}}}
+                        color={{pattern: ['#467B8D']}}                        
                     />
                 </div>
                 <div id = 'table3' style={{width: '500px', float: 'right'}} >

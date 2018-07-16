@@ -92,12 +92,18 @@ class LineChart2 extends Component {
         state.time.startDate = moment(state.time.startDate).format('YYYY-MM-DD');
         state.time.endDate = moment(state.time.endDate).format('YYYY-MM-DD');
 
-        fetch('/getData/request', {
+        fetch('/api', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(state)
+            body: JSON.stringify({
+                type: 'groups',
+                stat: 'pageviews',
+                url: groupURL,
+                start_date: startDate,
+                end_date: endDate
+            })
         }).then(response => {
             return response.json();
         }).then(data => {
@@ -127,7 +133,6 @@ class LineChart2 extends Component {
 
     // Repopulate graphs both on creation and on time changes
     componentWillReceiveProps(nextProps) {
-        console.log("BEEA")
         if(nextProps.language !== this.props.language){
             if(nextProps.language == 'EN'){
                 if (nextProps.interval == 'daily'){
@@ -281,7 +286,7 @@ class LineChart2 extends Component {
     }
 
     render() {
-        let sz = { height: 240, width: 500 };
+        // let sz = { height: 240, width: 500 };
         let spreadsheetData = this.reformatForSpreadsheet(this.state.data.columns);
         // Check if the table is oversize, if so add a scrollbar
         let scrollTable = '';
@@ -290,13 +295,30 @@ class LineChart2 extends Component {
                 scrollTable = ' scrollTable';
             }
         }
+        try{
+            if (this.props.language == "EN"){
+                this.state.data.columns[1].shift()
+                this.state.data.columns[1]
+                this.state.data.columns[1].unshift("Page Views")
+                this.state.data.columns[1]
+            }
+            if (this.props.language == "FR"){
+                this.state.data.columns[1].shift()
+                this.state.data.columns[1]
+                this.state.data.columns[1].unshift("Pages consultées")
+                this.state.data.columns[1]
+            }
+        }
+        catch(err){
+            console.log("Nope")
+        }
         return (
             <Segment className="ind-content-box" style={{marginTop: '10px', padding: '0 0', display: 'inline-block', width: '98%', borderRadius: '5px', backgroundColor: '#f9f9f9', border: '2px solid lightgray'}}>
                 <table className="content-box-heading" style={{width: '100%'}}>
                     <tr>
                         <td>
-                            <span style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.state.title}
-                                <IconButton tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
+                            <span className='outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h2> {this.state.title} </h2>
+                                <IconButton tooltip="Download data as CSV" style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
                             </span>
@@ -321,6 +343,7 @@ class LineChart2 extends Component {
                         unloadBeforeLoad={true}
                         point={{show: false}}
                         zoom={{enabled: true}}
+                        color={{pattern: ['#467B8D']}}
                     />
                 </div>
                 <DataTable

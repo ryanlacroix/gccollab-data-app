@@ -9,7 +9,7 @@ import * as moment from 'moment';
 import 'moment/locale/fr';
 import 'moment/locale/en-ca';
 
-import { DatePicker, DatePickerInput } from 'rc-datepicker';
+import { DatePickerInput } from 'rc-datepicker';
 import 'rc-datepicker/lib/style.css';
 
 
@@ -19,7 +19,7 @@ class Control extends Component {
         super(props);
         // This should instead be passed down from props
         const date1 = new Date();
-        const date2 = new Date();
+
         //date1.setFullYear(date1.getFullYear() - 1);
         date1.setDate(date1.getDate() - 90);
         this.state = {
@@ -144,7 +144,7 @@ class Control extends Component {
                 </div>
                 <Input className="searchBar" action={
                     <Popup trigger={
-                        <Button content={this.props.initLang=="EN" ? "Get stats" : "Obtenir des stats"}
+                        <Button content={this.props.language=="EN" ? "Get stats" : "Obtenir des stats"}
                         onClick={
                             (event, data) => {
                                 if (this.state.validURL) {
@@ -154,7 +154,7 @@ class Control extends Component {
                     } content={this.state.errorMessage} 
                     style={popupStyle} />
                 }
-                    placeholder={this.props.initLang=="EN" ? "Paste Group URL here..." : "Collez l'URL du groupe ici..."}
+                    placeholder={this.props.language=="EN" ? "Paste Group URL here..." : "Collez l'URL du groupe ici..."}
                     style={{ float: 'right', width: '500px' }}
                     error={this.state.showError}
                     onChange={(event, data) => {

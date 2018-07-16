@@ -22,14 +22,24 @@
     top: 0px;
 }
 .topBar{
-    margin-bottom: 35px;
+    /*margin-bottom: 35px;*/
     width: 100%;
+    height: 74px;
 }
 #showAll{
     position: absolute;
     bottom: 5px;
     left: 70%;
+    background-color: #467B8D;
 }
+#showAll:hover{
+    position: absolute;
+    bottom: 5px;
+    left: 70%;
+    background-color: #467B8D;
+    opacity: 0.8!important;
+}
+
 #table4{
     margin-bottom: 45px;
 }
