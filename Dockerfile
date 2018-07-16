@@ -33,8 +33,6 @@ RUN npm install -g forever
 WORKDIR /app
 ADD . /app
 
-RUN npm run build
-
 EXPOSE 3000
 
 # Start the app
