@@ -24,18 +24,9 @@ app.post('/getData/:type', (req, res) => {
     console.log('Data request received!');
 
     // Account for containerized & non-containerized environment
-<<<<<<< HEAD
-    try {
-        py = spawn('python', ['data_fetch.py']);
-    } catch (e) {
-        py = spawn('python', ['data_fetch.py']);
-    }
-    
-=======
     pyName = (os.platform() === 'win32' ? 'python' : 'python3');
     py = spawn(pyName, ['data_fetch.py']);
 
->>>>>>> origin/master
     console.log(JSON.stringify(req.body));
     // Start the python process
     dataString = '';

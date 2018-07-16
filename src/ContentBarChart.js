@@ -217,13 +217,8 @@ class ContentBarChart extends Component {
                 <table style={{width: '100%'}}>
                     <tr>
                         <td>
-<<<<<<< HEAD
                             <span style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.state.title}
                                 <IconButton tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
-=======
-                            <span className = 'outercsv' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.props.title}
-                                <IconButton className = 'innercsv' tooltip="Download data as CSV" style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
->>>>>>> origin/master
                                     <FileFileDownload />
                                 </IconButton> 
                             </span>
@@ -235,7 +230,7 @@ class ContentBarChart extends Component {
                     </tr>
                 </table>
                 <div>
-                    <Loader size='huge' active className={this.state.loaderClass} >Loading</Loader>
+                    <Loader size='huge' active className={this.state.loaderClass} >{this.props.initLang=="EN" ? "Loading" : "Chargement"}</Loader>
                 </div>
                 <div id = 'chart4' className={this.state.barChartClass} style={{float: 'left'}}>
                     <C3Chart data={{columns: [chartData], labels: true, type: 'bar'}}

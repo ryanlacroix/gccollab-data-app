@@ -279,34 +279,23 @@ class LineChartMembers extends Component {
                 <table style={{width: '100%'}}>
                     <tr>
                         <td>
-<<<<<<< HEAD
-                            <span style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.state.title}
-                                <IconButton tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
-=======
-                            <span className = 'outercsv' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.props.title}
-                                <IconButton tooltip="Download data as CSV" style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
->>>>>>> origin/master
+                            <span className = 'outercsv' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.state.title}
+                                <IconButton tooltip={this.props.language=="EN" ? "Download data as CSV" : "Télécharger les données au format CSV"} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
                             </span>
                             
                         </td>
                         <td>
-<<<<<<< HEAD
                             <SelectField onChange={this.handleIntervalChange} floatingLabelText={this.state.intervalWord} style={{width: 150, float: 'right'}} value={this.state.interval}>
                                 <MenuItem value={'monthly'} primaryText={this.state.frinterval2} />
                                 <MenuItem value={'daily'} primaryText={this.state.frinterval} />
-=======
-                            <SelectField className = 'MonthDay' onChange={this.handleIntervalChange} floatingLabelText="Interval" style={{width: 150, float: 'right'}} value={this.state.interval}>
-                                <MenuItem value={'monthly'} primaryText="Monthly" />
-                                <MenuItem value={'daily'} primaryText="Daily" />
->>>>>>> origin/master
                             </SelectField>
                         </td>
                     </tr>
                 </table>
                 <div>
-                    <Loader size='huge' active className={this.state.loaderClass} >Loading</Loader>
+                    <Loader size='huge' active className={this.state.loaderClass} >{this.props.language=="EN" ? "Loading" : "Chargement"}</Loader>
                 </div>
                 <div className={this.state.contentClass} style={{float: 'left'}} id="lineChartMembers">
                     <C3Chart data={this.state.data}
@@ -320,11 +309,7 @@ class LineChartMembers extends Component {
                 <DataTable
                     data={spreadsheetData}
                     className={this.state.contentClass + scrollTable}
-<<<<<<< HEAD
                     headers={[this.state.header1,this.state.header2]}
-=======
-                    headers={['Date','Members']}
->>>>>>> origin/master
                 />
             </Segment>
         );

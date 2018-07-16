@@ -141,15 +141,10 @@ class MemberDepChart extends Component {
                 console.log(err);
                 groupName = data.group_name;
             }
-
-            console.log("ICCCCCCCCCCIIIIII");
-
             var deptsfr = this.copy(fixed_data);
             var deptsen = this.copy(fixed_data);
             var fulldatafr = this.copy(fullData);
             var fulldataen = this.copy(fullData);
-            console.log(fulldataen);
-            console.log(fulldataen[0][0])
 
             var inversefrDict = {};
             for(var key in frDict){
@@ -176,21 +171,40 @@ class MemberDepChart extends Component {
             console.log(deptsfr);
             console.log(fulldatafr);
             // Update the state
-            this.setState({
-                data: {
-                    columns: fixed_data,
-                },
-                groupName: groupName,
-                fullData: fullData,
-                partialData: fullData.slice(0,20),
-                barChartClass: '',
-                dataTableClass: '',
-                loaderClass: 'hidden',
-                deptsfr: deptsfr,
-                deptsen: deptsen,
-                fulldatafr: fulldatafr,
-                fulldataen: fulldataen
-            });
+            if(this.props.initLang == "EN"){
+                this.setState({
+                    data: {
+                        columns: fixed_data,
+                    },
+                    groupName: groupName,
+                    fullData: fullData,
+                    partialData: fullData.slice(0,20),
+                    barChartClass: '',
+                    dataTableClass: '',
+                    loaderClass: 'hidden',
+                    deptsfr: deptsfr,
+                    deptsen: deptsen,
+                    fulldatafr: fulldatafr,
+                    fulldataen: fulldataen
+                });
+            }
+            else{
+                this.setState({
+                    data: {
+                        columns: fulldatafr.slice(0, 20),
+                    },
+                    groupName: groupName,
+                    fullData: fulldatafr,
+                    partialData: fulldatafr.slice(0,20),
+                    barChartClass: '',
+                    dataTableClass: '',
+                    loaderClass: 'hidden',
+                    deptsfr: deptsfr,
+                    deptsen: deptsen,
+                    fulldatafr: fulldatafr,
+                    fulldataen: fulldataen
+                });
+            }
             this.setState({
                 showAll: this.state.showAll
             });
@@ -213,34 +227,58 @@ class MemberDepChart extends Component {
     componentWillReceiveProps(nextProps) {
         if(nextProps.language !== this.props.language){
             if(nextProps.language == 'EN'){
-                this.setState({
-                    title: "Group Members by Department",
-                    header1: "Department",
-                    header2: "Group Members",
-                    downloadCSVmessage: "Download Data as CSV",
-                    contentButton2: "Show less content",
-                    contentButton: "Show all content",
-                    data: {
-                        columns: this.state.deptsen
-                    },
-                    fullData: this.state.fulldataen,
-                    partialData: this.state.fulldataen.slice(0, 20)
-                });
-            }
+                try{
+                    this.setState({
+                        title: "Group Members by Department",
+                        header1: "Department",
+                        header2: "Group Members",
+                        downloadCSVmessage: "Download Data as CSV",
+                        contentButton2: "Show less content",
+                        contentButton: "Show all content",
+                        data: {
+                            columns: this.state.deptsen
+                        },
+                        fullData: this.state.fulldataen,
+                        partialData: this.state.fulldataen.slice(0, 20)
+                    });
+                }
+                catch(err){
+                    this.setState({
+                        title: "Group Members by Department",
+                        header1: "Department",
+                        header2: "Group Members",
+                        downloadCSVmessage: "Download Data as CSV",
+                        contentButton2: "Show less content",
+                        contentButton: "Show all content"
+                    });
+                }
+            }     
             if(nextProps.language == 'FR'){
-                this.setState({
-                    title: "Membres du groupe par département",
-                    header1: "Département",
-                    header2: "Membres du groupe",
-                    downloadCSVmessage: "Télécharger les données au format CSV",
-                    contentButton2: "Montrer moins de contenu",
-                    contentButton: "Montrer tout le contenu",
-                    data: {
-                        columns: this.state.fulldatafr.slice(0, 20)
-                    },
-                    fullData: this.state.fulldatafr,
-                    partialData: this.state.fulldatafr.slice(0, 20)
-                });
+                try{
+                    this.setState({
+                        title: "Membres du groupe par département",
+                        header1: "Département",
+                        header2: "Membres du groupe",
+                        downloadCSVmessage: "Télécharger les données au format CSV",
+                        contentButton2: "Montrer moins de contenu",
+                        contentButton: "Montrer tout le contenu",
+                        data: {
+                            columns: this.state.fulldatafr.slice(0, 20)
+                        },
+                        fullData: this.state.fulldatafr,
+                        partialData: this.state.fulldatafr.slice(0, 20)
+                    });
+                }
+                catch(err){
+                    this.setState({
+                        title: "Membres du groupe par département",
+                        header1: "Département",
+                        header2: "Membres du groupe",
+                        downloadCSVmessage: "Télécharger les données au format CSV",
+                        contentButton2: "Montrer moins de contenu",
+                        contentButton: "Montrer tout le contenu",
+                    });
+                }
             }
         }
         else{
@@ -276,13 +314,8 @@ class MemberDepChart extends Component {
                 <table className = 'topBar' style={{width: '100%'}}>
                     <tr>
                         <td>
-<<<<<<< HEAD
-                            <span style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.state.title}
-                                <IconButton tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
-=======
-                            <span className = 'outercsv' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.props.title}
-                                <IconButton tooltip="Download data as CSV" style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
->>>>>>> origin/master
+                            <span className = 'outercsv' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.state.title}
+                                <IconButton tooltip={this.props.language=="EN" ? "Download data as CSV" : "Télécharger les données au format CSV"} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
                             </span>
@@ -293,7 +326,7 @@ class MemberDepChart extends Component {
                     </tr>
                 </table>
                 <div>
-                    <Loader style={{}} size='huge' active className={this.state.loaderClass} >Loading</Loader>
+                    <Loader style={{}} size='huge' active className={this.state.loaderClass} >{this.props.initLang=="EN" ? "Loading" : "Chargement"}</Loader>
                 </div>
                 <div id = 'chart3' className={this.state.barChartClass} style={{float: 'left'}}>
                     <C3Chart data={{columns: [chartData], labels: true, type: 'bar'}}

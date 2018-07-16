@@ -64,7 +64,9 @@ class LineChart2 extends Component {
             header1: 'Date',
             header2: 'Views',
             downloadCSVmessage: "Download Data as CSV",
-            intervalWord: "Interval"
+            intervalWord: "Interval",
+            loading: "Loading",
+            language: "EN"
         }
     }
 
@@ -125,6 +127,7 @@ class LineChart2 extends Component {
 
     // Repopulate graphs both on creation and on time changes
     componentWillReceiveProps(nextProps) {
+        console.log("BEEA")
         if(nextProps.language !== this.props.language){
             if(nextProps.language == 'EN'){
                 if (nextProps.interval == 'daily'){
@@ -135,7 +138,8 @@ class LineChart2 extends Component {
                         frinterval: "Daily",
                         frinterval2: "Monthly",
                         downloadCSVmessage: "Download Data as CSV",
-                        intervalWord: "Interval"
+                        intervalWord: "Interval",
+                        loading: "Loading"
                     });
                 }
                 if (nextProps.interval == 'monthly'){
@@ -146,7 +150,8 @@ class LineChart2 extends Component {
                         frinterval: "Monthly",
                         frinterval2: "Daily",
                         downloadCSVmessage: "Download Data as CSV",
-                        intervalWord: "Interval"
+                        intervalWord: "Interval",
+                        loading: "Loading"
                     });
                 }
                 else{
@@ -157,7 +162,8 @@ class LineChart2 extends Component {
                         frinterval: "Daily",
                         frinterval2: "Monthly",
                         downloadCSVmessage: "Download Data as CSV",
-                        intervalWord: "Interval"
+                        intervalWord: "Interval",
+                        loading: "Loading"
                     });
                 }
             }
@@ -170,7 +176,8 @@ class LineChart2 extends Component {
                         frinterval: "Quotidien",
                         frinterval2: "Mensuel",
                         downloadCSVmessage: "Télécharger les données au format CSV",
-                        intervalWord: "Intervalle"
+                        intervalWord: "Intervalle",
+                        loading: "Chargement"
                     });
                 }
                 if (nextProps.interval == 'montly'){
@@ -181,7 +188,8 @@ class LineChart2 extends Component {
                         frinterval: "Mensuel",
                         frinterval2: "Quotidien",
                         downloadCSVmessage: "Télécharger les données au format CSV",
-                        intervalWord: "Intervalle"
+                        intervalWord: "Intervalle",
+                        loading: "Chargement"
                     });
                 }
                 else{
@@ -192,7 +200,8 @@ class LineChart2 extends Component {
                         frinterval: "Quotidien",
                         frinterval2: "Mensuel",
                         downloadCSVmessage: "Télécharger les données au format CSV",
-                        intervalWord: "Intervalle"
+                        intervalWord: "Intervalle",
+                        loading: "Chargement"
                     });
                 }
             }
@@ -286,13 +295,8 @@ class LineChart2 extends Component {
                 <table className="content-box-heading" style={{width: '100%'}}>
                     <tr>
                         <td>
-<<<<<<< HEAD
                             <span style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.state.title}
                                 <IconButton tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
-=======
-                            <span className='outercsv0' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> {this.props.title}
-                                <IconButton tooltip="Download data as CSV" style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
->>>>>>> origin/master
                                     <FileFileDownload />
                                 </IconButton> 
                             </span>
@@ -307,7 +311,7 @@ class LineChart2 extends Component {
                     </tr>
                 </table>
                 
-                <Loader style={{}} size='huge' active className={this.state.loaderClass} >Loading</Loader>
+                <Loader style={{}} size='huge' active className={this.state.loaderClass} >{this.state.loading}</Loader>
 
                 <div className={this.state.contentClass} style={{float: 'left'}} onChange={this.handleIntervalChange} id="lineChartPageviews">
                     <C3Chart data={this.state.data}
