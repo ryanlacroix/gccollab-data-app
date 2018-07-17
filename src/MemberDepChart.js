@@ -15,8 +15,8 @@ import 'c3/c3.css';
 
 import './MemberDepChart.css';
 
-import enDict from './dict/en_dict.json'
-import frDict from './dict/fr_dict.json'
+import enDict from './en_dict.json'
+import frDict from './fr_dict.json'
 
 class MemberDepChart extends Component {
     /* Call each time step changes. Inserts correct component accordingly*/

@@ -233,8 +233,7 @@ def main(testing=False):
 
 # Start process
 if __name__ == '__main__':
-    inStr = '{"type":"groups","stat":"pageviews","url":"https://gccollab.ca/discussion/owner/11776","start_date":"2018-04-18","end_date":"2018-07-17"}'
-    main(inStr)
+    main()
     # If collab db was used be sure to close the tunnel properly
     try:
         gc.close_tunnel()
