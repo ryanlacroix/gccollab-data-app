@@ -40,6 +40,8 @@ class LineChartMembers extends Component {
                 }
             },
             interval: 'daily',
+            frinterval: 'Daily',
+            frinterval2: 'Monthly',
             dataBackup: {
                 // This is only here to prevent errors from changing interval before data is loaded
                 monthly: {
@@ -53,6 +55,11 @@ class LineChartMembers extends Component {
             },
             loaderClass: '',
             contentClass: 'hidden',
+            title: 'Group Membership',
+            header1: 'Date',
+            header2: 'Members',
+            downloadCSVmessage: "Download Data as CSV",
+            intervalWord: "Interval"
         }
     }
 
@@ -113,8 +120,83 @@ class LineChartMembers extends Component {
     }
     
     componentWillReceiveProps(nextProps) {
-        this.requestData(nextProps);
+        if(nextProps.language !== this.props.language){
+            if(nextProps.language == 'EN'){
+                if (nextProps.interval == 'daily'){
+                    this.setState({
+                        title: "Group Membership",
+                        header1: "Date",
+                        header2: "Members",
+                        frinterval: "Daily",
+                        frinterval2: "Monthly",
+                        downloadCSVmessage: "Download Data as CSV",
+                        intervalWord: "Interval"
+                    });
+                }
+                if (nextProps.interval == 'monthly'){
+                    this.setState({
+                        title: "Group Membership",
+                        header1: "Date",
+                        header2: "Members",
+                        frinterval: "Monthly",
+                        frinterval2: "Daily",
+                        downloadCSVmessage: "Download Data as CSV",
+                        intervalWord: "Interval"
+                    });
+                }
+                else{
+                    this.setState({
+                        title: "Group Membership",
+                        header1: "Date",
+                        header2: "Members",
+                        frinterval: "Daily",
+                        frinterval2: "Monthly",
+                        downloadCSVmessage: "Download Data as CSV",
+                        intervalWord: "Interval"
+                    });
+                }
+            }
+            if(nextProps.language == 'FR'){
+                if (nextProps.interval == 'daily'){
+                    this.setState({
+                        title: "Appartenance au groupe",
+                        header2: "Date",
+                        header2: "Membres",
+                        frinterval: "Quotidien",
+                        frinterval2: "Mensuel",
+                        downloadCSVmessage: "Télécharger les données au format CSV",
+                        intervalWord: "Intervalle"
+                    });
+                }
+                if (nextProps.interval == 'montly'){
+                    this.setState({
+                        title: "Appartenance au groupe",
+                        header2: "Date",
+                        header2: "Membres",
+                        frinterval: "Mensuel",
+                        frinterval2: "Quotidien",
+                        downloadCSVmessage: "Télécharger les données au format CSV",
+                        intervalWord: "Intervalle"
+                    });
+                }
+                else{
+                    this.setState({
+                        title: "Appartenance au groupe",
+                        header2: "Date",
+                        header2: "Membres",
+                        frinterval: "Quotidien",
+                        frinterval2: "Mensuel",
+                        downloadCSVmessage: "Télécharger les données au format CSV",
+                        intervalWord: "Intervalle"
+                    });
+                }
+            }
+        }
+        else{
+            this.requestData(nextProps);
+        }
     }
+
     componentDidMount() {
         // Turn on the loading indicator
         this.setState({loaderClass: '', contentClass:'hidden'});
@@ -194,28 +276,45 @@ class LineChartMembers extends Component {
                 scrollTable = ' scrollTable';
             }
         }
+        try{
+            if (this.props.language == "EN"){
+                this.state.data.columns[1].shift()
+                this.state.data.columns[1]
+                this.state.data.columns[1].unshift("Members")
+                this.state.data.columns[1]
+            }
+            if (this.props.language == "FR"){
+                this.state.data.columns[1].shift()
+                this.state.data.columns[1]
+                this.state.data.columns[1].unshift("Membres")
+                this.state.data.columns[1]
+            }
+        }
+        catch(err){
+            console.log("Nope")
+        }
         return (
             <Segment className="ind-content-box" style={{marginTop: '10px', padding: '0 0', display: 'inline-block', width: '98%', align: 'center', borderRadius: '5px', backgroundColor: '#f9f9f9', border: '2px solid lightgray'}}>
                 <table style={{width: '100%'}}>
                     <tr>
                         <td>
-                            <span className = 'outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h2> {this.props.title} </h2>
-                                <IconButton tooltip="Download data as CSV" style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
+                            <span className = 'outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h2> {this.state.title} </h2>
+                                <IconButton tooltip={this.props.language=="EN" ? "Download data as CSV" : "Télécharger les données au format CSV"} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
                             </span>
                             
                         </td>
                         <td>
-                            <SelectField className = 'MonthDay' onChange={this.handleIntervalChange} floatingLabelText="Interval" style={{width: 150, float: 'right'}} value={this.state.interval}>
-                                <MenuItem value={'monthly'} primaryText="Monthly" />
-                                <MenuItem value={'daily'} primaryText="Daily" />
+                            <SelectField onChange={this.handleIntervalChange} floatingLabelText={this.state.intervalWord} style={{width: 150, float: 'right'}} value={this.state.interval}>
+                                <MenuItem value={'monthly'} primaryText={this.state.frinterval2} />
+                                <MenuItem value={'daily'} primaryText={this.state.frinterval} />
                             </SelectField>
                         </td>
                     </tr>
                 </table>
                 <div>
-                    <Loader size='huge' active className={this.state.loaderClass} >Loading</Loader>
+                    <Loader size='huge' active className={this.state.loaderClass} >{this.props.language=="EN" ? "Loading" : "Chargement"}</Loader>
                 </div>
                 <div className={this.state.contentClass} style={{float: 'left'}} id="lineChartMembers">
                     <C3Chart data={this.state.data}
@@ -230,7 +329,7 @@ class LineChartMembers extends Component {
                 <DataTable
                     data={spreadsheetData}
                     className={this.state.contentClass + scrollTable}
-                    headers={['Date','Members']}
+                    headers={[this.state.header1,this.state.header2]}
                 />
             </Segment>
         );
