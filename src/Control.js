@@ -5,7 +5,9 @@ import { Button, Input, Popup } from 'semantic-ui-react';
 import './Content.css';
 import './Control.css';
 
-import moment from 'moment';
+import * as moment from 'moment';
+import 'moment/locale/fr';
+import 'moment/locale/en-ca';
 
 import { DatePickerInput } from 'rc-datepicker';
 import 'rc-datepicker/lib/style.css';
@@ -27,28 +29,52 @@ class Control extends Component {
             currUrl: '',
             validURL: false,
             showError: false,
-            errorMessage: "URLs should be of the format https://gcollab.ca/groups/profile..."
+            errorMessage: "URLs should be of the format https://gcollab.ca/groups/profile...",
+            language: '',
+            initLang: '',
+            helperMessage: "Paste Group URL here...",
         }
+    }
+
+    // Used to set the URL type. Currently this supports GCcollab groups or random GCcollab pages
+    getURLType = (url) => {
+        if (url.indexOf('https://gccollab.ca/groups') === 0)
+            return ('collab-group')
+        else if (url.indexOf('https://gccollab.ca/') === 0)
+            return ('collab-page')
     }
 
     // Basic check to make sure the URL is actually a group page
     URLIsValid = (url) => {
-        if (url.indexOf('https://gccollab.ca/groups/profile') === 0)
+        if (url.indexOf('https://gccollab.ca/groups/profile') === 0){ 
             return true;
+        }
+        else if (url.indexOf('https://gccollab.ca/') === 0) {
+            return true;
+        }
         else
             return false;
     }
 
     URLErrorMessage = (url) => {
-        if ((url.indexOf('https://gccollab.ca/') === 0) && !this.URLIsValid(url) ) {
+        /*if ((url.indexOf('https://gccollab.ca/') === 0) && !this.URLIsValid(url) ) {
             // URL is from collab, but not a group's main page.
             // In the future relevant stats will be served for whatever content is requested.
             // Right now, provide an error + explanation
-            return "This tool currently only supports group stats. Enter a group's main page URL (https://gcollab.gc.ca/groups/profile...)"
-        } else if (url.indexOf('https://gcconnex') === 0) {
-            return "This tool is currently only available for GCcollab groups."
+        } else*/ if (url.indexOf('https://gcconnex') === 0) {
+            if (this.props.initLang == "EN"){
+                return "This tool is currently only available for GCcollab groups."
+            }
+            else{
+                return "Cet outil est maintenant disponible juste pour les groupes de GCcollab."
+            }
         } else {
-            return "URLs should be of the format https://gcollab.ca/groups/profile...";
+            if (this.props.initLang == "EN"){
+                return "URLs should be of the format https://gcollab.ca/groups/profile...";
+            }
+            else{
+                return "Les URL doivent être au format https: //gcollab.ca/groups/profile ..."
+            }
         }
     }
 
@@ -70,6 +96,14 @@ class Control extends Component {
     }
 
     render() {
+        if(this.props.initLang == "EN"){
+            moment.locale('en-ca');
+            console.log(moment.locale());
+        }
+        else{
+            moment.locale('fr');
+            console.log(moment.locale());
+        }
         let popupStyle = {
             opacity: this.state.validURL ? "0" : "1"
         }
@@ -93,6 +127,7 @@ class Control extends Component {
                             style={{ width: '200px', float: 'left' }}
                             validationFormat="DD/MM/YYYY"
                             showOnInputClick={true}
+                            locale= {this.props.language=="EN" ? "en-ca" : "fr"}
                         />
                         <DatePickerInput
                             displayFormat='DD/MM/YYYY'
@@ -109,22 +144,24 @@ class Control extends Component {
                             style={{ width: '200px', float: 'right' }}
                             validationFormat="DD/MM/YYYY"
                             showOnInputClick={true}
+                            local = {this.props.language=="EN" ? "en-ca" : "fr"}
                         />
                     </span>
                 </div>
                 <Input className="searchBar" action={
                     <Popup trigger={
-                        <Button content='Get stats'
+                        <Button content={this.props.language=="EN" ? "Get stats" : "Obtenir des stats"}
                         onClick={
                             (event, data) => {
                                 if (this.state.validURL) {
                                     this.props.setGroupUrl(this.state.currUrl);
+                                    this.props.setURLType(this.getURLType(this.state.currUrl));
                                 }
                         }} />
                     } content={this.state.errorMessage} 
                     style={popupStyle} />
                 }
-                    placeholder='Paste group URL here...'
+                    placeholder={this.props.language=="EN" ? "Paste Group URL here..." : "Collez l'URL du groupe ici..."}
                     style={{ float: 'right', width: '500px' }}
                     error={this.state.showError}
                     onChange={(event, data) => {
