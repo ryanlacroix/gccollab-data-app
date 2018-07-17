@@ -30,6 +30,8 @@ class Content extends Component {
                             endDate={this.props.endDate}
                             groupURL={this.props.groupURL}
                             superState={this.props.endDate}
+                            stat='pageviews'
+
                         />
                     </div>
                     <div className="membership" style={{width: '100%'}}>
