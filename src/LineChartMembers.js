@@ -276,6 +276,23 @@ class LineChartMembers extends Component {
                 scrollTable = ' scrollTable';
             }
         }
+        try{
+            if (this.props.language == "EN"){
+                this.state.data.columns[1].shift()
+                this.state.data.columns[1]
+                this.state.data.columns[1].unshift("Members")
+                this.state.data.columns[1]
+            }
+            if (this.props.language == "FR"){
+                this.state.data.columns[1].shift()
+                this.state.data.columns[1]
+                this.state.data.columns[1].unshift("Membres")
+                this.state.data.columns[1]
+            }
+        }
+        catch(err){
+            console.log("Nope")
+        }
         return (
             <Segment className="ind-content-box" style={{marginTop: '10px', padding: '0 0', display: 'inline-block', width: '98%', align: 'center', borderRadius: '5px', backgroundColor: '#f9f9f9', border: '2px solid lightgray'}}>
                 <table style={{width: '100%'}}>

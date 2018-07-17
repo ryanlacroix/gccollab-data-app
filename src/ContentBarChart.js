@@ -37,7 +37,13 @@ class ContentBarChart extends Component {
             header2: 'Views',
             downloadCSVmessage: "Download Data as CSV",
             contentButton: "Show all content",
-            contentButton2: "Show less content"
+            contentButton2: "Show less content",
+            fixed_data_fr: {},
+            fullDataFR: {},
+            fixed_data_en: {},
+            fullDataEN: {},
+            partialDataEN: {},
+            partialDataFR: {}
         }
     }
 
@@ -79,6 +85,19 @@ class ContentBarChart extends Component {
         });
         return newData
     }
+
+    toFrench (typeStr){
+        let validTypes = ['file','discussion','event_calendar','groups','blog',
+                        'bookmarks','pages',];
+        let validTypesFR = ['fichier','discussion','calendrier des événements','groupes ','blog',
+        'signets','pages',];
+        for(var i=0; i<validTypes.length; i++){
+            if(typeStr == validTypes[i]){
+                typeStr = validTypesFR[i];
+            }
+        }
+        return typeStr;
+    }
     
     requestData = (nextProps=null) => {
         
@@ -107,26 +126,40 @@ class ContentBarChart extends Component {
         }).then(data => {
             // Apply final transformations for visualization
             var fixed_data = []
+            var fixed_data_fr = []
             for (var i=0;i<data.urls.length;i++) {
                 fixed_data.push([ '('+ this.validTypeCheck(data.urls[i]) +') ' + data.titles[i], parseInt(data.pageviews[i])]);
+            }
+    
+            for (var i=0;i<data.urls.length;i++) {
+                fixed_data_fr.push([ '('+ this.toFrench(this.validTypeCheck(data.urls[i])) +') ' + data.titles[i], parseInt(data.pageviews[i])]);
             }
 
             // Show error message if no group content found
             if (data.urls.length === 0) {
                 fixed_data.push(['No content found in group', '0'])
             }
+            if (data.urls.length === 0) {
+                fixed_data_fr.push(["Aucun contenu trouvé dans le groupe", '0'])
+            }
 
             // Fix duplicate entries
             fixed_data = this.fixDuplicateEntries(fixed_data);
+            fixed_data_fr = this.fixDuplicateEntries(fixed_data_fr);
+
+            
 
             // Need to create separate data store for table
             // Title | type | pageviews
             let fullData = JSON.parse(JSON.stringify(fixed_data));
-
+            let fullDataFR = JSON.parse(JSON.stringify(fixed_data_fr));
             // Truncate the formatted data if too many content pieces found
             // (For visualization)
             if (fixed_data.length > 10) {
                 fixed_data = fixed_data.slice(0,20);
+            }
+            if (fixed_data_fr.length > 10) {
+                fixed_data_fr = fixed_data_fr.slice(0,20);
             }
 
             // Determine if group name is an object or not
@@ -137,20 +170,47 @@ class ContentBarChart extends Component {
                 console.log(err);
                 groupName = data.group_name;
             }
-
             // Update the state
-            this.setState({
-                data: {
-                    columns: fixed_data,
-                },
-                groupName: groupName,
-                fullData: fullData,
-                partialData: fullData.slice(0,20),
-                barChartClass: '',
-                dataTableClass: '',
-                loaderClass: 'hidden',
-                contentClass: ''
-            });
+            if(this.props.language == "EN"){
+                this.setState({
+                    data: {
+                        columns: fixed_data,
+                    },
+                    groupName: groupName,
+                    fullData: fullData,
+                    partialData: fullData.slice(0,20),
+                    barChartClass: '',
+                    dataTableClass: '',
+                    loaderClass: 'hidden',
+                    contentClass: '',
+                    fixed_data_fr: fixed_data_fr,
+                    fullDataFR: fullDataFR,
+                    fixed_data_en: fixed_data,
+                    fullDataEN: fullData,
+                    partialDataEN: fullData.slice(0,20),
+                    partialDataFR: fullDataFR.slice(0,20)
+                });
+            }
+            else{
+                this.setState({
+                    data: {
+                        columns: fixed_data_fr,
+                    },
+                    groupName: groupName,
+                    fullData: fullDataFR,
+                    partialData: fullDataFR.slice(0,20),
+                    barChartClass: '',
+                    dataTableClass: '',
+                    loaderClass: 'hidden',
+                    contentClass: '',
+                    fixed_data_fr: fixed_data_fr,
+                    fullDataFR: fullDataFR,
+                    fixed_data_en: fixed_data,
+                    fullDataEN: fullData,
+                    partialDataEN: fullData.slice(0,20),
+                    partialDataFR: fullDataFR.slice(0,20)
+                });
+            }
             setTimeout(() => {
                 console.log("timing outtttt");
                 this.setState({
@@ -167,25 +227,37 @@ class ContentBarChart extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log(this.state.fixed_data_fr);
+        console.log(this.state.fullDataFR)
         if(nextProps.language !== this.props.language){
             if(nextProps.language == 'EN'){
                 this.setState({
+                    data: {
+                        columns: this.state.fixed_data_en,
+                    },
+                    fullData: this.state.fullDataEN,
                     title: "Top Group Content",
                     header1: "Title",
                     header2: "Views",
                     downloadCSVmessage: "Download Data as CSV",
                     contentButton2: "Show less content",
-                    contentButton: "Show all content"
+                    contentButton: "Show all content",
+                    partialData: this.state.partialDataEN
                 });
             }
             if(nextProps.language == 'FR'){
                 this.setState({
+                    data: {
+                        columns: this.state.fixed_data_fr,
+                    },
+                    fullData: this.state.fullDataFR,
                     title: "Top contenu du groupe",
                     header1: "Titre",
                     header2: "Pages consultées",
                     downloadCSVmessage: "Télécharger les données au format CSV",
                     contentButton2: "Montrer moins de contenu",
-                    contentButton: "Montrer tout le contenu"
+                    contentButton: "Montrer tout le contenu",
+                    partialData: this.state.partialDataFR
                 });
             }
         }
@@ -206,6 +278,8 @@ class ContentBarChart extends Component {
     }
 
     render() {
+        console.log(this.state.data)
+        console.log(this.state.fullData)
         // let sz = { height: 240, width: 500 };
 
         // 'Unzip' data into c3 format
@@ -213,9 +287,6 @@ class ContentBarChart extends Component {
         for (var i =0; i < this.state.data.columns.length; i++) {
             chartData.push(this.state.data.columns[i][1]);
         }
-        console.log('UNZIPPED');
-        console.log(chartData);
-
         return (
             <Segment className="ind-content-box" style={{marginTop: '10px',padding:'0 0', display: 'inline-block', width: '98%', align: 'center', borderRadius: '5px', backgroundColor: '#f9f9f9', border: '2px solid lightgray'}}>
                 <table className="topBar" style={{width: '100%'}}>

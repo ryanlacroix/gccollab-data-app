@@ -144,7 +144,7 @@ class Control extends Component {
                 </div>
                 <Input className="searchBar" action={
                     <Popup trigger={
-                        <Button content={this.props.initLang=="EN" ? "Get stats" : "Obtenir des stats"}
+                        <Button content={this.props.language=="EN" ? "Get stats" : "Obtenir des stats"}
                         onClick={
                             (event, data) => {
                                 if (this.state.validURL) {
@@ -154,7 +154,7 @@ class Control extends Component {
                     } content={this.state.errorMessage} 
                     style={popupStyle} />
                 }
-                    placeholder={this.props.initLang=="EN" ? "Paste Group URL here..." : "Collez l'URL du groupe ici..."}
+                    placeholder={this.props.language=="EN" ? "Paste Group URL here..." : "Collez l'URL du groupe ici..."}
                     style={{ float: 'right', width: '500px' }}
                     error={this.state.showError}
                     onChange={(event, data) => {

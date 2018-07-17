@@ -174,10 +174,8 @@ class MemberDepChart extends Component {
                     fulldatafr[i][0] = fullData[i][0]
                 }
             }
-            console.log(deptsfr);
-            console.log(fulldatafr);
             // Update the state
-            if(this.props.initLang == "EN"){
+            if(this.props.language == "EN"){
                 this.setState({
                     data: {
                         columns: fixed_data,
@@ -297,6 +295,7 @@ class MemberDepChart extends Component {
                         contentButton: "Montrer tout le contenu",
                     });
                 }
+                console.log(this.state.fulldatafr)
             }
         }
         else{

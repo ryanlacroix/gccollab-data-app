@@ -133,7 +133,6 @@ class LineChart2 extends Component {
 
     // Repopulate graphs both on creation and on time changes
     componentWillReceiveProps(nextProps) {
-        console.log("BEEA")
         if(nextProps.language !== this.props.language){
             if(nextProps.language == 'EN'){
                 if (nextProps.interval == 'daily'){
@@ -295,6 +294,23 @@ class LineChart2 extends Component {
             if (this.state.data.columns[0].length > 20) {
                 scrollTable = ' scrollTable';
             }
+        }
+        try{
+            if (this.props.language == "EN"){
+                this.state.data.columns[1].shift()
+                this.state.data.columns[1]
+                this.state.data.columns[1].unshift("Page Views")
+                this.state.data.columns[1]
+            }
+            if (this.props.language == "FR"){
+                this.state.data.columns[1].shift()
+                this.state.data.columns[1]
+                this.state.data.columns[1].unshift("Pages consultées")
+                this.state.data.columns[1]
+            }
+        }
+        catch(err){
+            console.log("Nope")
         }
         return (
             <Segment className="ind-content-box" style={{marginTop: '10px', padding: '0 0', display: 'inline-block', width: '98%', borderRadius: '5px', backgroundColor: '#f9f9f9', border: '2px solid lightgray'}}>
