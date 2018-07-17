@@ -36,26 +36,32 @@ class Control extends Component {
         }
     }
 
+    // Used to set the URL type. Currently this supports GCcollab groups or random GCcollab pages
+    getURLType = (url) => {
+        if (url.indexOf('https://gccollab.ca/groups') === 0)
+            return ('collab-group')
+        else if (url.indexOf('https://gccollab.ca/') === 0)
+            return ('collab-page')
+    }
+
     // Basic check to make sure the URL is actually a group page
     URLIsValid = (url) => {
-        if (url.indexOf('https://gccollab.ca/groups/profile') === 0)
+        if (url.indexOf('https://gccollab.ca/groups/profile') === 0){ 
             return true;
+        }
+        else if (url.indexOf('https://gccollab.ca/') === 0) {
+            return true;
+        }
         else
             return false;
     }
 
     URLErrorMessage = (url) => {
-        if ((url.indexOf('https://gccollab.ca/') === 0) && !this.URLIsValid(url) ) {
+        /*if ((url.indexOf('https://gccollab.ca/') === 0) && !this.URLIsValid(url) ) {
             // URL is from collab, but not a group's main page.
             // In the future relevant stats will be served for whatever content is requested.
             // Right now, provide an error + explanation
-            if (this.props.initLang == "EN"){
-                return "This tool currently only supports group stats. Enter a group's main page URL (https://gcollab.gc.ca/groups/profile...)"
-            }
-            else{
-                return "Cet outil ne prend que les stats pour les groupes. Entrez l'URL de la page principale du groupe (https://gcollab.gc.ca/groups/profile ...)"
-            }
-        } else if (url.indexOf('https://gcconnex') === 0) {
+        } else*/ if (url.indexOf('https://gcconnex') === 0) {
             if (this.props.initLang == "EN"){
                 return "This tool is currently only available for GCcollab groups."
             }
@@ -149,6 +155,7 @@ class Control extends Component {
                             (event, data) => {
                                 if (this.state.validURL) {
                                     this.props.setGroupUrl(this.state.currUrl);
+                                    this.props.setURLType(this.getURLType(this.state.currUrl));
                                 }
                         }} />
                     } content={this.state.errorMessage} 

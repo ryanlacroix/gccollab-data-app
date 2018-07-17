@@ -61,13 +61,13 @@ class gcga:
 
     # REPORT FUNCTIONS (internal use only)
     
-    def _construct_orderby(self, order):
+    def _construct_orderby(self, order, metric):
         """ Build the correct orderBy object depending on type of request.
             Valid orders are 'views' and 'date'. """
         if order == 'views':
             return [
                 {
-                    'fieldName': 'ga:pageviews',
+                    'fieldName': metric,
                     'sortOrder': 'DESCENDING'
                 }
             ]
@@ -83,7 +83,7 @@ class gcga:
         """ Build the report request and send it off. Return report object.
             string, string, string, string, list of dicts """
         # Order can be by date or views
-        orderBy = self._construct_orderby(order)
+        orderBy = self._construct_orderby(order, metric)
         dim = []
         if double_dimension == True:
             dim = [{'name': dimension}, {'name': 'ga:PageTitle'}]
@@ -243,13 +243,35 @@ class gcga:
             'pageviews': df['metric'].values.tolist(),
             'titles': df['dimension2'].values.tolist()
         }
+    
+    def strip_domain(self, url):
+            return url.replace('https://gcconnex.gc.ca/','').replace('https://gccollab.ca/','').replace('www.gcpedia.gc.ca/','')
 
+    def avg_time_on_page(self, URL, start_date, end_date):
+        """ Return a float value representing number of seconds users typically spend on page"""
+        URL = [self.strip_domain(URL)+'$', 'NOToffset']
+        metric = "ga:avgTimeOnPage"
+        dimension="ga:pagePath"
+
+        filter_clause = self._construct_filter_clause(metric, dimension, URL)
+        response_stats = self._make_report(start_date, end_date, metric, 'ga:PagePath', filter_clause, order='views')
+
+        df = self._parse_response_into_df(response_stats)
+        try:
+            return df['metric'][0]
+        except:
+            return '0'
+
+    # Helper function. Returns pageviews on any number of pages
     def pageviews(self, URLs, start_date='30daysAgo', end_date='today', intervals=False):
+        return self.get_stats(URLs, start_date, end_date, intervals, metric='pageviews')
+
+    def get_stats(self, URLs, start_date='30daysAgo', end_date='today', intervals=False, metric='pageviews'):
         """ Return a dataframe containing views on a particular page.
             First argument can be a URL string or list of URLs. """
         def strip_domain(url):
             return url.replace('https://gcconnex.gc.ca/','').replace('https://gccollab.ca/','').replace('www.gcpedia.gc.ca/','')
-        metric = 'ga:pageviews'
+        ga_metric = 'ga:' + metric
         dimension = 'ga:date'
         # Strip the domain from the URL
         if type(URLs) == list:
@@ -258,15 +280,15 @@ class gcga:
             URLs = [strip_domain(URLs)]
         
         # Construct filter clauses for both requests
-        filter_clause = self._construct_filter_clause(metric, 'ga:pagePath', URLs)
+        filter_clause = self._construct_filter_clause(ga_metric, 'ga:pagePath', URLs)
         # Should first construct report for found pagePaths. Print to ensure nothing is wonky.
         # Construct report for stats.
-        response_names = self._make_report(start_date, end_date, metric, 'ga:pagePath', filter_clause, order='views')
-        response_stats = self._make_report(start_date, end_date, metric, 'ga:date', filter_clause, order='date')
+        response_names = self._make_report(start_date, end_date, ga_metric, 'ga:pagePath', filter_clause, order='views')
+        response_stats = self._make_report(start_date, end_date, ga_metric, 'ga:date', filter_clause, order='date')
         
         df_names = self._parse_response_into_df(response_names)
         df = self._parse_response_into_df(response_stats)
-        df.columns = ['date', 'pageviews']
+        df.columns = ['date', metric]
         df['date'] = df['date'].apply(lambda x: pd.to_datetime(x, format='%Y%m%d'))
         
         df.set_index('date', inplace=True)
@@ -276,19 +298,19 @@ class gcga:
         #code.interact(local=locals())
         df = df.reindex(idx, fill_value=0)
         df = df[df.index.weekday < 5] # Should work now
-        df['pageviews'] = df['pageviews'].astype(int)
+        df[metric] = df[metric].astype(int)
         if intervals == True: # Create both monthly and daily
             df_month = df.groupby(pd.TimeGrouper(freq='M')).sum()
             #code.interact(local=locals())
             df_month.reset_index(inplace=True)
             df_month.rename(columns={'index':'date'}, inplace=True)
-            df_month['pageviews'] = df_month['pageviews'].astype(str)
+            df_month[metric] = df_month[metric].astype(str)
             df_month['date'] = df_month['date'].apply(lambda x: x.strftime('%Y%m%d'))
             
         df.reset_index(inplace=True)
         #code.interact(local=locals()) 
         df.rename(columns={'index':'date'}, inplace=True)
-        df['pageviews'] = df['pageviews'].astype(str)
+        df[metric] = df[metric].astype(str)
         df['date'] = df['date'].apply(lambda x: x.strftime('%Y%m%d'))
 
         # Build lists from columns for C3 timechart format
@@ -296,17 +318,17 @@ class gcga:
             return {
                 'daily': {
                     'dates': df['date'].values.tolist(),
-                    'pageviews': df['pageviews'].values.tolist()
+                    metric: df[metric].values.tolist()
                 },
                 'monthly': {
                     'dates': df_month['date'].values.tolist(),
-                    'pageviews': df_month['pageviews'].values.tolist()
+                    metric: df_month[metric].values.tolist()
                 }
             }
         else:
             return {
                 'dates': df['date'].values.tolist(),
-                'pageviews': df['pageviews'].values.tolist()
+                metric: df[metric].values.tolist()
             }
 
 # For testing purposes
@@ -315,6 +337,7 @@ class gcga:
 #a = ga.content_views('24345175|24345230|24345864|24346589|24346609|24346761|24347051|24347063|24347064|24348915|24348916|24353569|24354020|24354022|24354025|24374956|24374974|24388448|24420361|24550020|24731204|24737608|25785766|26184204|26363406|26888731|29042669|29500717|29500814|29724264|30765572|30842912|30844818|31401461|32519731|32779395|32804758|33360989|33474515')
 #a = ga.pageviews('https://gcconnex.gc.ca/newsfeed/')
 #a = ga.pageviews(['https://gccollab.ca/newsfeed/', 'NOToffset'], intervals=True, start_date='2010-01-01', end_date='2017-01-01')
+#df = ga.avg_time_on_page('https://gccollab.ca/newsfeed/', start_date='2017-01-01', end_date='2018-01-01')
 #code.interact(local=locals()) 
 
 
