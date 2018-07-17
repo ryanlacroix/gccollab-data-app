@@ -41,7 +41,9 @@ class ContentBarChart extends Component {
             fixed_data_fr: {},
             fullDataFR: {},
             fixed_data_en: {},
-            fullDataEN: {}
+            fullDataEN: {},
+            partialDataEN: {},
+            partialDataFR: {}
         }
     }
 
@@ -169,22 +171,46 @@ class ContentBarChart extends Component {
                 groupName = data.group_name;
             }
             // Update the state
-            this.setState({
-                data: {
-                    columns: fixed_data,
-                },
-                groupName: groupName,
-                fullData: fullData,
-                partialData: fullData.slice(0,20),
-                barChartClass: '',
-                dataTableClass: '',
-                loaderClass: 'hidden',
-                contentClass: '',
-                fixed_data_fr: fixed_data_fr,
-                fullDataFR: fullDataFR,
-                fixed_data_en: fixed_data,
-                fullDataEN: fullData
-            });
+            if(this.props.language == "EN"){
+                this.setState({
+                    data: {
+                        columns: fixed_data,
+                    },
+                    groupName: groupName,
+                    fullData: fullData,
+                    partialData: fullData.slice(0,20),
+                    barChartClass: '',
+                    dataTableClass: '',
+                    loaderClass: 'hidden',
+                    contentClass: '',
+                    fixed_data_fr: fixed_data_fr,
+                    fullDataFR: fullDataFR,
+                    fixed_data_en: fixed_data,
+                    fullDataEN: fullData,
+                    partialDataEN: fullData.slice(0,20),
+                    partialDataFR: fullDataFR.slice(0,20)
+                });
+            }
+            else{
+                this.setState({
+                    data: {
+                        columns: fixed_data_fr,
+                    },
+                    groupName: groupName,
+                    fullData: fullDataFR,
+                    partialData: fullDataFR.slice(0,20),
+                    barChartClass: '',
+                    dataTableClass: '',
+                    loaderClass: 'hidden',
+                    contentClass: '',
+                    fixed_data_fr: fixed_data_fr,
+                    fullDataFR: fullDataFR,
+                    fixed_data_en: fixed_data,
+                    fullDataEN: fullData,
+                    partialDataEN: fullData.slice(0,20),
+                    partialDataFR: fullDataFR.slice(0,20)
+                });
+            }
             setTimeout(() => {
                 console.log("timing outtttt");
                 this.setState({
@@ -216,7 +242,7 @@ class ContentBarChart extends Component {
                     downloadCSVmessage: "Download Data as CSV",
                     contentButton2: "Show less content",
                     contentButton: "Show all content",
-                    partialData: this.state.fixed_data_en.slice(0, 20)
+                    partialData: this.state.partialDataEN
                 });
             }
             if(nextProps.language == 'FR'){
@@ -231,7 +257,7 @@ class ContentBarChart extends Component {
                     downloadCSVmessage: "Télécharger les données au format CSV",
                     contentButton2: "Montrer moins de contenu",
                     contentButton: "Montrer tout le contenu",
-                    partialData: this.state.fixed_data_fr.slice(0, 20)
+                    partialData: this.state.partialDataFR
                 });
             }
         }
@@ -267,7 +293,7 @@ class ContentBarChart extends Component {
                     <tr>
                         <td>
                             <span className = 'outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h2> {this.state.title} </h2>
-                                <IconButton className = 'innercsv' tooltip="Download data as CSV" style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
+                                <IconButton className = 'innercsv' tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
                             </span>

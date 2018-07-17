@@ -123,7 +123,7 @@ class App extends Component {
             />
           </div>
           <div className={this.state.onIntro ? '' : 'hidden'} style={{paddingBottom: '10px', fontFamily: "'Nunito Sans', sans-serif"}} id="container2">
-            Paste the group URL above and set your desired start and end dates to retrieve relevant statistics.
+            {this.state.helpmessage}
           </div>
         </div>
         </Container>
