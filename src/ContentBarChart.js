@@ -43,7 +43,9 @@ class ContentBarChart extends Component {
             fixed_data_en: {},
             fullDataEN: {},
             partialDataEN: {},
-            partialDataFR: {}
+            partialDataFR: {},
+            groupNameEN: '',
+            groupNameFR: ''
         }
     }
 
@@ -163,12 +165,14 @@ class ContentBarChart extends Component {
             }
 
             // Determine if group name is an object or not
-            let groupName = ''
+            let groupNameEN = ''
+            let groupNameFR = ''
             try {
-                groupName = JSON.parse(data.group_name).en;
+                groupNameEN = JSON.parse(data.group_name).en;
+                groupNameFR = JSON.parse(data.group_name).fr;
             } catch (err) {
-                console.log(err);
-                groupName = data.group_name;
+                groupNameEN = data.group_name;
+                groupNameFR = data.group_name;
             }
             // Update the state
             if(this.props.language == "EN"){
@@ -176,7 +180,7 @@ class ContentBarChart extends Component {
                     data: {
                         columns: fixed_data,
                     },
-                    groupName: groupName,
+                    groupName: groupNameEN,
                     fullData: fullData,
                     partialData: fullData.slice(0,20),
                     barChartClass: '',
@@ -188,7 +192,9 @@ class ContentBarChart extends Component {
                     fixed_data_en: fixed_data,
                     fullDataEN: fullData,
                     partialDataEN: fullData.slice(0,20),
-                    partialDataFR: fullDataFR.slice(0,20)
+                    partialDataFR: fullDataFR.slice(0,20),
+                    groupNameEN: groupNameEN,
+                    groupNameFR: groupNameFR
                 });
             }
             else{
@@ -196,7 +202,7 @@ class ContentBarChart extends Component {
                     data: {
                         columns: fixed_data_fr,
                     },
-                    groupName: groupName,
+                    groupName: groupNameFR,
                     fullData: fullDataFR,
                     partialData: fullDataFR.slice(0,20),
                     barChartClass: '',
@@ -208,16 +214,16 @@ class ContentBarChart extends Component {
                     fixed_data_en: fixed_data,
                     fullDataEN: fullData,
                     partialDataEN: fullData.slice(0,20),
-                    partialDataFR: fullDataFR.slice(0,20)
+                    partialDataFR: fullDataFR.slice(0,20),
+                    groupNameEN: groupNameEN,
+                    groupNameFR: groupNameFR
                 });
             }
             setTimeout(() => {
-                console.log("timing outtttt");
                 this.setState({
                     showAll: this.state.showAll
                 })
                 setTimeout(() => {
-                    console.log("wneoenwf");
                     this.setState({
                         showAll: this.state.showAll
                     })
@@ -226,10 +232,14 @@ class ContentBarChart extends Component {
         });
     }
 
+    get_title = () => {
+        var listInfo = [this.state.groupNameEN, this.state.groupNameFR];
+        this.props.callbackFromParent(listInfo)
+    }
+
     componentWillReceiveProps(nextProps) {
-        console.log(this.state.fixed_data_fr);
-        console.log(this.state.fullDataFR)
         if(nextProps.language !== this.props.language){
+            this.get_title();
             if(nextProps.language == 'EN'){
                 this.setState({
                     data: {
@@ -262,7 +272,9 @@ class ContentBarChart extends Component {
             }
         }
         else{
-            this.requestData(nextProps);
+            if(nextProps.groupURL != this.props.groupURL){
+                this.requestData(nextProps);
+            }
         }
     }
     componentDidMount() {
@@ -278,8 +290,6 @@ class ContentBarChart extends Component {
     }
 
     render() {
-        console.log(this.state.data)
-        console.log(this.state.fullData)
         // let sz = { height: 240, width: 500 };
 
         // 'Unzip' data into c3 format

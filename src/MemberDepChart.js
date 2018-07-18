@@ -15,8 +15,8 @@ import 'c3/c3.css';
 
 import './MemberDepChart.css';
 
-import enDict from './dict/en_dict.json'
-import frDict from './dict/fr_dict.json'
+import enDict from './en_dict.json'
+import frDict from './fr_dict.json'
 
 class MemberDepChart extends Component {
     /* Call each time step changes. Inserts correct component accordingly*/
@@ -88,7 +88,6 @@ class MemberDepChart extends Component {
     }
     
     requestData = (nextProps = null) => {
-        
         this.setState({loaderClass: ''});
         if (nextProps) {
             // Do not send request if no query is present
@@ -144,7 +143,6 @@ class MemberDepChart extends Component {
             try {
                 groupName = JSON.parse(data.group_name).en;
             } catch (err) {
-                console.log(err);
                 groupName = data.group_name;
             }
             var deptsfr = this.copy(fixed_data);
@@ -216,12 +214,10 @@ class MemberDepChart extends Component {
                 showAll: this.state.showAll
             });
             setTimeout(() => {
-                console.log("timing outtttt");
                 this.setState({
                     showAll: this.state.showAll
                 })
                 setTimeout(() => {
-                    console.log("wneoenwf");
                     this.setState({
                         showAll: this.state.showAll
                     })
@@ -295,7 +291,6 @@ class MemberDepChart extends Component {
                         contentButton: "Montrer tout le contenu",
                     });
                 }
-                console.log(this.state.fulldatafr)
             }
         }
         else{
@@ -322,8 +317,6 @@ class MemberDepChart extends Component {
         for (var i =0; i < this.state.data.columns.length; i++) {
             chartData.push(this.state.data.columns[i][1]);
         }
-        console.log('UNZIPPED');
-        console.log(chartData);
         //this.state.data
     
         return (

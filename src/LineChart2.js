@@ -66,7 +66,10 @@ class LineChart2 extends Component {
             downloadCSVmessage: "Download Data as CSV",
             intervalWord: "Interval",
             loading: "Loading",
-            language: "EN"
+            language: "EN",
+            groupNameEN: "",
+            groupNameFR: "",
+            groupName: ""
         }
     }
 
@@ -115,17 +118,52 @@ class LineChart2 extends Component {
             data[this.state.interval].pageviews.unshift('pageviews');
             data[this.state.interval].dates.unshift('date');
 
+            function replaceAll(str, find, replace) {
+                return str.replace(new RegExp(find, 'g'), replace);
+            }
+
+            // Determine if group name is an object or not
+            let groupNameEN = ''
+            let groupNameFR = ''
+            try {
+                groupNameEN = replaceAll(JSON.parse(data.group_name).en, "-", " ");
+                groupNameFR = replaceAll(JSON.parse(data.group_name).fr, "-", " ");
+            } catch (err) {
+                groupNameEN = replaceAll(data.group_name, "-", " ");
+                groupNameFR = replaceAll(data.group_name, "-", " ");
+            }
+
             // Update the state
-            this.setState({
-                data: {
-                    x: 'x',
-                    columns: [data[this.state.interval].dates, data[this.state.interval].pageviews],
-                    xFormat: '%Y%m%d',
-                },
-                dataBackup: dataBackup,
-                loaderClass: 'hidden',
-                contentClass: '',
-            });
+            if(this.props.language == "EN"){
+                this.setState({
+                    data: {
+                        x: 'x',
+                        columns: [data[this.state.interval].dates, data[this.state.interval].pageviews],
+                        xFormat: '%Y%m%d',
+                    },
+                    dataBackup: dataBackup,
+                    loaderClass: 'hidden',
+                    contentClass: '',
+                    groupNameEN: groupNameEN,
+                    groupNameFR: groupNameFR,
+                    groupName: groupNameEN
+                });
+            }
+            else{
+                this.setState({
+                    data: {
+                        x: 'x',
+                        columns: [data[this.state.interval].dates, data[this.state.interval].pageviews],
+                        xFormat: '%Y%m%d',
+                    },
+                    dataBackup: dataBackup,
+                    loaderClass: 'hidden',
+                    contentClass: '',
+                    groupNameEN: groupNameEN,
+                    groupNameFR: groupNameFR,
+                    groupName: groupNameFR
+                });
+            }
             this.handleIntervalChange(true, 561651, 'daily');
             this.handleIntervalChange(true, 561651, 'daily');
         });
@@ -133,6 +171,12 @@ class LineChart2 extends Component {
 
     // Repopulate graphs both on creation and on time changes
     componentWillReceiveProps(nextProps) {
+        console.log("------------------------")
+        console.log(this.state.groupNameEN)
+        console.log(this.state.groupNameFR)
+        console.log(this.props.groupNameEN)
+        console.log(this.props.groupNameFR)
+        console.log("-----------------------")
         if(nextProps.language !== this.props.language){
             if(nextProps.language == 'EN'){
                 if (nextProps.interval == 'daily'){
@@ -144,7 +188,8 @@ class LineChart2 extends Component {
                         frinterval2: "Monthly",
                         downloadCSVmessage: "Download Data as CSV",
                         intervalWord: "Interval",
-                        loading: "Loading"
+                        loading: "Loading",
+                        groupName: this.props.groupNameEN
                     });
                 }
                 if (nextProps.interval == 'monthly'){
@@ -156,7 +201,8 @@ class LineChart2 extends Component {
                         frinterval2: "Daily",
                         downloadCSVmessage: "Download Data as CSV",
                         intervalWord: "Interval",
-                        loading: "Loading"
+                        loading: "Loading",
+                        groupName: this.props.groupNameEN
                     });
                 }
                 else{
@@ -168,7 +214,8 @@ class LineChart2 extends Component {
                         frinterval2: "Monthly",
                         downloadCSVmessage: "Download Data as CSV",
                         intervalWord: "Interval",
-                        loading: "Loading"
+                        loading: "Loading",
+                        groupName: this.props.groupNameEN
                     });
                 }
             }
@@ -182,7 +229,8 @@ class LineChart2 extends Component {
                         frinterval2: "Mensuel",
                         downloadCSVmessage: "Télécharger les données au format CSV",
                         intervalWord: "Intervalle",
-                        loading: "Chargement"
+                        loading: "Chargement",
+                        groupName: this.props.groupNameFR
                     });
                 }
                 if (nextProps.interval == 'montly'){
@@ -194,7 +242,8 @@ class LineChart2 extends Component {
                         frinterval2: "Quotidien",
                         downloadCSVmessage: "Télécharger les données au format CSV",
                         intervalWord: "Intervalle",
-                        loading: "Chargement"
+                        loading: "Chargement",
+                        groupName: this.props.groupNameFR
                     });
                 }
                 else{
@@ -206,7 +255,8 @@ class LineChart2 extends Component {
                         frinterval2: "Mensuel",
                         downloadCSVmessage: "Télécharger les données au format CSV",
                         intervalWord: "Intervalle",
-                        loading: "Chargement"
+                        loading: "Chargement",
+                        groupName: this.props.groupNameFR
                     });
                 }
             }
@@ -312,8 +362,15 @@ class LineChart2 extends Component {
         catch(err){
             console.log("Nope")
         }
+        console.log("------------------------")
+        console.log(this.state.groupNameEN)
+        console.log(this.state.groupNameFR)
+        console.log(this.props.groupNameEN)
+        console.log(this.props.groupNameFR)
+        console.log("-----------------------")
         return (
             <Segment className="ind-content-box" style={{marginTop: '10px', padding: '0 0', display: 'inline-block', width: '98%', borderRadius: '5px', backgroundColor: '#f9f9f9', border: '2px solid lightgray'}}>
+                <div className = 'title'>{this.props.groupNameEN == "" ? this.state.groupName : this.props.language == "EN" ? this.props.groupNameEN : this.props.groupNameFR}</div>
                 <table className="content-box-heading" style={{width: '100%'}}>
                     <tr>
                         <td>

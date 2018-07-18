@@ -20,11 +20,30 @@ def read_in():
     #Since our input would only be having one line, parse our JSON data from that
     return json.loads(lines[0])
 
+def get_group_name(urlString, req_obj):
+    try:
+        url2 = urlString[urlString.find('profile/'):]
+        url3 = url2[url2.find('/')+1:]
+        url4 = url3[url3.find('/')+1:]
+        return url4
+    except:
+        gc.connect_to_database()
+        gc.create_session()
+        url = req_obj['filter']
+        url2 = url[url.find('profile/'):]
+        url3 = url2[url2.find('/')+1:]
+        group_guid = url3[:url3.find('/')]
+        group_name = gc.groups.name_from_guid(group_guid)
+        return group_name
+
 def get_group_pageviews(req_obj):
     ga = gcga()
     ga.set_platform('gccollab')
+    url = req_obj['url']
+    group_name = get_group_name(url, req_obj)
     # Request a dataframe containing pageviews and corresponding dates
     ret = ga.pageviews([req_obj['url'], 'NOToffset'], intervals=True, start_date=req_obj['start_date'], end_date=req_obj['end_date'])
+    ret['group_name'] = group_name
     print(json.dumps(ret))
 
 def get_group_top_content(req_obj):
@@ -183,6 +202,7 @@ def main(testing=False):
 
 # Start process
 if __name__ == '__main__':
+    inStr = '{"type":"groups","stat":"pageviews","url":"https://gccollab.ca/groups/profile/85014/the-policy-community-la-communaute-des-politiques","start_date":"2017-07-17","end_date":"2018-07-17"}'
     main()
     # If collab db was used be sure to close the tunnel properly
     try:

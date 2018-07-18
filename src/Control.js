@@ -33,6 +33,9 @@ class Control extends Component {
             language: '',
             initLang: '',
             helperMessage: "Paste Group URL here...",
+            possibleIncorrectURL: '',
+            errorMessageEN: "",
+            errorMessageFR: ''
         }
     }
 
@@ -44,40 +47,38 @@ class Control extends Component {
             return false;
     }
 
-    URLErrorMessage = (url) => {
+    URLErrorMessageEN = (url) => {      
         if ((url.indexOf('https://gccollab.ca/') === 0) && !this.URLIsValid(url) ) {
             // URL is from collab, but not a group's main page.
             // In the future relevant stats will be served for whatever content is requested.
             // Right now, provide an error + explanation
-            if (this.props.initLang == "EN"){
-                return "This tool currently only supports group stats. Enter a group's main page URL (https://gcollab.gc.ca/groups/profile...)"
-            }
-            else{
-                return "Cet outil ne prend que les stats pour les groupes. Entrez l'URL de la page principale du groupe (https://gcollab.gc.ca/groups/profile ...)"
-            }
+            return "This tool currently only supports group stats. Enter a group's main page URL (https://gcollab.gc.ca/groups/profile...)"
         } else if (url.indexOf('https://gcconnex') === 0) {
-            if (this.props.initLang == "EN"){
-                return "This tool is currently only available for GCcollab groups."
-            }
-            else{
-                return "Cet outil est maintenant disponible juste pour les groupes de GCcollab."
-            }
+            return "This tool is currently only available for GCcollab groups."
         } else {
-            if (this.props.initLang == "EN"){
-                return "URLs should be of the format https://gcollab.ca/groups/profile...";
-            }
-            else{
-                return "Les URL doivent être au format https: //gcollab.ca/groups/profile ..."
-            }
+            return "URLs should be of the format https://gcollab.ca/groups/profile...";
         }
     }
 
-    checkUserInput = (url) => {
+    URLErrorMessageFR = (url) => {      
+        if ((url.indexOf('https://gccollab.ca/') === 0) && !this.URLIsValid(url) ) {
+            // URL is from collab, but not a group's main page.
+            // In the future relevant stats will be served for whatever content is requested.
+            // Right now, provide an error + explanation
+            return "Cet outil ne prend que les stats pour les groupes. Entrez l'URL de la page principale du groupe (https://gcollab.gc.ca/groups/profile ...)"
+        } else if (url.indexOf('https://gcconnex') === 0) {
+            return "Cet outil est maintenant disponible juste pour les groupes de GCcollab."
+        } else {
+            return "Les URL doivent être au format https: //gcollab.ca/groups/profile ..."
+        }
+    }
+
+    checkUserInput = (url, lang) => {
         if (this.URLIsValid(url)) {
             this.setState({ currUrl: this.cleanURL(url), validURL: true, showError: false })
         } else {
             // URL is invalid in some way. Generate an error message
-            this.setState({validURL: false, showError: true, errorMessage: this.URLErrorMessage(url)})
+            this.setState({validURL: false, showError: true, errorMessageEN: this.URLErrorMessageEN(url), errorMessageFR: this.URLErrorMessageFR(url)})
         }
     }
 
@@ -92,11 +93,9 @@ class Control extends Component {
     render() {
         if(this.props.initLang == "EN"){
             moment.locale('en-ca');
-            console.log(moment.locale());
         }
         else{
             moment.locale('fr');
-            console.log(moment.locale());
         }
         let popupStyle = {
             opacity: this.state.validURL ? "0" : "1"
@@ -151,7 +150,7 @@ class Control extends Component {
                                     this.props.setGroupUrl(this.state.currUrl);
                                 }
                         }} />
-                    } content={this.state.errorMessage} 
+                    } content={this.props.language == "EN" ? this.state.errorMessageEN : this.state.errorMessageFR} 
                     style={popupStyle} />
                 }
                     placeholder={this.props.language=="EN" ? "Paste Group URL here..." : "Collez l'URL du groupe ici..."}
