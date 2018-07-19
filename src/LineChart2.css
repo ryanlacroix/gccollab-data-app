@@ -8,9 +8,13 @@
 }
 
 .outercsv0{
-    position: absolute;
+    position: relative;
     left: 0px;
     top: 20px;
+    bottom: 0px !important;
+}
+.cellName{
+    margin-bottom: 0px !important;
 }
 
 .content-box-heading{

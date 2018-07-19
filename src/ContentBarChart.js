@@ -164,12 +164,15 @@ class ContentBarChart extends Component {
                 fixed_data_fr = fixed_data_fr.slice(0,20);
             }
 
+            function replaceAll(str, find, replace) {
+                return str.replace(new RegExp(find, 'g'), replace);
+            }
             // Determine if group name is an object or not
             let groupNameEN = ''
             let groupNameFR = ''
             try {
-                groupNameEN = JSON.parse(data.group_name).en;
-                groupNameFR = JSON.parse(data.group_name).fr;
+                groupNameEN = replaceAll(JSON.parse(data.group_name).en, '&#039;', "'");
+                groupNameFR = replaceAll(JSON.parse(data.group_name).fr, '&#039;', "'");
             } catch (err) {
                 groupNameEN = data.group_name;
                 groupNameFR = data.group_name;
