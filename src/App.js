@@ -117,6 +117,7 @@ class App extends Component {
             setInitLanguage={this.setInitLanguage}
             initLang={this.state.initLang}
             language={this.state.language}
+            groupURL={this.state.groupURL} 
           />
           <div className={this.state.onIntro ? 'hidden' : ''}>
             <Content

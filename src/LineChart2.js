@@ -69,10 +69,25 @@ class LineChart2 extends Component {
             loading: "Loading",
             language: "EN",
             pageTime: 0,
-            avgTimeMessage: "Average time on page:"
+            avgTimeMessage: "Average time on page:",
+            backupGroupNameEN: "",
+            backupGroupNameFR: ""
         }
     }
     handleIncomingData = (data, data2) => {
+        // Handle group name
+        function replaceAll(str, find, replace) {
+            return str.replace(new RegExp(find, 'g'), replace);
+        }
+        let backupGroupNameEN = ''
+        let backupGroupNameFR = ''
+        try {
+            backupGroupNameEN = replaceAll(JSON.parse(data.group_name).en, "-", " ");
+            backupGroupNameFR = replaceAll(JSON.parse(data.group_name).fr, "-", " ");
+        } catch (err) {
+            backupGroupNameEN = replaceAll(data.group_name, "-", " ");
+            backupGroupNameFR = replaceAll(data.group_name, "-", " ");
+        }
         // Deepcopy the data to store for interval changes
         let interval = this.state.interval;
         data[interval].uniquePageviews = data2[interval].uniquePageviews
@@ -96,6 +111,8 @@ class LineChart2 extends Component {
             dataBackup: dataBackup,
             loaderClass: 'hidden',
             contentClass: '',
+            backupGroupNameEN: backupGroupNameEN,
+            backupGroupNameFR: backupGroupNameFR
         });
         this.handleIntervalChange(true, 561651, 'daily');
         this.handleIntervalChange(true, 561651, 'daily');
@@ -362,6 +379,19 @@ class LineChart2 extends Component {
         return fixedDates;
     }
 
+    getGroupName = (lang) => {
+        if(this.props.groupNameEN == ""){
+            return this.state.backupGroupNameEN
+        }
+        if(this.props.groupNameEN != "" && lang == "EN"){
+            return this.props.groupNameEN
+        }
+        if(this.props.groupNameFR != "" && lang == "FR"){
+            return this.props.groupNameFR
+        }
+        return this.state.backupGroupNameFR
+    }
+
     render() {
         // let sz = { height: 240, width: 500 };
         let spreadsheetData = this.reformatForSpreadsheet(this.state.data.columns);
@@ -392,10 +422,11 @@ class LineChart2 extends Component {
         console.log(this.state.data)
         return (
             <Segment className="ind-content-box" style={{marginTop: '10px', padding: '0 0', display: 'inline-block', width: '98%', borderRadius: '5px', backgroundColor: '#f9f9f9', border: '2px solid lightgray'}}>
+                <div className = 'title'> <h2> {this.getGroupName(this.props.language)} </h2> </div>
                 <table className="content-box-heading" style={{width: '100%'}}>
                     <tr>
                         <td>
-                            <span className='outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h2> {this.state.title} </h2>
+                            <span className='outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h3> {this.state.title} </h3>
                                 <IconButton tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
