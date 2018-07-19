@@ -273,7 +273,7 @@ class ContentBarChart extends Component {
             }
         }
         else{
-            if(nextProps.groupURL != this.props.groupURL){
+            if(this.props.groupURL !== nextProps.groupURL || this.props.startDate !== nextProps.startDate || this.props.endDate !== nextProps.endDate){
                 this.requestData(nextProps);
             }
         }

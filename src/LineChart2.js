@@ -300,7 +300,7 @@ class LineChart2 extends Component {
                 }
             }
         }
-        else{
+        if (this.props.groupURL !== nextProps.groupURL || this.props.startDate !== nextProps.startDate || this.props.endDate !== nextProps.endDate){
             // Language hasn't changed? This change in props is for a new request.
             this.requestData(nextProps);
             this.requestAvgTimeOnPage(nextProps);

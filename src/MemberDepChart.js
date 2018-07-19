@@ -36,7 +36,7 @@ class MemberDepChart extends Component {
             dataTableClass: 'hide',
             loaderClass: '',
             showAll: false,
-            title: 'Group Membership',
+            title: 'Group Members By Department',
             header1: 'Date',
             header2: 'Members',
             downloadCSVmessage: "Download Data as CSV",
