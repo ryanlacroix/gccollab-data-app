@@ -54,6 +54,15 @@ def get_pageviews(req_obj):
     print(json.dumps(ret))
 
 
+def get_unique_pageviews(req_obj):
+    ga = gcga()
+    ga.set_platform('gccollab')
+    # Request a dataframe containing pageviews and corresponding dates
+    ret = ga.get_stats([req_obj['url'], 'NOToffset'], intervals=True,
+                       start_date=req_obj['start_date'], end_date=req_obj['end_date'], metric='uniquePageviews')
+    print(json.dumps(ret))
+
+
 def get_avg_time_on_page(req_obj):
     ga = gcga()
     ga.set_platform('gccollab')
@@ -247,6 +256,8 @@ def main(testing=False):
             get_pageviews(req_obj)
         elif req_obj['stat'] == 'avgTimeOnPage':
             get_avg_time_on_page(req_obj)
+        elif req_obj['stat'] == 'uniquePageviews':
+            get_unique_pageviews(req_obj)
 
 
 # Start process
