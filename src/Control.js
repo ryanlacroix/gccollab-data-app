@@ -34,8 +34,8 @@ class Control extends Component {
             initLang: '',
             helperMessage: "Paste Group URL here...",
             possibleIncorrectURL: '',
-            errorMessageEN: "",
-            errorMessageFR: ''
+            errorMessageEN: "URLs should be of the format https://gcollab.ca/groups/profile...",
+            errorMessageFR: 'Les URL doivent être au format https: //gcollab.ca/groups/profile ...'
         }
     }
 
