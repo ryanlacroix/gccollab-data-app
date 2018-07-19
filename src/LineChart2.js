@@ -426,7 +426,7 @@ class LineChart2 extends Component {
                 <table className="content-box-heading" style={{width: '100%'}}>
                     <tr>
                         <td>
-                            <span className='outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h3> {this.state.title} </h3>
+                            <span className='outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px', marginbottom:'0px'}}> <h3> {this.state.title} </h3>
                                 <IconButton tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
@@ -434,7 +434,7 @@ class LineChart2 extends Component {
                             
                         </td>
                         <td>
-                            <SelectField onChange={this.handleIntervalChange} floatingLabelText={this.state.intervalWord} style={{width: 150, float: 'right'}} value={this.state.interval}>
+                            <SelectField className= 'cellName' onChange={this.handleIntervalChange} floatingLabelText={this.state.intervalWord} style={{width: 150, float: 'right'}} value={this.state.interval}>
                                 <MenuItem value={'monthly'} primaryText={this.state.frinterval2} />
                                 <MenuItem value={'daily'} primaryText={this.state.frinterval} />
                             </SelectField>

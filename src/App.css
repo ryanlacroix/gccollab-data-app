@@ -89,9 +89,6 @@ h4 {
   /* .App-intro{
     width: 700px !important;
   } */
-  .container{
-    /* width: 700px !important; */
-  }
 }
 
 @media only screen and (max-width: 689px) and (min-width: 560px){
@@ -113,11 +110,23 @@ h4 {
     /* margin-left: 28px !important; */
     margin-top: 80px !important;
   }
+  .cell-title h3 {
+    font-family: 'Rubik';
+    font-size: 1.5em;
+    display: inline-block!important;
+    margin-bottom: 0px !important;
+  }
 }  
 
 @media only screen and (max-width: 375px){
   #container2{
     /* margin-left: 28px !important; */
     margin-top: 78px !important;
+  }
+  .cell-title h3 {
+    font-family: 'Rubik';
+    font-size: 1.5em;
+    display: inline-block!important;
+    margin-bottom: 0px !important;
   }
 }
