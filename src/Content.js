@@ -35,58 +35,77 @@ class Content extends Component {
     }
 
     render() {
-        return (
-            <div class="bigBox" style={{margin: '0 auto', backgroundColor: '#fff', border: '2px solid lightgray', borderRadius: '5px', width: '95%'}}>
-                <div className="pageviews" style={{width: '100%'}}>
-                    <LineChart2
-                        title="Page views"
-                        className='linechart1'
-                        startDate={this.props.startDate}
-                        endDate={this.props.endDate}
-                        groupURL={this.props.groupURL}
-                        superState={this.props.endDate}
-                        language={this.props.language}
-                        initLang={this.props.initLang}
-                        groupNameEN={this.state.groupNameEN}
-                        groupNameFR={this.state.groupNameFR}
-                    />
+        if(this.props.URLType === 'collab-group')
+            return (
+                <div class="bigBox" style={{margin: '0 auto', backgroundColor: '#fff', border: '2px solid lightgray', borderRadius: '5px', width: '95%'}}>
+                    <div className="pageviews" style={{width: '100%'}}>
+                        <LineChart2
+                            title="Page views"
+                            className='linechart1'
+                            startDate={this.props.startDate}
+                            endDate={this.props.endDate}
+                            groupURL={this.props.groupURL}
+                            superState={this.props.endDate}
+                            language={this.props.language}
+                            initLang={this.props.initLang}
+                            groupNameEN={this.state.groupNameEN}
+                            groupNameFR={this.state.groupNameFR}
+                            stat='pageviews'
+                        />
+                    </div>
+                    <div className="membership" style={{width: '100%'}}>
+                        <LineChartMembers
+                            title="Group Membership"
+                            superState={this.props.superState}
+                            startDate={this.props.startDate}
+                            endDate={this.props.endDate}
+                            groupURL={this.props.groupURL}  
+                            language={this.props.language}
+                            initLang={this.props.initLang}  
+                        />
+                    </div>
+                    <div className="deps" style={{width: '100%'}}>
+                        <MemberDepChart
+                            title="Group Members by Department"
+                            superState={this.props.superState}
+                            startDate={this.props.startDate}
+                            endDate={this.props.endDate}
+                            groupURL={this.props.groupURL} 
+                            language={this.props.language}
+                            initLang={this.props.initLang}
+                        />
+                    </div>
+                    <div className="top-content" style={{width: '100%'}}>
+                        <ContentBarChart
+                            title="Top Group Content"
+                            superState={this.props.superState}
+                            startDate={this.props.startDate}
+                            endDate={this.props.endDate}
+                            groupURL={this.props.groupURL}
+                            language={this.props.language}
+                            initLang={this.props.initLang}
+                            callbackFromParent = {this.myCallBack}
+                        />
+                    </div>
                 </div>
-                <div className="membership" style={{width: '100%'}}>
-                    <LineChartMembers
-                        title="Group Membership"
-                        superState={this.props.superState}
-                        startDate={this.props.startDate}
-                        endDate={this.props.endDate}
-                        groupURL={this.props.groupURL}  
-                        language={this.props.language}
-                        initLang={this.props.initLang}  
-                    />
+            );
+        if (this.props.URLType === 'collab-page')
+            return (
+                <div class="bigBox" style={{margin: '0 auto', backgroundColor: '#fff', border: '2px solid lightgray', borderRadius: '5px', width: '95%'}}>
+                    <div className="pageviews" style={{width: '100%'}}>
+                        <LineChart2
+                            title="Page views"
+                            className='linechart1'
+                            startDate={this.props.startDate}
+                            endDate={this.props.endDate}
+                            groupURL={this.props.groupURL}
+                            superState={this.props.endDate}
+                            language={this.props.language}
+                            initLang={this.props.initLang}
+                        />
+                    </div>
                 </div>
-                <div className="deps" style={{width: '100%'}}>
-                    <MemberDepChart
-                        title="Group Members by Department"
-                        superState={this.props.superState}
-                        startDate={this.props.startDate}
-                        endDate={this.props.endDate}
-                        groupURL={this.props.groupURL} 
-                        language={this.props.language}
-                        initLang={this.props.initLang}
-                    />
-                </div>
-                <div className="top-content" style={{width: '100%'}}>
-                    <ContentBarChart
-                        title="Top Group Content"
-                        superState={this.props.superState}
-                        startDate={this.props.startDate}
-                        endDate={this.props.endDate}
-                        groupURL={this.props.groupURL}
-                        language={this.props.language}
-                        initLang={this.props.initLang}
-                        callbackFromParent = {this.myCallBack}
-                    />
-                </div>
-            </div>
-        );
+            );
     }
 }
 

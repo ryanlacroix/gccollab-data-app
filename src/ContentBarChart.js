@@ -323,7 +323,8 @@ class ContentBarChart extends Component {
                             format: {
                                 name: (name, ratio, id, index) => {
                                     return this.state.data.columns[index][0];
-                                }
+                                },
+                                title: () => {return 'Content'}
                             }
                         }}
                         className = 'c3chart'

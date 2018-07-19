@@ -34,13 +34,14 @@ class App extends Component {
     const date2 = new Date();
     const language = 'EN';
     const initLang = "EN";
-    date1.setFullYear(date1.getFullYear() - 1);
+    date1.setDate(date1.getDate() - 90);
     let m1 = moment(date1);
     let m2 = moment(date2);
     // Bind the state setter
     this.setMainState = this.setMainState.bind(this);
     this.setStartDate = this.setStartDate.bind(this);
     this.setGroupUrl = this.setGroupUrl.bind(this);
+    this.setURLType = this.setURLType.bind(this);
     this.setLanguage = this.setLanguage.bind(this);
     this.setInitLanguage = this.setInitLanguage.bind(this);
 
@@ -49,8 +50,9 @@ class App extends Component {
       language: 'EN',
       startDate: m1,
       endDate: m2,
-      groupURL: "",
+      groupURL: '',
       onIntro: true,
+      URLType: 'collab-group',
       helpmessage: "Paste the group URL above and set your desired start and end dates to retrieve relevant statistics.",
       initLang: 'EN',
       title: "GCcollab Group Stats Page"
@@ -74,6 +76,9 @@ class App extends Component {
       groupURL: url,
       onIntro: false
     });
+  }
+  setURLType = (URLType) => {
+    this.setState({URLType: URLType});
   }
   setLanguage = (l) => {
     this.setState({language: l});
@@ -107,6 +112,7 @@ class App extends Component {
             setStartDate={this.setStartDate}
             setEndDate={this.setEndDate}
             setGroupUrl={this.setGroupUrl}
+            setURLType={this.setURLType}
             setLanguage ={this.setLanguage}
             setInitLanguage={this.setInitLanguage}
             initLang={this.state.initLang}
@@ -119,6 +125,7 @@ class App extends Component {
               startDate={this.state.startDate}
               endDate={this.state.endDate}
               groupURL={this.state.groupURL}
+              URLType={this.state.URLType}
               language={this.state.language}
               initLang={this.state.initLang}
             />

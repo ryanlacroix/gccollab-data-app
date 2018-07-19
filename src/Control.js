@@ -39,10 +39,22 @@ class Control extends Component {
         }
     }
 
+    // Used to set the URL type. Currently this supports GCcollab groups or random GCcollab pages
+    getURLType = (url) => {
+        if (url.indexOf('https://gccollab.ca/groups') === 0)
+            return ('collab-group')
+        else if (url.indexOf('https://gccollab.ca/') === 0)
+            return ('collab-page')
+    }
+
     // Basic check to make sure the URL is actually a group page
     URLIsValid = (url) => {
-        if (url.indexOf('https://gccollab.ca/groups/profile') === 0)
+        if (url.indexOf('https://gccollab.ca/groups/profile') === 0){ 
             return true;
+        }
+        else if (url.indexOf('https://gccollab.ca/') === 0) {
+            return true;
+        }
         else
             return false;
     }
@@ -148,6 +160,7 @@ class Control extends Component {
                             (event, data) => {
                                 if (this.state.validURL) {
                                     this.props.setGroupUrl(this.state.currUrl);
+                                    this.props.setURLType(this.getURLType(this.state.currUrl));
                                 }
                         }} />
                     } content={this.props.language == "EN" ? this.state.errorMessageEN : this.state.errorMessageFR} 
