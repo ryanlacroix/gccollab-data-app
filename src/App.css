@@ -68,8 +68,9 @@ a:hover{
   background-color: #047177;
 }
 
-.cell-title h2 {
-  font-family: 'Rubik', sans-serif;
+.cell-title h3 {
+  font-family: 'Rubik';
+  font-size: 1.5em;
   display: inline-block!important;
 }
 

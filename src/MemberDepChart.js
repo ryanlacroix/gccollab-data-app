@@ -237,6 +237,7 @@ class MemberDepChart extends Component {
      }
 
     componentWillReceiveProps(nextProps) {
+        console.log("cwrp")
         if(nextProps.language !== this.props.language){
             if(nextProps.language == 'EN'){
                 try{
@@ -293,7 +294,7 @@ class MemberDepChart extends Component {
                 }
             }
         }
-        else{
+        if(this.props.groupURL != nextProps.groupURL){
             this.requestData(nextProps);
         }
     }
@@ -324,7 +325,7 @@ class MemberDepChart extends Component {
                 <table className = 'topBar' style={{width: '100%'}}>
                     <tr>
                         <td>
-                            <span className = 'outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h2> {this.state.title} </h2>
+                            <span className = 'outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h3> {this.state.title} </h3>
                                 <IconButton tooltip={this.props.language=="EN" ? "Download data as CSV" : "Télécharger les données au format CSV"} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 

@@ -219,6 +219,7 @@ class ContentBarChart extends Component {
                     groupNameFR: groupNameFR
                 });
             }
+            this.getTitle()
             setTimeout(() => {
                 this.setState({
                     showAll: this.state.showAll
@@ -227,19 +228,19 @@ class ContentBarChart extends Component {
                     this.setState({
                         showAll: this.state.showAll
                     })
-                }, 250)
-              }, 250);
+                }, 300)
+              }, 300);
         });
     }
 
-    get_title = () => {
+    getTitle = () => {
         var listInfo = [this.state.groupNameEN, this.state.groupNameFR];
         this.props.callbackFromParent(listInfo)
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log("Csrp")
         if(nextProps.language !== this.props.language){
-            this.get_title();
             if(nextProps.language == 'EN'){
                 this.setState({
                     data: {
@@ -291,7 +292,6 @@ class ContentBarChart extends Component {
 
     render() {
         // let sz = { height: 240, width: 500 };
-
         // 'Unzip' data into c3 format
         var chartData = ['Content']
         for (var i =0; i < this.state.data.columns.length; i++) {
@@ -302,7 +302,7 @@ class ContentBarChart extends Component {
                 <table className="topBar" style={{width: '100%'}}>
                     <tr>
                         <td>
-                            <span className = 'outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h2> {this.state.title} </h2>
+                            <span className = 'outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h3> {this.state.title} </h3>
                                 <IconButton className = 'innercsv' tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 

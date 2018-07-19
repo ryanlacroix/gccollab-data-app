@@ -22,11 +22,11 @@ class Content extends Component {
     }
 
     myCallBack = (dataFromChild) =>{
-        console.log("------------------------")
+        console.log("ATCONTENT")
         console.log(dataFromChild[0])
-        console.log(dataFromChild[1])
-        console.log("-----------------------")
-        if (this.state.groupNameEN == ""){
+        console.log(this.state.groupNameEN)
+        if (this.state.groupNameEN != dataFromChild[0]){
+            console.log("INCONTENTIF")
             this.setState({
                 groupNameEN: dataFromChild[0],
                 groupNameFR: dataFromChild[1]
@@ -35,10 +35,6 @@ class Content extends Component {
     }
 
     render() {
-        console.log("------------------------")
-        console.log(this.state.groupNameEN)
-        console.log(this.state.groupNameFR)
-        console.log("------------------------")
         return (
             <div class="bigBox" style={{margin: '0 auto', backgroundColor: '#fff', border: '2px solid lightgray', borderRadius: '5px', width: '95%'}}>
                 <div className="pageviews" style={{width: '100%'}}>
