@@ -66,7 +66,9 @@ class LineChart2 extends Component {
             downloadCSVmessage: "Download Data as CSV",
             intervalWord: "Interval",
             loading: "Loading",
-            language: "EN"
+            language: "EN",
+            backupGroupNameEN: "",
+            backupGroupNameFR: ""
         }
     }
 
@@ -115,6 +117,20 @@ class LineChart2 extends Component {
             data[this.state.interval].pageviews.unshift('pageviews');
             data[this.state.interval].dates.unshift('date');
 
+            function replaceAll(str, find, replace) {
+                return str.replace(new RegExp(find, 'g'), replace);
+            }
+
+            let backupGroupNameEN = ''
+            let backupGroupNameFR = ''
+            try {
+                backupGroupNameEN = replaceAll(JSON.parse(data.group_name).en, "-", " ");
+                backupGroupNameFR = replaceAll(JSON.parse(data.group_name).fr, "-", " ");
+            } catch (err) {
+                backupGroupNameEN = replaceAll(data.group_name, "-", " ");
+                backupGroupNameFR = replaceAll(data.group_name, "-", " ");
+            }
+
             // Update the state
             this.setState({
                 data: {
@@ -125,9 +141,12 @@ class LineChart2 extends Component {
                 dataBackup: dataBackup,
                 loaderClass: 'hidden',
                 contentClass: '',
+                backupGroupNameEN: backupGroupNameEN,
+                backupGroupNameFR: backupGroupNameFR
             });
             this.handleIntervalChange(true, 561651, 'daily');
             this.handleIntervalChange(true, 561651, 'daily');
+            console.log("-----------------------")
         });
     }
 
@@ -144,7 +163,7 @@ class LineChart2 extends Component {
                         frinterval2: "Monthly",
                         downloadCSVmessage: "Download Data as CSV",
                         intervalWord: "Interval",
-                        loading: "Loading"
+                        loading: "Loading",
                     });
                 }
                 if (nextProps.interval == 'monthly'){
@@ -156,7 +175,7 @@ class LineChart2 extends Component {
                         frinterval2: "Daily",
                         downloadCSVmessage: "Download Data as CSV",
                         intervalWord: "Interval",
-                        loading: "Loading"
+                        loading: "Loading",
                     });
                 }
                 else{
@@ -168,7 +187,7 @@ class LineChart2 extends Component {
                         frinterval2: "Monthly",
                         downloadCSVmessage: "Download Data as CSV",
                         intervalWord: "Interval",
-                        loading: "Loading"
+                        loading: "Loading",
                     });
                 }
             }
@@ -182,7 +201,7 @@ class LineChart2 extends Component {
                         frinterval2: "Mensuel",
                         downloadCSVmessage: "Télécharger les données au format CSV",
                         intervalWord: "Intervalle",
-                        loading: "Chargement"
+                        loading: "Chargement",
                     });
                 }
                 if (nextProps.interval == 'montly'){
@@ -194,7 +213,7 @@ class LineChart2 extends Component {
                         frinterval2: "Quotidien",
                         downloadCSVmessage: "Télécharger les données au format CSV",
                         intervalWord: "Intervalle",
-                        loading: "Chargement"
+                        loading: "Chargement",
                     });
                 }
                 else{
@@ -206,12 +225,12 @@ class LineChart2 extends Component {
                         frinterval2: "Mensuel",
                         downloadCSVmessage: "Télécharger les données au format CSV",
                         intervalWord: "Intervalle",
-                        loading: "Chargement"
+                        loading: "Chargement",
                     });
                 }
             }
         }
-        else{
+        if(this.props.groupURL != nextProps.groupURL){
             this.requestData(nextProps);
         }
     }
@@ -285,6 +304,19 @@ class LineChart2 extends Component {
         return fixedDates;
     }
 
+    getGroupName = (lang) => {
+        if(this.props.groupNameEN == ""){
+            return this.state.backupGroupNameEN
+        }
+        if(this.props.groupNameEN != "" && lang == "EN"){
+            return this.props.groupNameEN
+        }
+        if(this.props.groupNameFR != "" && lang == "FR"){
+            return this.props.groupNameFR
+        }
+        return this.state.backupGroupNameFR
+    }
+
     render() {
         // let sz = { height: 240, width: 500 };
         let spreadsheetData = this.reformatForSpreadsheet(this.state.data.columns);
@@ -298,15 +330,11 @@ class LineChart2 extends Component {
         try{
             if (this.props.language == "EN"){
                 this.state.data.columns[1].shift()
-                this.state.data.columns[1]
                 this.state.data.columns[1].unshift("Page Views")
-                this.state.data.columns[1]
             }
             if (this.props.language == "FR"){
                 this.state.data.columns[1].shift()
-                this.state.data.columns[1]
                 this.state.data.columns[1].unshift("Pages consultées")
-                this.state.data.columns[1]
             }
         }
         catch(err){
@@ -314,10 +342,11 @@ class LineChart2 extends Component {
         }
         return (
             <Segment className="ind-content-box" style={{marginTop: '10px', padding: '0 0', display: 'inline-block', width: '98%', borderRadius: '5px', backgroundColor: '#f9f9f9', border: '2px solid lightgray'}}>
+                <div className = 'title'> <h2> {this.getGroupName(this.props.language)} </h2> </div>
                 <table className="content-box-heading" style={{width: '100%'}}>
                     <tr>
                         <td>
-                            <span className='outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h2> {this.state.title} </h2>
+                            <span className='outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h3> {this.state.title} </h3>
                                 <IconButton tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
