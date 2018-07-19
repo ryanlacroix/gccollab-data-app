@@ -234,7 +234,7 @@ class LineChart2 extends Component {
                         downloadCSVmessage: "Télécharger les données au format CSV",
                         intervalWord: "Intervalle",
                         loading: "Chargement",
-                        avgTimeMessage: "Temps moyen sur la page"
+                        avgTimeMessage: "Temps moyen sur la page:"
                     });
                 }
                 else{
@@ -247,7 +247,7 @@ class LineChart2 extends Component {
                         downloadCSVmessage: "Télécharger les données au format CSV",
                         intervalWord: "Intervalle",
                         loading: "Chargement",
-                        avgTimeMessage: "Temps moyen sur la page"
+                        avgTimeMessage: "Temps moyen sur la page:"
                     });
                 }
             }
