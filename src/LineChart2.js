@@ -71,10 +71,37 @@ class LineChart2 extends Component {
             avgTimeMessage: "Average time on page:"
         }
     }
+    handleIncomingData = (data, data2) => {
+        // Deepcopy the data to store for interval changes
+        let interval = this.state.interval;
+        data[interval].uniquePageviews = data2[interval].uniquePageviews
+        let dataBackup = JSON.parse(JSON.stringify(data));
+        
+        // Apply final transformations for visualization
+        data[interval].pageviews = data[interval].pageviews.map(Number);
+        data[interval].pageviews.unshift('pageviews');
+        data[interval].dates.unshift('date');
+
+        data[interval].uniquePageviews = data2[interval].uniquePageviews.map(Number);
+        data[interval].uniquePageviews.unshift('unique pageviews');
+
+        // Update the state
+        this.setState({
+            data: {
+                x: 'x',
+                columns: [data[interval].dates, data[interval].pageviews, data[interval].uniquePageviews],
+                xFormat: '%Y%m%d',
+            },
+            dataBackup: dataBackup,
+            loaderClass: 'hidden',
+            contentClass: '',
+        });
+        this.handleIntervalChange(true, 561651, 'daily');
+        this.handleIntervalChange(true, 561651, 'daily');
+    }
 
     // Call this from componentDidMount as well as componentWillReceiveProps
     requestData = (nextProps=null) => {
-        
         this.setState({loaderClass: ''});
         // Account for both first and n use of the function
         if (nextProps) {
@@ -108,28 +135,25 @@ class LineChart2 extends Component {
             })
         }).then(response => {
             return response.json();
-        }).then(data => {
-            // Deepcopy the data to store for interval changes
-            let dataBackup = JSON.parse(JSON.stringify(data));
-
-            // Apply final transformations for visualization
-            data[this.state.interval].pageviews = data[this.state.interval].pageviews.map(Number)
-            data[this.state.interval].pageviews.unshift('pageviews');
-            data[this.state.interval].dates.unshift('date');
-
-            // Update the state
-            this.setState({
-                data: {
-                    x: 'x',
-                    columns: [data[this.state.interval].dates, data[this.state.interval].pageviews],
-                    xFormat: '%Y%m%d',
+        }).then(viewData => {
+            fetch('/api', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
                 },
-                dataBackup: dataBackup,
-                loaderClass: 'hidden',
-                contentClass: '',
+                body: JSON.stringify({
+                    type: 'pages',
+                    stat: 'uniquePageviews',
+                    url: groupURL,
+                    start_date: startDate,
+                    end_date: endDate
+                })
+            }).then(response => {
+                return response.json();
+            }).then(uniqueData => {
+                console.log(uniqueData)
+                this.handleIncomingData(viewData, uniqueData);
             });
-            this.handleIntervalChange(true, 561651, 'daily');
-            this.handleIntervalChange(true, 561651, 'daily');
         });
     }
 
@@ -271,17 +295,19 @@ class LineChart2 extends Component {
 
         // Apply final transformations for visualization
         data[value].pageviews = data[value].pageviews.map(Number)
+        data[value].uniquePageviews = data[value].uniquePageviews.map(Number)
         data[value].pageviews.unshift('pageviews');
+        data[value].uniquePageviews.unshift('unique pageviews');
         data[value].dates.unshift('date');
 
         this.setState({
             interval: value,
             data: {
                 x: 'date',
-                columns: [data[value].dates, data[value].pageviews],
+                columns: [data[value].dates, data[value].pageviews, data[value].uniquePageviews],
                 xFormat: '%Y%m%d',
             }
-        });
+        }); // add a then here to check for presence of uniques, append if present with second setState
     }
 
     // Reformat data to .csv and prompt user for download
@@ -343,15 +369,20 @@ class LineChart2 extends Component {
             if (this.props.language == "EN"){
                 this.state.data.columns[1].shift()
                 this.state.data.columns[1].unshift("Page Views")
+                this.state.data.columns[2].shift()
+                this.state.data.columns[2].unshift("Unique Views")
             }
             if (this.props.language == "FR"){
                 this.state.data.columns[1].shift()
                 this.state.data.columns[1].unshift("Pages consultées")
+                this.state.data.columns[2].shift()
+                this.state.data.columns[2].unshift("Consultées uniques")
             }
         }
         catch(err){
             console.log("Nope")
         }
+        console.log(this.state.data)
         return (
             <Segment className="ind-content-box" style={{marginTop: '10px', padding: '0 0', display: 'inline-block', width: '98%', borderRadius: '5px', backgroundColor: '#f9f9f9', border: '2px solid lightgray'}}>
                 <table className="content-box-heading" style={{width: '100%'}}>
@@ -383,7 +414,8 @@ class LineChart2 extends Component {
                         unloadBeforeLoad={true}
                         point={{show: false}}
                         zoom={{enabled: true}}
-                        color={{pattern: ['#467B8D']}}
+                        color={{pattern: ['#467B8D','#55C0A3']}}
+                        tooltip={{grouped: true}}
                     />
                 </div>
                 <DataTable
