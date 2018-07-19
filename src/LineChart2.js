@@ -66,7 +66,9 @@ class LineChart2 extends Component {
             downloadCSVmessage: "Download Data as CSV",
             intervalWord: "Interval",
             loading: "Loading",
-            language: "EN"
+            language: "EN",
+            pageTime: 0,
+            avgTimeMessage: "Average time on page:"
         }
     }
 
@@ -131,6 +133,39 @@ class LineChart2 extends Component {
         });
     }
 
+    requestAvgTimeOnPage = (nextProps=null) => {
+        if (nextProps) {
+            if (nextProps.groupURL == '') return;
+            var startDate = nextProps.startDate.format("YYYY-MM-DD");
+            var endDate = nextProps.endDate.format("YYYY-MM-DD");
+            var groupURL = nextProps.groupURL;
+        } else {
+            var startDate = this.props.startDate.format("YYYY-MM-DD");
+            var endDate = this.props.endDate.format("YYYY-MM-DD");
+            var groupURL = this.props.groupURL;
+        }
+        
+        fetch('/api', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                type: 'pages',
+                stat: 'avgTimeOnPage',
+                url: groupURL,
+                start_date: startDate,
+                end_date: endDate
+            })
+        }).then(response => {
+            return response.json();
+        }).then(data => {
+            this.setState({
+                pageTime: parseFloat(data['avgTime']).toFixed(2)
+            });
+        });
+    }
+
     // Repopulate graphs both on creation and on time changes
     componentWillReceiveProps(nextProps) {
         if(nextProps.language !== this.props.language){
@@ -144,7 +179,8 @@ class LineChart2 extends Component {
                         frinterval2: "Monthly",
                         downloadCSVmessage: "Download Data as CSV",
                         intervalWord: "Interval",
-                        loading: "Loading"
+                        loading: "Loading",
+                        avgTimeMessage: "Average time on page:"
                     });
                 }
                 if (nextProps.interval == 'monthly'){
@@ -156,7 +192,8 @@ class LineChart2 extends Component {
                         frinterval2: "Daily",
                         downloadCSVmessage: "Download Data as CSV",
                         intervalWord: "Interval",
-                        loading: "Loading"
+                        loading: "Loading",
+                        avgTimeMessage: "Average time on page:"
                     });
                 }
                 else{
@@ -168,7 +205,8 @@ class LineChart2 extends Component {
                         frinterval2: "Monthly",
                         downloadCSVmessage: "Download Data as CSV",
                         intervalWord: "Interval",
-                        loading: "Loading"
+                        loading: "Loading",
+                        avgTimeMessage: "Average time on page:"
                     });
                 }
             }
@@ -182,7 +220,8 @@ class LineChart2 extends Component {
                         frinterval2: "Mensuel",
                         downloadCSVmessage: "Télécharger les données au format CSV",
                         intervalWord: "Intervalle",
-                        loading: "Chargement"
+                        loading: "Chargement",
+                        avgTimeMessage: "Temps moyen sur la page"
                     });
                 }
                 if (nextProps.interval == 'montly'){
@@ -194,7 +233,8 @@ class LineChart2 extends Component {
                         frinterval2: "Quotidien",
                         downloadCSVmessage: "Télécharger les données au format CSV",
                         intervalWord: "Intervalle",
-                        loading: "Chargement"
+                        loading: "Chargement",
+                        avgTimeMessage: "Temps moyen sur la page"
                     });
                 }
                 else{
@@ -206,15 +246,19 @@ class LineChart2 extends Component {
                         frinterval2: "Mensuel",
                         downloadCSVmessage: "Télécharger les données au format CSV",
                         intervalWord: "Intervalle",
-                        loading: "Chargement"
+                        loading: "Chargement",
+                        avgTimeMessage: "Temps moyen sur la page"
                     });
                 }
             }
         }
         else{
+            // Language hasn't changed? This change in props is for a new request.
             this.requestData(nextProps);
+            this.requestAvgTimeOnPage(nextProps);
         }
     }
+
     componentDidMount() {
         // Turn on the loading indicator
         this.setState({loaderClass: '',contentClass: 'hidden'});
@@ -298,15 +342,11 @@ class LineChart2 extends Component {
         try{
             if (this.props.language == "EN"){
                 this.state.data.columns[1].shift()
-                this.state.data.columns[1]
                 this.state.data.columns[1].unshift("Page Views")
-                this.state.data.columns[1]
             }
             if (this.props.language == "FR"){
                 this.state.data.columns[1].shift()
-                this.state.data.columns[1]
                 this.state.data.columns[1].unshift("Pages consultées")
-                this.state.data.columns[1]
             }
         }
         catch(err){
@@ -352,6 +392,7 @@ class LineChart2 extends Component {
                     className={this.state.contentClass + ' ' + scrollTable}
                     headers={[this.state.header1,this.state.header2]}
                 />
+                <h4 className={this.state.contentClass}>{this.state.avgTimeMessage} {this.state.pageTime} seconds </h4>
             </Segment>
         );
     }
