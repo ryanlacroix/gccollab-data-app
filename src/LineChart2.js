@@ -63,6 +63,7 @@ class LineChart2 extends Component {
             title: 'Page Views',
             header1: 'Date',
             header2: 'Views',
+            header3: 'Unique views',
             downloadCSVmessage: "Download Data as CSV",
             intervalWord: "Interval",
             loading: "Loading",
@@ -199,6 +200,7 @@ class LineChart2 extends Component {
                         title: "Page Views",
                         header1: "Date",
                         header2: "Views",
+                        header3: "Unique views",
                         frinterval: "Daily",
                         frinterval2: "Monthly",
                         downloadCSVmessage: "Download Data as CSV",
@@ -212,6 +214,7 @@ class LineChart2 extends Component {
                         title: "Page Views",
                         header1: "Date",
                         header2: "Views",
+                        header3: "Unique views",
                         frinterval: "Monthly",
                         frinterval2: "Daily",
                         downloadCSVmessage: "Download Data as CSV",
@@ -225,6 +228,7 @@ class LineChart2 extends Component {
                         title: "Page Views",
                         header1: "Date",
                         header2: "Views",
+                        header3: "Unique views",
                         frinterval: "Daily",
                         frinterval2: "Monthly",
                         downloadCSVmessage: "Download Data as CSV",
@@ -238,8 +242,9 @@ class LineChart2 extends Component {
                 if (nextProps.interval == 'daily'){
                     this.setState({
                         title: "Pages consultées",
-                        header2: "Date",
+                        header1: "Date",
                         header2: "Pages consultées",
+                        header3: "Consultées uniques",
                         frinterval: "Quotidien",
                         frinterval2: "Mensuel",
                         downloadCSVmessage: "Télécharger les données au format CSV",
@@ -251,8 +256,9 @@ class LineChart2 extends Component {
                 if (nextProps.interval == 'montly'){
                     this.setState({
                         title: "Pages consultées",
-                        header2: "Date",
+                        header1: "Date",
                         header2: "Pages consultées",
+                        header3: "Consultées uniques",
                         frinterval: "Mensuel",
                         frinterval2: "Quotidien",
                         downloadCSVmessage: "Télécharger les données au format CSV",
@@ -266,6 +272,7 @@ class LineChart2 extends Component {
                         title: "Pages consultées",
                         header2: "Date",
                         header2: "Pages consultées",
+                        header3: "Consultées uniques",
                         frinterval: "Quotidien",
                         frinterval2: "Mensuel",
                         downloadCSVmessage: "Télécharger les données au format CSV",
@@ -315,7 +322,7 @@ class LineChart2 extends Component {
         // Shape the data into an acceptable format for parsing
         let overall = [];
         for (var i=0;i<this.state.data.columns[0].length;i++) {
-            overall.push([this.state.data.columns[0][i], this.state.data.columns[1][i]]);
+            overall.push([this.state.data.columns[0][i], this.state.data.columns[1][i], this.state.data.columns[1][i]]);
         }
         // Construct the CSV string and start download
         let csv_data = Papa.unparse(overall);
@@ -331,7 +338,7 @@ class LineChart2 extends Component {
             let output = [];
             // Reformat dates, skipping column name
             for (var i=0;i<data[0].length;i++) {
-                output.push([data[0][i], data[1][i]]);
+                output.push([data[0][i], data[1][i], data[2][i]]);
             }
             output.shift();
             return output;
@@ -422,7 +429,7 @@ class LineChart2 extends Component {
                     data={spreadsheetData}
                     id="tablePageviews"
                     className={this.state.contentClass + ' ' + scrollTable}
-                    headers={[this.state.header1,this.state.header2]}
+                    headers={[this.state.header1, this.state.header2, this.state.header3]}
                 />
                 <h4 className={this.state.contentClass}>{this.state.avgTimeMessage} {this.state.pageTime} seconds </h4>
             </Segment>
