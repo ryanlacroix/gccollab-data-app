@@ -64,7 +64,7 @@
     #table4{
         margin-right: 20% !important;
         margin-left: 16% !important;
-        margin-top: 45px !important;
+        background-color: pink !important;
     }
     #showAll{
         position: absolute;
@@ -91,7 +91,6 @@
         margin-left: 8% !important; 
     }
     #table4{
-        margin-top: 45px !important;
     }
     #showAll{
         position: absolute;
@@ -126,7 +125,6 @@
         display: inline-block !important; 
         width: 100% !important; 
         height: 200px !important;
-        margin-top: 45px !important;
         /* padding: 5px !important; */
     }
     #showAll{
@@ -151,7 +149,6 @@
         display: inline-block !important; 
         width: 100% !important; 
         height: 200px !important;
-        margin-top: 45px !important;
         /* padding: 5px !important; */
     }
     #showAll{
@@ -175,7 +172,6 @@
         display: inline-block !important; 
         width: 100% !important; 
         height: 200px !important;
-        margin-top: 45px !important;
         /* padding: 5px !important; */
     }
     #showAll{
