@@ -22,6 +22,14 @@ html {
   height: 100%;
 }
 
+#lang-toggle{
+  margin-left: 80%;
+  margin-top: 10px;
+}
+a:hover{
+  color: blue;
+  cursor: pointer;
+}
 .App {
   text-align: center;
   /*text-align: center;*/
@@ -60,9 +68,14 @@ html {
   background-color: #047177;
 }
 
-.cell-title h2 {
-  font-family: 'Rubik', sans-serif;
+.cell-title h3 {
+  font-family: 'Rubik';
+  font-size: 1.5em;
   display: inline-block!important;
+}
+
+h4 {
+  font-family: 'Rubik', sans-serif;
 }
 
 @media only screen and (max-width: 1175px) and (min-width: 680px){
@@ -76,9 +89,6 @@ html {
   /* .App-intro{
     width: 700px !important;
   } */
-  .container{
-    /* width: 700px !important; */
-  }
 }
 
 @media only screen and (max-width: 689px) and (min-width: 560px){
@@ -100,11 +110,23 @@ html {
     /* margin-left: 28px !important; */
     margin-top: 80px !important;
   }
+  .cell-title h3 {
+    font-family: 'Rubik';
+    font-size: 1.5em;
+    display: inline-block!important;
+    margin-bottom: 0px !important;
+  }
 }  
 
 @media only screen and (max-width: 375px){
   #container2{
     /* margin-left: 28px !important; */
     margin-top: 78px !important;
+  }
+  .cell-title h3 {
+    font-family: 'Rubik';
+    font-size: 1.5em;
+    display: inline-block!important;
+    margin-bottom: 0px !important;
   }
 }

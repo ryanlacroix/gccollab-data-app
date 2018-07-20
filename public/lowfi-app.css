@@ -1,74 +1,721 @@
-body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f9f9f9;
-    line-height: 1;
-}
-
-svg {
-    position: absolute !important;
-    /* may not be necessary, check later*/
-}
-
-html {
-    background-color: #f9f9f9;
-    background-size: cover;
-
-}
-
-.app {
-    background-color: rgb(249, 249, 249);
-    height: 100%;
+.App{
+    background-color: rgb(249, 249, 249); 
+    height: 100%; 
     max-width: 100%;
 }
-
-.main-view {
-    max-width: 1200px;
-    margin: 0px auto;
-    margin-top: 30px;
+a:hover{
+    color: blue;
 }
-
-.intro-container {
-    background-color: rgb(243, 243, 243);
+#title{
+    font-size: 100%;
+    font-family: Roboto, sans-serif;
+    margin-right: 5px;
+    margin-left: 5px;
+    text-align: center;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+#lang-toggle{
+    margin-left: 90%;
+}
+.div1{
+    height: 15px; 
+    width: 1px;
+}
+.div2{
+    max-width: 1200px; 
+    margin: 0px auto;
+}
+.ui-container{
+    background-color: rgb(243, 243, 243); 
     border-radius: 5px;
 }
-
-.app-intro {
-   box-shadow: rgba(0, 0, 0, 0.31) 0px -1px 80px -4px;
-   display: block;
+.App-intro{
+    box-shadow: rgba(0, 0, 0, 0.31) 0px -1px 80px -4px;
 }
-
-.title-bar {
+.h11{
     font-family: Helvetica, Arial, sans-serif; 
     text-shadow: rgb(85, 85, 85) 2px 2px; 
     background-color: rgb(70, 36, 106); 
     color: white; 
     border-top-left-radius: 5px; 
     border-top-right-radius: 5px;
-    padding-left: 10px;
 }
-
-.control-group {
-    height: 50px;
-    width: 95%;
+.div3{
+    height: 50px; 
+    width: 95%; 
     margin: 10px auto 5px;
 }
-
-.date-pickers {
-    float: left;
-    display: inline;
-    width: 410px;
-    padding-top: 5px;
+.div4{
+    float: left; 
+    display: inline; 
+    width: 410px; 
+    padding-top: 5px; 
     vertical-align: middle;
 }
-
-.search-bar {
+.span1{
+    vertical-align: middle;
+}
+.react-datepicker-component-my-react-component{
+    width: 200px; 
+    float: left;
+}
+.react-flex-view-align-content-center-button-wrapper{
+    flex: 0 1 auto;
+}
+.react-flex-view-input-button{
+    flex: 0 0 auto;
+}
+.react-datepicker-component-my-react-component-11{
+    width: 200px; 
+    float: right;
+}
+.react-flex-view-align-content-center-button-wrapper{
+    flex: 0 1 auto;
+}
+.react-flex-view-input-button{
+    flex: 0 0 auto;
+}
+.white-box{
+    margin: 0px auto; 
+    background-color: rgb(255, 255, 255); 
+    border: 2px solid lightgray; 
+    border-radius: 5px; 
+    width: 95%;
+}
+.ui-segment-ind-content-box{
+    margin-top: 10px; 
+    margin-left: 10px; 
+    margin-right: 10px; 
+    display: inline-block; 
+    width: 98%; 
+    border-radius: 5px; 
+    background-color: rgb(249, 249, 249); 
+    border: 2px solid lightgray;
+    position: relative;
+}
+.ui-segment-ind-content-box-final{
+    margin-top: 10px; 
+    margin-left: 10px; 
+    margin-right: 10px; 
+    display: inline-block; 
+    width: 98%; 
+    border-radius: 5px; 
+    background-color: rgb(249, 249, 249); 
+    border: 2px solid lightgray;
+    margin-bottom: 10px;
+    position: relative;
+}
+#rangestart, #rangeend{
+    display: inline-block;
+}
+.title{
+    display: inline-block; 
+    margin-left: 20px;
+}
+.csv-button{
+    border: 10px; 
+    box-sizing: border-box; 
+    display: inline-block; 
+    font-family: Roboto, sans-serif; 
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0); 
+    cursor: pointer; 
+    text-decoration: none; 
+    margin: 0px; 
+    padding: 0px; 
+    outline: none; 
+    font-size: 0px; 
+    font-weight: inherit; 
+    position: relative; 
+    overflow: visible; 
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; 
+    width: 40px; 
+    height: 40px; 
+    background: none;
+}
+select.ui.dropdown{
     float: right; 
-    width: 500px; 
-    margin-top: 20px;
+    margin-top: 10px; 
+    margin-right: 20px;
+}
+.chart{
+    display: inline-block; 
+    width: 475px; 
+    height: 200px; 
+    padding: 5px
+}
+.chart2{
+    display: inline-block; 
+    width: 475px; 
+    height: 200px; 
+    padding: 5px
+}
+.spacing{
+    display: inline-block; 
+    width: 10%; 
+    height: 200px;
+}
+.table{
+    display: inline-block; 
+    width: 475px; 
+    height: 200px;
+    margin-bottom: 68px;
+}
+div.ui.action.input{
+    float: right; 
+    width: 500px;
+}
+.pageviews{
+    width: 100%;    
+}
+.div1button{
+    position: absolute;
+    font-family: Roboto, sans-serif; 
+    font-size: 10px; 
+    line-height: 22px; 
+    padding: 0px 8px; 
+    z-index: 3000; 
+    color: rgb(255, 255, 255); 
+    overflow: hidden; 
+    top: -10000px; 
+    border-radius: 2px; 
+    user-select: none; 
+    opacity: 0; 
+    left: -34.5px; 
+    transition: top 0ms cubic-bezier(0.23, 1, 0.32, 1) 450ms, transform 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, opacity 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; 
+    box-sizing: border-box;
+}
+.div2button{
+    position: absolute; 
+    left: 50%; 
+    top: 0px; 
+    transform: translate(-50%, -50%); 
+    border-radius: 50%; 
+    background-color: transparent; 
+    transition: width 0ms cubic-bezier(0.23, 1, 0.32, 1) 450ms, height 0ms cubic-bezier(0.23, 1, 0.32, 1) 450ms, backgroundColor 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; 
+    width: 0px; 
+    height: 0px;
+}
+.stylebutton{
+    position: relative; 
+    white-space: nowrap;
+}
+.svgButton{
+    display: inline-block; 
+    color: rgba(0, 0, 0, 0.87); 
+    fill: currentcolor; 
+    height: 24px; 
+    width: 24px; 
+    user-select: none; 
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
 }
 
-.welcome-message {
-    font-size: 19px;
-    text-align: center;
-    padding-top: 20px;
+#getStats {
+    display: inline-block;
+    margin-bottom: 15px;
+}
+.field{
+    display: inline-block;
+    margin: auto;
+    margin-left: 33px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.field1{
+    display: inline-block;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-right: 190px;
+}
+.url-message{
+    top: 50%;
+    transform: translateY(-50%);
+    margin: auto;
+    margin-left: 250px;
+    font-family: Helvetica, Arial, sans-serif; 
+}
+#loading {
+    /* margin-left: 48%;
+    margin-top: 100px; */
+    position: absolute;
+    left: 50%;
+    top: 35%;
+ }
+ #loading1 {
+    /* margin-left: 48%;
+    margin-top: 100px; */
+    position: absolute;
+    left: 50%;
+    top: 35%;
+ }
+ #loading2 {
+    /* margin-left: 48%;
+    margin-top: 100px; */
+    position: absolute;
+    left: 50%;
+    top: 35%;
+ }
+ #loading3 {
+    /* margin-left: 48%;
+    margin-top: 100px; */
+    position: absolute;
+    left: 50%;
+    top: 35%;
+ }
+
+ @media only screen and (max-width: 1175px) and (min-width: 680px){
+    /* .App{
+        background-color: lightblue;
+    } */
+    .getStats{
+        display: inline;
+        position: absolute;
+        left: 30px;
+        margin-left: 33%;
+    }
+    .url-message{
+        margin-left: 33px;
+        margin-top: 20px;
+    }
+    div.ui.action.input{
+        margin-left: 33px;
+    }
+    .ui-segment-ind-content-box{
+        margin-right: 1.25%;
+        margin-left: 1.25%; 
+        display: inline-block; 
+        width: 97%; 
+        border-radius: 5px; 
+        background-color: rgb(249, 249, 249); 
+        border: 2px solid lightgray;
+        position: relative;
+        text-align: center;
+    }
+    .ui-segment-ind-content-box-final{
+        margin-top: 10px; 
+        margin-left: 1.25%; 
+        margin-right: 1.25%; 
+        display: inline-block; 
+        width: 97%; 
+        border-radius: 5px; 
+        background-color: rgb(249, 249, 249); 
+        border: 2px solid lightgray;
+        margin-bottom: 10px;
+        position: relative;
+        text-align: center;
+    }
+    .field{
+        display: inline-block;
+        margin: auto;
+        margin-left: 33px;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-top: 1%;
+    }
+    .field1{
+        display: inline-block;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-right: 190px;
+        margin-top: 1%;
+    }
+    .chart{
+        display: block; 
+        width: 475px; 
+        height: 200px; 
+        padding: 5px;
+        margin-right: 5px;
+        margin-top: 5%;
+        margin: 0 auto;
+    }
+    .chart2{
+        margin-top: 0px;
+        display: block; 
+        width: 475px; 
+        height: 200px; 
+        padding: 5px;
+        margin-right: 5px;
+        margin-top: 5%;
+        margin: 0 auto;
+        margin-bottom: 50px;
+    }
+    .table{
+        margin-left: 5px;
+        margin-left: 5px;
+        display: inline-block; 
+        width: 475px; 
+        height: 200px;
+        padding: 5px;
+    }
+    .table2{
+        margin-left: 5px;
+        margin-left: 5px;
+        display: inline-block; 
+        width: 475px; 
+        height: 200px;
+        padding: 5px;
+    }
+    .title{
+        display: inline-block; 
+        margin-left: 20px;
+        float: left;
+    }
+    .csv-button{
+        float: left;
+        margin-right: 100px;
+        z-index: 9999;
+    }
+}
+
+@media only screen and (max-width: 689px) and (min-width: 560px){
+    /* .App{
+        background-color: lightgreen;
+    } */
+    .field{
+        display: inline-block;
+        margin: auto;
+        margin-left: 33px;
+        top: 10%;
+        transform: translateY(-50%);
+        margin-top: 1%;
+    }
+    .field1{
+        display: inline-block;
+        margin: auto;
+        margin-left: 3px;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-top: 1%;
+    }
+    .getStats{
+        display: inline;
+        position: absolute;
+        left: 30px;
+        margin-left: 33%;
+    }
+    .url-message{
+        margin-left: 33px;
+        margin-top: 20px;
+    }
+    div.ui.action.input{
+        margin-left: 33px;
+    }
+    .spacing{
+        display: inline-block; 
+        width: 0%; 
+        height: 0px;
+    }
+    .chart{
+        display: inline-block; 
+        width: 95%; 
+        height: 200px; 
+        padding: 5px;
+        margin-right: 5px;
+    }
+    .chart2{
+        display: inline-block; 
+        width: 95%; 
+        height: 200px; 
+        padding: 5px;
+        margin-right: 5px;
+    }
+    .table{
+        margin-left: 5px;
+        margin-left: 5px;
+        display: inline-block; 
+        width: 95%; 
+        height: 200px;
+        padding: 5px;
+    }
+    .ui-segment-ind-content-box{
+        margin-right: 1%;
+        margin-left: 1%; 
+        display: inline-block; 
+        width: 97%; 
+        border-radius: 5px; 
+        background-color: rgb(249, 249, 249); 
+        border: 2px solid lightgray;
+        position: relative;
+    }
+    .ui-segment-ind-content-box-final{
+        margin-top: 10px; 
+        margin-left: 1%; 
+        margin-right: 1%; 
+        display: inline-block; 
+        width: 97%; 
+        border-radius: 5px; 
+        background-color: rgb(249, 249, 249); 
+        border: 2px solid lightgray;
+        margin-bottom: 10px;
+        position: relative;
+    }
+}
+
+@media only screen and (max-width: 559px) and (min-width: 475px){
+    /* .App{
+        background-color: red;
+    } */
+    .field{
+        display: inline-block;
+        margin: auto;
+        margin-left: 28px;
+        top: 10%;
+        transform: translateY(-50%);
+        margin-top: 1%;
+    }
+    .field1{
+        display: inline-block;
+        margin: auto;
+        margin-left: 3px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .url-message{
+        margin-left: 28px;
+        margin-top: 20px;
+    }
+    .getStats{
+        display: inline-block;
+    }
+    div.ui.action.input{
+        margin-left: 33px;
+        float: right; 
+        width: 425px;
+    }
+    .spacing{
+        display: inline-block; 
+        width: 0%; 
+        height: 0px;
+    }
+    .chart{
+        display: inline-block; 
+        width: 95%; 
+        height: 200px; 
+        padding: 5px;
+        margin-right: 5px;
+    }
+    .chart2{
+        display: inline-block; 
+        width: 95%; 
+        height: 200px; 
+        padding: 5px;
+        margin-right: 5px;
+    }
+    .table{
+        margin-left: 5px;
+        margin-left: 5px;
+        display: inline-block; 
+        width: 95%; 
+        height: 200px;
+        padding: 5px;
+    }
+    .ui-segment-ind-content-box{
+        margin-right: 1%;
+        margin-left: 1%; 
+        display: inline-block; 
+        width: 97%; 
+        border-radius: 5px; 
+        background-color: rgb(249, 249, 249); 
+        border: 2px solid lightgray;
+        position: relative;
+    }
+    .ui-segment-ind-content-box-final{
+        margin-top: 10px; 
+        margin-left: 1%; 
+        margin-right: 1%; 
+        display: inline-block; 
+        width: 97%; 
+        border-radius: 5px; 
+        background-color: rgb(249, 249, 249); 
+        border: 2px solid lightgray;
+        margin-bottom: 10px;
+        position: relative;
+    }
+    .white-box{
+        margin: 5px; 
+        background-color: rgb(255, 255, 255); 
+        border: 2px solid lightgray; 
+        border-radius: 5px; 
+        width: 95%;
+    }
+}
+
+@media only screen and (max-width: 475px) and (min-width: 375px){
+    /* .App{
+        background-color: darkblue;
+    } */
+    .field{
+        display: inline-block;
+        margin: auto;
+        margin-left: 28px;
+        top: 10%;
+        transform: translateY(-50%);
+        margin-top: 1%;
+    }
+    .field1{
+        display: inline-block;
+        margin: auto;
+        margin-left: 31px;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-right: 25px;
+    }
+    .getStats{
+        display: inline-block;
+    }
+    div.ui.action.input{
+        margin-left: 35px;
+        float: right; 
+        width: 195px;
+    }
+    .url-message{
+        margin-left: 28px;
+        margin-top: 30px;
+    }
+    .spacing{
+        display: inline-block; 
+        width: 0%; 
+        height: 0px;
+    }
+    .chart{
+        display: inline-block; 
+        width: 95%; 
+        height: 200px; 
+        padding: 5px;
+        margin-right: 5px;
+    }
+    .chart2{
+        display: inline-block; 
+        width: 95%; 
+        height: 200px; 
+        padding: 5px;
+        margin-right: 5px;
+    }
+    .table{
+        margin-left: 5px;
+        margin-left: 5px;
+        display: inline-block; 
+        width: 95%; 
+        height: 200px;
+        padding: 5px;
+    }
+    .ui-segment-ind-content-box{
+        margin-right: 1%;
+        margin-left: 1%; 
+        display: inline-block; 
+        width: 97%; 
+        border-radius: 5px; 
+        background-color: rgb(249, 249, 249); 
+        border: 2px solid lightgray;
+        position: relative;
+    }
+    .ui-segment-ind-content-box-final{
+        margin-top: 10px; 
+        margin-left: 1%; 
+        margin-right: 1%; 
+        display: inline-block; 
+        width: 97%; 
+        border-radius: 5px; 
+        background-color: rgb(249, 249, 249); 
+        border: 2px solid lightgray;
+        margin-bottom: 10px;
+        position: relative;
+    }
+    .white-box{
+        margin: 5px; 
+        background-color: rgb(255, 255, 255); 
+        border: 2px solid lightgray; 
+        border-radius: 5px; 
+        width: 95%;
+    }
+}
+
+@media only screen and (max-width: 375px){
+    /* .App{
+        background-color: yellow;
+    } */
+    .field{
+        display: inline-block;
+        margin: auto;
+        margin-left: 28px;
+        top: 10%;
+        transform: translateY(-50%);
+        margin-top: 1%;
+    }
+    .field1{
+        display: inline-block;
+        margin: auto;
+        margin-left: 31px;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-right: 25px;
+    }
+    .getStats{
+        display: inline-block;
+    }
+    div.ui.action.input{
+        margin-left: 5px;
+        float: right; 
+        width: 175px;
+    }
+    .url-message{
+        margin-left: 28px;
+        margin-top: 30px;
+    }
+    .spacing{
+        display: inline-block; 
+        width: 0%; 
+        height: 0px;
+    }
+    .chart{
+        display: inline-block; 
+        width: 200px; 
+        height: 95%; 
+        padding: 5px;
+        margin-right: 5px;
+    }
+    .chart2{
+        display: inline-block; 
+        width: 200px; 
+        height: 95%; 
+        padding: 5px;
+        margin-right: 5px;
+    }
+    .table{
+        margin-left: 5px;
+        margin-left: 5px;
+        display: inline-block; 
+        width: 95%; 
+        height: 200px;
+        padding: 5px;
+    }
+    .ui-segment-ind-content-box{
+        margin-right: 1.25%;
+        margin-left: 1%; 
+        display: inline-block; 
+        width: 97%; 
+        border-radius: 5px; 
+        background-color: rgb(249, 249, 249); 
+        border: 2px solid lightgray;
+        position: relative;
+    }
+    .ui-segment-ind-content-box-final{
+        margin-top: 10px; 
+        margin-left: 1%; 
+        margin-right: 1%; 
+        display: inline-block; 
+        width: 97%; 
+        border-radius: 5px; 
+        background-color: rgb(249, 249, 249); 
+        border: 2px solid lightgray;
+        margin-bottom: 10px;
+        position: relative;
+    }
+    .white-box{
+        margin: 5px; 
+        background-color: rgb(255, 255, 255); 
+        border: 2px solid lightgray; 
+        border-radius: 5px; 
+        width: 95%;
+    }
 }

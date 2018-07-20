@@ -8,9 +8,13 @@
 }
 
 .outercsv0{
-    position: absolute;
+    position: relative;
     left: 0px;
     top: 20px;
+    bottom: 0px !important;
+}
+.cellName{
+    margin-bottom: 0px !important;
 }
 
 .content-box-heading{
@@ -18,8 +22,8 @@
     margin-bottom: 0px;
 }
 .title{
-    font-family: Roboto, sans-serif;
-    font-size: 1.7em;
+    font-family: 'Rubik';
+    font-size: 1.75em;
     margin-top: 15px;
     width: 90%;
     margin-left: 5%;

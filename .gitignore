@@ -9,3 +9,5 @@ kubernetes_commands.txt
 creds.pkl
 creds_collab.pkl
 __pycache__
+build/static/js/*.map
+build/static/css/*.map
