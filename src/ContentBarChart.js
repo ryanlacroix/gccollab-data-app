@@ -146,17 +146,15 @@ class ContentBarChart extends Component {
                 contentClass: ''
             });
             setTimeout(() => {
-                console.log("timing outtttt");
                 this.setState({
                     showAll: this.state.showAll
                 })
                 setTimeout(() => {
-                    console.log("wneoenwf");
                     this.setState({
                         showAll: this.state.showAll
                     })
-                }, 250)
-              }, 250);
+                }, 300)
+              }, 300);
         });
     }
 
