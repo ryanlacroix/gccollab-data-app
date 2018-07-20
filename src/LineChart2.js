@@ -90,7 +90,8 @@ class LineChart2 extends Component {
         }
         // Deepcopy the data to store for interval changes
         let interval = this.state.interval;
-        data[interval].uniquePageviews = data2[interval].uniquePageviews
+        data['daily'].uniquePageviews = data2['daily'].uniquePageviews
+        data['monthly'].uniquePageviews = data2['monthly'].uniquePageviews
         let dataBackup = JSON.parse(JSON.stringify(data));
         
         // Apply final transformations for visualization
@@ -339,7 +340,7 @@ class LineChart2 extends Component {
         // Shape the data into an acceptable format for parsing
         let overall = [];
         for (var i=0;i<this.state.data.columns[0].length;i++) {
-            overall.push([this.state.data.columns[0][i], this.state.data.columns[1][i], this.state.data.columns[1][i]]);
+            overall.push([this.state.data.columns[0][i], this.state.data.columns[1][i], this.state.data.columns[2][i]]);
         }
         // Construct the CSV string and start download
         let csv_data = Papa.unparse(overall);
