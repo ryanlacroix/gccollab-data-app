@@ -1,69 +1,236 @@
 <!DOCTYPE html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
-    <link type="text/css" rel="stylesheet" href="lowfi-app.css" />
-    <!-- following dependencies need to be made proper haha -->
-    <!--<script src="calendar.min.js"></script>-->
-    <!--<link type="text/css" src="calendar.min.css"></script>-->
-    <link href="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.js"></script>
-</head>
-<body>
-    <div class="app">
-        <div class="main-view">
-            <div class="ui container intro-container"><!-- Container for intro / control bar -->
-                <div class="app-intro"> 
-                    <div class="title-bar">
-                        <h1><strong>GC</strong>collab Group Stats Page</h1>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css"> 
+        <link rel="stylesheet" type="text/css" href="lowfi-app.css">
+        <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.2.1/jszip-2.5.0/dt-1.10.16/b-1.5.1/b-colvis-1.5.1/b-flash-1.5.1/b-html5-1.5.1/b-print-1.5.1/cr-1.4.1/fc-3.2.4/fh-3.1.3/kt-2.3.2/r-2.2.1/rr-1.2.3/sc-1.4.4/sl-1.2.5/datatables.min.css"/>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.2.1/jszip-2.5.0/dt-1.10.16/b-1.5.1/b-colvis-1.5.1/b-flash-1.5.1/b-html5-1.5.1/b-print-1.5.1/cr-1.4.1/fc-3.2.4/fh-3.1.3/kt-2.3.2/r-2.2.1/rr-1.2.3/sc-1.4.4/sl-1.2.5/datatables.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.4.0/papaparse.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.7/download.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/components/button.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/components/input.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/components/dropdown.min.css"/>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/components/dropdown.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"/>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script type"text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/components/loader.min.css"></script>
+        <!–– Script so datepickers (JQuery) work ––>
+        <script>
+            $( function() {
+                $( "#datepicker1" ).datepicker();
+                var d = new Date();
+                d.setDate(d.getDate() - 90);
+                $( "#datepicker1" ).datepicker("setDate", d);
+            } );
+            $( function() {
+                $( "#datepicker2" ).datepicker();
+                $( "#datepicker2" ).datepicker("setDate", new Date());
+            } );
+        </script>
+    </head>
+    <body>
+        <div id=unsupported-browser>
+            <div class="container-clearfix">
+                <!-- <img src="C:/Users/trinet.tbs-004409/Desktop/DataApp/DataAppJune6v2/DataAppC3Graphs4graph test-88af208f96310a0ec090fe13664d582b2f2733a3/server/public/iebad.jpeg"> -->
+                <button class="ui right floated button" id="ignore" onclick="ignore()">Ignore</button>
+                <h5 id="browser-warning">
+                    Please note that Internet Explorer 11 and below is outdated. You've therefore been redirected to a simplified version of the GCcollab stats page. We recommed upgrading to the latest <a href="https://www.microsoft.com/en-us/windows/microsoft-edge">Microsoft Edge</a>, <a href="https://chrome.google.com">Google Chrome</a>, or <a href="https://mozilla.org/firefox">Firefox</a>.
+                </h5>
+            </div>
+        </div>
+        <script src=browserDetect.js></script>
+        <div id="root">
+            <div class="App" id="App">
+                <div class="div1" id="div1"></div>
+                <div class="div2">
+                    <div id="lang-toggle">
+                        <a id="eng-toggle" class="lang" href="#">en</a> | <a href="#" id="fr-toggle" class="lang">fr</a>
                     </div>
-                    <div class="control-group">
-                        <div class="date-pickers">
-                            <span style="vertical-align: middle;">
-                                <!-- insert datepickers here. Semantic ui maybe? -->
-                                <div class="ui form">
-                                    <div class="two fields">
-                                        <div class="field">
-                                            <label>Start Date</label>
-                                            <div class="ui calendar" id="rangestart">
-                                                <div class="ui input left icon">
-                                                    <i class="calendar icon"></i>
-                                                    <input type="text" placeholder="Start">
+                    <div class="ui-container">
+                        <header>
+                            <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+                        </header>
+                        <div class="App-intro">
+                            <!–– purple title bar ––>
+                            <div class="title-bar">
+                                <h1 class="h11" id='h11'><strong>GC</strong>collab Group Stats Page</h1>
+                            </div>
+                            <!–– calendar and enter URL ––>
+                            <div class="two-fields">
+                                <div class="field">
+                                    <div class="ui calendar" id="rangestart" >
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon"></i>
+                                            <input type="text" placeholder="Start Date" id ="datepicker1" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field1">
+                                    <div class="ui calendar" id="rangeend">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon"></i>
+                                            <input type="text" placeholder="End Date" id = "datepicker2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id = "getStats">
+                                    <div class="ui action input">
+                                        <input placeholder="Paste group URL here..." type="text" id="statsurl">
+                                        <button class="ui button" role="button" id="getStatss">Get Stats</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!–– white box around 4 graphs ––>
+                            <div class="aroundWhiteBox" id-"aroundWhiteBoxID">
+                                <div class="white-box" id="white-box">
+                                    <div class="pageviews">
+                                        <!-- end white box around 4 graphs -->
+                                        <!–– box around indivial graph ––>
+                                        <div class="ui-segment-ind-content-box" id="box1">
+                                            <!–– lineChartData1 ––>
+                                            <p id = 'title'></p>
+                                            <p class="title" id="pageViewsTitle">Page Views</p>
+                                            <button class = "csv-button" id="DownloadCSVLine1" tabindex="0" type="button">
+                                                <div>
+                                                    <div class = "div1button">
+                                                        <div class="div2button"></div>
+                                                        <span class"sytlebutton" id="downloadCSV">Download data as CSV</span>
+                                                    </div>
+                                                    <svg class="svgButton" viewBox="0 0 24 24">
+                                                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"></path>
+                                                    </svg>
+                                                </div>
+                                            </button>
+                                            <!-- Monthly/daily dropdown-->
+                                            <select class="ui dropdown" id="select">
+                                                    <option value="monthly1" id='month' selected>Monthly</option>
+                                                    <option value="daily1" id="day">Daily</option>  
+                                            </select>
+                                            <!-- End Monthly/daily dropdown-->  
+                                             <!-- loading symbol-->
+                                            <div id="loading" class="loading">
+                                                    <img id="loading-image" src="loader2.gif" alt="Loading..." />
+                                            </div>       
+                                            <div id="container">
+                                                <div class="chart" id = "chart1"></div>
+                                                <div class="spacing" id = "spacing"></div>
+                                                <div class="table" id = "table1"><table id="theTable1" class="display"></table></div>
+                                            </div>
+                                        </div>
+                                        <!–– box around indivial graph ––>
+                                        <div class="ui-segment-ind-content-box" id="box2">
+                                            <!–– lineChartData2 ––>
+                                            <p class = "title" id="groupMemebershipTitle">Group Membership</p>
+                                            <button class = "csv-button" id="DownloadCSVLine2" tabindex="0" type="button">
+                                                <div>
+                                                    <div class = "div1button">
+                                                        <div class="div2button"></div>
+                                                        <span class="sytlebutton" id="downloadCSV">Download data as CSV</span>
+                                                    </div>
+                                                    <svg class="svgButton" viewBox="0 0 24 24">
+                                                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"></path>
+                                                    </svg>
+                                                </div>
+                                            </button>
+                                            <!-- Monthly/daily dropdown-->
+                                            <select class="ui dropdown" id="select2">
+                                                    <option value="monthly2" id="month2" selected>Monthly</option>
+                                                    <option value="daily2" id="day2">Daily</option>  
+                                            </select>
+                                            <!-- loading symbol-->
+                                            <div id="loading1" class="loading1">
+                                                    <img id="loading-image" src="loader2.gif" alt="Loading..." />
+                                            </div> 
+                                            <!-- End Monthly/daily dropdown-->        
+                                            <div id="container">
+                                                <div class="chart" id = "chart2"></div>
+                                                <div class="spacing" id = "spacing"></div>
+                                                <div class="table" id = "table2">
+                                                    <table id="theTable2" class="display"></table>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="field">
-                                            <label>End Date</label>
-                                            <div class="ui calendar" id="rangeend">
-                                                <div class="ui input left icon">
-                                                    <i class="calendar icon"></i>
-                                                    <input type="text" placeholder="End">
+                                        <!–– box around indivial graph ––>
+                                        <div class="ui-segment-ind-content-box" id="box3">
+                                            <!–– BarChartData1 ––>
+                                            <div>
+                                                <p class = "title" id="departmentTitle">Group Members by Department</p>
+                                                <button class = "csv-button" id="DownloadCSVBar1" tabindex="0" type="button">
+                                                    <div>
+                                                        <div class = "div1button">
+                                                            <div class="div2button"></div>
+                                                            <span class="sytlebutton" id="downloadCSV">Download data as CSV</span>
+                                                        </div>
+                                                        <svg class="svgButton" viewBox="0 0 24 24">
+                                                            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"></path>
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                            <!-- loading symbol-->
+                                            <div id="loading2" class="loading2">
+                                                    <img id="loading-image" src="loader2.gif" alt="Loading..." />
+                                            </div> 
+                                            <div>
+                                                <div class="chart2" id="barChart1"></div>
+                                                <div class="spacing" id = "spacing"></div>
+                                                <div class="table">
+                                                    <table id="test1" class="display"></table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!–– box around indivial graph ––>
+                                        <div class="ui-segment-ind-content-box-final" id="box4">
+                                            <!–– BarChartData2 ––>
+                                            <div>
+                                                <p class = "title" id="topContentTitle">Top Group Content</p>
+                                                <button class = "csv-button" id="DownloadCSVBar2" tabindex="0" type="button">
+                                                    <div>
+                                                        <div class = "div1button">
+                                                            <div class="div2button"></div>
+                                                            <span class="sytlebutton" id="downloadCSV">Download data as CSV</span>
+                                                        </div>
+                                                        <svg class="svgButton" viewBox="0 0 24 24">
+                                                            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"></path>
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                            <!-- loading symbol-->
+                                            <div id="loading3" class="loading3">
+                                                    <img id="loading-image" src="loader2.gif" alt="Loading..." />
+                                            </div> 
+                                            <div class="container2">
+                                                <div class="chart2" id="barChart2"></div>
+                                                <div class="spacing" id = "spacing"></div>
+                                                <div class="table">
+                                                    <table id="test2" class="display"></table>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </span>
+                                <!–– paste url message ––>
+                                <p class="url-message" id = "url-message">Paste the group URL above and set your desired start and end dates to retrieve relevant statistics.</p>
+                            </div>
                         </div>
-                        <div class="ui action input search-bar">
-                            <input type="text" placeholder="Paste group URL">
-                            <button class="ui icon button">
-                                <i class="search icon"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="welcome-message" style="padding-bottom: 10px; display: block">
-                        Paste the group URL above and set your desired start and end dates to retrieve relevant statistics.
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</body>
-
-<script>
-    $('#rangestart').calendar({type:'date'});
-    $('#rangeend').calendar({type:'date'});
-</script>
+        <!–– Connection to javascript ––>
+        <script src="lowfi-app.js"></script>
+    </body>
+</html>
