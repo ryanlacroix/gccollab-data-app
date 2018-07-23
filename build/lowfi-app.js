@@ -168,9 +168,9 @@ function updatedTitle (){
 }
 
 $("#eng-toggle").on('click', function(event) {
+    currentLang = "EN";
     updatedTitle();
     document.getElementById("title").innerHTML=groupNameEN;
-    currentLang = "EN";
     document.getElementById("h11").innerHTML="<strong>GC</strong>collab Group Stats Page";
     document.getElementById("url-message").innerHTML="Paste the group URL above and set your desired start and end dates to retrieve relevant statistics.";
     document.getElementById("pageViewsTitle").innerHTML="Page Views";
@@ -184,10 +184,20 @@ $("#eng-toggle").on('click', function(event) {
     document.getElementById("topContentTitle").innerHTML="Top Group Content";
     document.getElementById("getStatss").innerHTML="Get Stats";
     mainBar(1, 'departments', barChartData1);
+    // state.groupURL = document.getElementById("statsurl").value;
+    // console.log(!URLIsValid(state.groupURL));
+    // if(!URLIsValid(state.groupURL)){
+    //     console.log('efowebfuewbfoweiubfewuifbuwafbuiwef');
+    //     document.getElementById('getStatss').title=URLErrorMessage(state.groupURL)
+    // }s
 });
 
 $("#fr-toggle").on('click', function(event) {
     currentLang = "FR";
+    // state.groupURL = document.getElementById("statsurl").value;
+    // if(!URLIsValid(state.groupURL)){
+    //     document.getElementById('getStatss').title=URLErrorMessage(state.groupURL)
+    // }
     updatedTitle();
     document.getElementById("title").innerHTML=groupNameFR;
     document.getElementById("h11").innerHTML="Page des statistiques des groupes <strong>GC</strong>collab";
@@ -605,11 +615,88 @@ function helperRequestData() {
     })
 }
 
-document.getElementById("getStatss").addEventListener("click", function(){
-    //console.log(document.getElementById("statsurl").value);
+tippy('.ui button', {
+    createPopperInstanceOnInit: false,
+    hideOnClick: false,
+    trigger: 'click',
+    dynamicTitle: true,
+    // animateFill: true,
+    animation: 'fade',
+    arrow: true,
+    arrowType: 'round',
+    // theme: 'dark custom',
+})
+
+document.getElementById("getStatss").addEventListener("mouseover", function(){
     state.groupURL = document.getElementById("statsurl").value;
-    helperRequestData(); 
+    if(!URLIsValid(state.groupURL)){
+        document.getElementById('getStatss').title=URLErrorMessage(state.groupURL)
+        tippy('.ui button', {
+            createPopperInstanceOnInit: false,
+            hideOnClick: false,
+            trigger: 'click',
+            dynamicTitle: true
+        })
+    }
+    else{
+        document.getElementById("getStatss")._tippy.destroy();
+        document.getElementById('getStatss').removeAttribute("title");
+    }
 });
+
+document.getElementById("getStatss").addEventListener("click", function(){
+    state.groupURL = document.getElementById("statsurl").value;
+    if(!URLIsValid(state.groupURL)){
+        document.getElementById('getStatss').title=URLErrorMessage(state.groupURL)
+        console.log(URLErrorMessage(state.groupURL));
+        document.getElementById("statsurl").style.backgroundColor='#fff6f6';
+        document.getElementById("statsurl").style.borderColor='#e0b4b4';
+        document.getElementById("statsurl").style.color='#9f3a38';
+    }
+    else{
+        document.getElementById('getStatss').removeAttribute("title");
+        document.getElementById("statsurl").style.backgroundColor='#fff';
+        document.getElementById("statsurl").style.borderColor='rgba(34,36,38,.15)';
+        document.getElementById("statsurl").style.color='rgba(0,0,0,.87)';
+        helperRequestData();
+    }
+});
+
+// Basic check to make sure the URL is actually a group page
+function URLIsValid(url) {
+    if (url.indexOf('https://gccollab.ca/groups/profile') === 0)
+        return true;
+    else
+        return false;
+}
+
+function URLErrorMessage(url){
+    if ((url.indexOf('https://gccollab.ca/') === 0) && !this.URLIsValid(url) ) {
+        // URL is from collab, but not a group's main page.
+        // In the future relevant stats will be served for whatever content is requested.
+        // Right now, provide an error + explanation
+        if(currentLang=='EN'){
+            return "This tool currently only supports group stats. Enter a group's main page URL (https://gcollab.gc.ca/groups/profile...)"
+        }
+        else{
+            return "Cet outil prend actuellement en charge uniquement les statistiques de groupe. Entrez l'URL de la page principale d'un groupe (https: //gcollab.gc.ca/groups/profile ...)"
+        }
+    } else if (url.indexOf('https://gcconnex') === 0) {
+        if(currentLang=='EN'){
+            return "This tool is currently only available for GCcollab groups."
+        }
+        else{
+            return "Cet outil est actuellement disponible uniquement pour les groupes GCcollab."
+        }
+    } else {
+        if(currentLang=='EN'){
+            return "URLs should be of the format https://gcollab.ca/groups/profile...";
+        }
+        else{
+            return "Les URL doivent être au format https: //gcollab.ca/groups/profile ...";
+        }
+    }
+}
 
 var state = {
     // Each metric's specific state. Populated after data is received
@@ -656,11 +743,11 @@ function requestData(reqType) {
             break;
         case 'departments':
             reqStatement = '{"stepIndex":4,"reqType":{"category":1,"filter":"'+ 
-                state.groupURL +'"},"metric":4,"metric2":0,"time":{"startDate":"2017-02-12","endDate":"2018-02-12","allTime":true},"errorFlag":false}'
+                state.groupURL +'"},"metric":4,"metric2":0,"time":{"startDate":"2017-02-12","endDate":"'+ state.endDate +'","allTime":true},"errorFlag":false}'
             break;
         case 'topContent':
             reqStatement = '{"stepIndex":4,"reqType":{"category":1,"filter":"'+
-                state.groupURL +'"},"metric":2,"metric2":0,"time":{"startDate":"2017-02-12","endDate":"2018-02-12","allTime":true},"errorFlag":false}'
+                state.groupURL +'"},"metric":2,"metric2":0,"time":{"startDate":"2017-02-12","endDate":"'+ state.endDate +'","allTime":true},"errorFlag":false}'
             break;
         case 'pageViews':
             reqStatement = '{"stepIndex":4,"reqType":{"category":1,"filter":"'+ 

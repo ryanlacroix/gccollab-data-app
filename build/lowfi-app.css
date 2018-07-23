@@ -15,6 +15,9 @@ a:hover{
     font-weight: bold;
     text-transform: capitalize;
 }
+#ignore{
+    height: 35px;
+}
 #lang-toggle{
     margin-left: 90%;
 }
