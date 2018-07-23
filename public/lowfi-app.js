@@ -93,7 +93,7 @@ function swap(dict){
 var fr_dict = {};
 var fr_list = [];
 var inverse_fr_dict = {};
-$.getJSON("fr_dpts.json", function(result){
+$.getJSON("fr_dict.json", function(result){
     //console.log(result);
     fr_dict = result;
     var values = $.map(fr_dict, function(value,key) {return value});
@@ -108,7 +108,7 @@ $.getJSON("fr_dpts.json", function(result){
 var en_dict = {};
 var en_list = [];
 var inverse_en_dict = {};
-$.getJSON("en_dpts.json", function(result){
+$.getJSON("en_dict.json", function(result){
     //console.log(result);
     en_dict = result;
     var values = $.map(en_dict, function(value,key) {return value});
@@ -168,8 +168,13 @@ function updatedTitle (){
 }
 
 $("#eng-toggle").on('click', function(event) {
-    updatedTitle();
-    document.getElementById("title").innerHTML=groupNameEN;
+    try{
+        updatedTitle();
+        document.getElementById("title").innerHTML=groupNameEN;
+    }
+    catch(err){
+        console.log("languagetitleerror");
+    }
     currentLang = "EN";
     document.getElementById("h11").innerHTML="<strong>GC</strong>collab Group Stats Page";
     document.getElementById("url-message").innerHTML="Paste the group URL above and set your desired start and end dates to retrieve relevant statistics.";
@@ -187,9 +192,14 @@ $("#eng-toggle").on('click', function(event) {
 });
 
 $("#fr-toggle").on('click', function(event) {
+    try{
+        updatedTitle();
+        document.getElementById("title").innerHTML=groupNameFR;
+    }
+    catch(err){
+        console.log("languagetitleerror");
+    }
     currentLang = "FR";
-    updatedTitle();
-    document.getElementById("title").innerHTML=groupNameFR;
     document.getElementById("h11").innerHTML="Page des statistiques des groupes <strong>GC</strong>collab";
     document.getElementById("url-message").innerHTML="Collez l'URL du groupe ci-dessus et choisissez les dates de début et de fin pour récupérer les statistiques pertinentes.";
     document.getElementById("pageViewsTitle").innerHTML="Pages consultées";
@@ -649,24 +659,40 @@ function requestData(reqType) {
     var reqStatement = ""; // Populate this with the request
     switch (reqType) {
         case 'membersOverTime':
-            reqStatement = '{"stepIndex":4,"reqType":{"category":1,"filter":"'+
-                state.groupURL +'"},"metric":3,"metric2":0,"time":{"startDate":"'+
-                state.startDate +'","endDate":"'+ 
-                state.endDate +'","allTime":true},"errorFlag":false}';
+            reqStatement = JSON.stringify({
+                type: 'groups',
+                stat: 'membersOverTime',
+                url: state.groupURL,
+                start_date: state.startDate,
+                end_date: state.endDate
+            });
             break;
         case 'departments':
-            reqStatement = '{"stepIndex":4,"reqType":{"category":1,"filter":"'+ 
-                state.groupURL +'"},"metric":4,"metric2":0,"time":{"startDate":"2017-02-12","endDate":"2018-02-12","allTime":true},"errorFlag":false}'
+            reqStatement = JSON.stringify({
+                type: 'groups',
+                stat: 'membersByDepartment',
+                url: state.groupURL,
+                start_date: state.startDate,
+                end_date: state.endDate
+            });
             break;
         case 'topContent':
-            reqStatement = '{"stepIndex":4,"reqType":{"category":1,"filter":"'+
-                state.groupURL +'"},"metric":2,"metric2":0,"time":{"startDate":"2017-02-12","endDate":"2018-02-12","allTime":true},"errorFlag":false}'
+            reqStatement = JSON.stringify({
+                type: 'groups',
+                stat: 'topContent',
+                url: state.groupURL,
+                start_date: state.startDate,
+                end_date: state.endDate
+            });
             break;
         case 'pageViews':
-            reqStatement = '{"stepIndex":4,"reqType":{"category":1,"filter":"'+ 
-                state.groupURL +'"},"metric":1,"metric2":0,"time":{"startDate":"' + 
-                state.startDate +'","endDate":"' + 
-                state.endDate +'","allTime":true},"errorFlag":false}';
+            reqStatement = JSON.stringify({
+                type: 'groups',
+                stat: 'pageviews',
+                url: state.groupURL,
+                start_date: state.startDate,
+                end_date: state.endDate
+            });
             break;
         }
     // Send the request
@@ -717,7 +743,7 @@ function requestData(reqType) {
             }, 0);
        }
     };
-    xmlHttp.open("POST", "/getData/request", true); // false for synchronous request
+    xmlHttp.open("POST", "/api", true); // false for synchronous request
     xmlHttp.setRequestHeader("Content-type", "application/json");
     xmlHttp.send(reqStatement);
     // $.ajax({
