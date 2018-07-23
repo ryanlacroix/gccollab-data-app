@@ -23,22 +23,11 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.js"></script>
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link rel="stylesheet" href="/resources/demos/style.css">
+        <script src="../jquery/development-bundle/ui/i18n/jquery.ui.datepicker-fr.js"></script>
         <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script type"text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/components/loader.min.css"></script>
         <!–– Script so datepickers (JQuery) work ––>
-        <script>
-            $( function() {
-                $( "#datepicker1" ).datepicker();
-                var d = new Date();
-                d.setDate(d.getDate() - 90);
-                $( "#datepicker1" ).datepicker("setDate", d);
-            } );
-            $( function() {
-                $( "#datepicker2" ).datepicker();
-                $( "#datepicker2" ).datepicker("setDate", new Date());
-            } );
-        </script>
     </head>
     <body>
         <div id=unsupported-browser>
