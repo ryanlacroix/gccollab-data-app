@@ -221,8 +221,8 @@ class MemberDepChart extends Component {
                     this.setState({
                         showAll: this.state.showAll
                     })
-                }, 250)
-              }, 250);
+                }, 300)
+              }, 300);
         });
     }
 
