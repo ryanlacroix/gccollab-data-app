@@ -276,9 +276,9 @@ div.ui.action.input{
  }
 
  @media only screen and (max-width: 1175px) and (min-width: 680px){
-    .App{
+    /* .App{
         background-color: lightblue;
-    }
+    } */
     #avgTimeOnPage{
         margin: 0 auto !important;
         width: 300px 
@@ -384,9 +384,9 @@ div.ui.action.input{
 }
 
 @media only screen and (max-width: 689px) and (min-width: 560px){
-    .App{
+    /* .App{
         background-color: lightgreen;
-    }
+    } */
     #avgTimeOnPage{
         width: 300px;
         margin: 0 auto !important;
@@ -477,9 +477,9 @@ div.ui.action.input{
 }
 
 @media only screen and (max-width: 559px) and (min-width: 475px){
-    .App{
+    /* .App{
         background-color: red;
-    }
+    } */
     #avgTimeOnPage{
         margin: 0 auto !important;
         width: 300px 
@@ -570,9 +570,9 @@ div.ui.action.input{
 }
 
 @media only screen and (max-width: 475px) and (min-width: 375px){
-    .App{
+    /* .App{
         background-color: darkblue;
-    }
+    } */
     #avgTimeOnPage{
         margin: 0 auto !important;
         width: 300px; 
@@ -664,9 +664,9 @@ div.ui.action.input{
 }
 
 @media only screen and (max-width: 375px){
-    .App{
+    /* .App{
         background-color: yellow;
-    }
+    } */
     #avgTimeOnPage{
         width: 150px;
         margin: 0 auto !important;
