@@ -141,6 +141,29 @@ function departmentsToFrench (barchartData1){
     return barChartData1FR;
 }
 
+function toFrench (typeStr){
+    let validTypes = ['file','discussion','event_calendar','groups','blog',
+                    'bookmarks','pages',];
+    let validTypesFR = ['fichier','discussion','calendrier des événements','groupes ','blog',
+    'signets','pages',];
+    for(var i=0; i<validTypes.length; i++){
+        if(typeStr == validTypes[i]){
+            typeStr = validTypesFR[i];
+        }
+    }
+    return typeStr;
+}
+
+function contentToFrench (barchartData2){
+    var barChartData2FR = $.extend(true, {}, barChartData2);
+    var helper = $.extend(true, {}, barChartData2);
+    for(var i=1; i<barchartData2["urls"].length; i++){
+        var splitArray = helper["urls"][i].split(")");
+        barChartData2FR["urls"][i] = "(" + toFrench(splitArray[0].substr(1)) + ") " + splitArray[1]
+    }
+    return barChartData2FR;
+}
+
 var groupNameEN;
 var groupNameFR;
 var hardCopyURLTitle;
@@ -195,7 +218,9 @@ $("#eng-toggle").on('click', function(event) {
     document.getElementById("departmentTitle").innerHTML="Group Members by Department";
     document.getElementById("topContentTitle").innerHTML="Top Group Content";
     document.getElementById("getStatss").innerHTML="Get Stats";
+    var enHelper = $.extend(true, {}, hardCopybcd2en);
     mainBar(1, 'departments', barChartData1);
+    mainBar(2, 'topContent', enHelper);
 });
 
 $("#fr-toggle").on('click', function(event) {
@@ -225,7 +250,8 @@ $("#fr-toggle").on('click', function(event) {
     barChartData1[zeroethKey].shift(); //adds "department" to start of department array 
     barChartData1[firstKey].shift();
     frenchDepartments = departmentsToFrench(barChartData1);
-    console.log(frenchDepartments);
+    var frHelper = $.extend(true, {}, hardCopybcd2);
+    mainBar(2, 'topContent', frHelper);
     mainBar(1, 'departments', frenchDepartments);
 });
 
@@ -421,9 +447,11 @@ function downloadCSVLine(timeFrame){
 //BARCHART STUFF
 var barChartData1;
 var barChartData2;
+var hardCopybcd2;
+var hardCopybcd2en;
 //var titles=["Departments", "Members"]; 
 //var columnColors = [rgb(31, 119, 180), rgb(255, 127, 14), rgb(44, 160, 44), rgb(214, 39, 40), rgb(148, 103, 189), rgb(140, 86, 75), rgb(227, 119, 194), rgb(127, 127, 127), rgb(188, 189, 34), rgb(23, 190, 207)];
-var columnColors = ['#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177'];
+var columnColors = ['#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177'];
 
         
 document.getElementById("DownloadCSVBar1").addEventListener("click", function(){
@@ -455,7 +483,6 @@ function mainBar(num, stringy, barChartData){
         x = prepareTableDataBar(barChartData)
     }
     else if(stringy == 'topContent'){
-        //console.log(barChartData);
         x = prepareTableDataBar2(barChartData);
     }
     createChartBar(barChartData, '#barChart'.concat(String(num)));
@@ -596,7 +623,6 @@ function prepareTableDataBar2(chartData){
     return dataSet;
 }
 
-
 // $("getStats").click(function(e) {
 //     e.preventDefault();
 //     $.ajax({
@@ -621,8 +647,6 @@ String.prototype.replaceAll = function(search, replacement) {
 };
 
 $("#datepicker1").on("change keyup paste", function(){
-    //console.log(this.value);
-    
     console.log($("#datepicker2").datepicker("getDate"));
     if($("#datepicker2").datepicker("getDate") < $("#datepicker1").datepicker("getDate")){
         document.getElementById("getStatss").disabled = true;
@@ -637,7 +661,6 @@ $("#datepicker1").on("change keyup paste", function(){
 })
 
 $("#datepicker2").on("change keyup paste", function(){
-    //console.log(this.value);
     if($("#datepicker2").datepicker("getDate") < $("#datepicker1").datepicker("getDate")){
         document.getElementById("getStatss").disabled = true;
     }
@@ -784,6 +807,11 @@ function requestData(reqType) {
                 case 'topContent':
                     p3 = false;
                     barChartData2 = resp;
+                    hardCopybcd2en = $.extend(true, {}, barChartData2);
+                    hardCopybcd2 = $.extend(true, {}, barChartData2);
+                    for(var i = 0; i < hardCopybcd2['urls'].length; i++){
+                        hardCopybcd2['urls'][i] = toFrench(hardCopybcd2['urls'][i])
+                    }
                     console.log(barChartData2);
                     mainBar(2, 'topContent', resp);
                     $('.loading3').hide();
@@ -806,46 +834,8 @@ function requestData(reqType) {
     xmlHttp.open("POST", "/api", true); // false for synchronous request
     xmlHttp.setRequestHeader("Content-type", "application/json");
     xmlHttp.send(reqStatement);
-    // $.ajax({
-    //     type: 'post',
-    //     contentType: 'application/json',
-    //     dataType: 'json',
-    //     url: '/getData/request',
-    //     body: reqStatement,
-    //     processData: false,
-    //     success: function(resp) {  
-    //         console.log(resp);
-    //         console.log(typeof(resp));
-    //         //resp = JSON.parse(resp);
-    //         switch(reqType) {
-    //             case 'membersOverTime':
-    //                 chartData2 = resp;
-    //                 console.log(chartData2);
-    //                 mainLine(2);
-    //                 break;
-    //             case 'departments':
-    //                 barChartData1 = resp;
-    //                 console.log(barChartData1);
-    //                 mainBar(1, 'departments', resp);
-    //                 break;
-    //             case 'topContent':
-    //                 barChartData2 = resp;
-    //                 console.log(barChartData2);
-    //                 mainBar(2, 'topContent', resp);
-    //                 break;
-    //             case 'pageViews':
-    //                 chartData1 = resp;
-    //                 console.log(chartData1);
-    //                 mainLine(1)
-    //                 break;
-    //         }
-    //     }
-    // });
 }
 
 $(document).ready(function(){
     $('.white-box').hide();
 });
-// $(window).load(function() {
-//     $('#loading').hide();
-// });
