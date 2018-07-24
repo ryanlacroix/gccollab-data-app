@@ -433,6 +433,23 @@ function createChartLine(timeFrame, chartID){
     valueKey = Object.keys(thisTime)[1];
     thisTime[valueKey].unshift(valueKey);
     dataa = thisTime[valueKey];
+    //setting tooltips in if else below
+    if(chartID == "#chart1"){
+        if(currentLang == "EN"){
+            dataa[0] = "Page Views"
+        }
+        else{ //lang is french
+            dataa[0] = "Pages consultées"
+        }
+    }
+    else{ //chart2
+        if(currentLang == "EN"){
+            dataa[0] = "Members"
+        }
+        else{ //lang is french
+            dataa[0] = "Membres"
+        }
+    }
     var chart = c3.generate({
             bindto: chartID,
             size: {
