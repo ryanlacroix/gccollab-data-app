@@ -209,6 +209,8 @@ $("#eng-toggle").on('click', function(event) {
     document.getElementById("topContentTitle").innerHTML="Top Group Content";
     document.getElementById("getStatss").innerHTML="Get Stats";
     var enHelper = $.extend(true, {}, hardCopybcden);
+    mainLine(1)
+    mainLine(2)
     mainBar(2, 'topContent', enHelper)
     mainBar(1, 'departments', barChartData1);
 });
@@ -241,6 +243,8 @@ $("#fr-toggle").on('click', function(event) {
     barChartData1[firstKey].shift();
     frenchDepartments = departmentsToFrench(barChartData1);
     var frHelper = $.extend(true, {}, hardCopybcdfr);
+    mainLine(1)
+    mainLine(2)
     mainBar(2, 'topContent', frHelper)
     mainBar(1, 'departments', frenchDepartments);
 });
@@ -307,10 +311,26 @@ function mainLine(num) {
     else if (time2 == 'daily' && num==2) {
         time = chartData2.daily;
     }
+    if (num == 1){
+        if(currentLang == "EN"){
+            var TitleColumn2 = "Page Views";
+        }
+        else{
+            var TitleColumn2 = "Pages consultées"
+        }
+    }
+    else{
+        if(currentLang == "EN"){
+            var TitleColumn2 = "Members";
+        }
+        else{
+            var TitleColumn2 = "Membres"
+        }
+    }
     // x = prepareTableDataLine(time);
     // createTable(x);
     x = prepareTableDataLine(time);
-    createTable(x, '#theTable'.concat(String(num)), "Date");
+    createTable(x, '#theTable'.concat(String(num)), "Date", TitleColumn2);
     createChartLine(time, '#chart'.concat(String(num)));
 }    
 
@@ -338,11 +358,29 @@ function prepareTableDataLine(timeFrame){
     return dataSet;
 }
 
-function createTable(tableData, tableID, metric){
+function createTable(tableData, tableID, TitleColumn1, TitleColumn2){
     console.log(tableData['departments']);
     if ( $.fn.dataTable.isDataTable( tableID ) ) { //check if this is already a datatable
-        $(tableID).DataTable().clear();              //clear its data
-        $(tableID).dataTable().fnAddData(tableData);     //populate it with a new set of data
+        $(tableID).DataTable().destroy();              //clear its data
+        $(document).ready(function() {
+            $(tableID).DataTable( {      //initialization of the datatable
+                data: tableData,
+                // "columnDefs": [
+                //     { "width": "20%", "targets": 0 }
+                // ],
+                columns: [
+                    { title: TitleColumn1 },
+                    { title: TitleColumn2 },
+                ],
+                "scrollY": "200px",     //scroll function and the default size of the table
+                "searching": false,     //disabled the search function
+                "paging":   false,      //disabled paging
+                scrollCollapse: true, //shortens the height of the table if there isnt much data to fill up its height
+                "deferRender": true,    //renders one page at a time to speed up intialization if we're using a paginated table(but we're not lol)
+                "processing": true,     //displays a 'processing' indicator while the table is being processed
+                "bInfo": false,         //the table by default states "show 1 to N entries of N entries" so i got rid of that
+            } );
+        } );
     }
     else{
         $(document).ready(function() {
@@ -352,8 +390,8 @@ function createTable(tableData, tableID, metric){
                 //     { "width": "20%", "targets": 0 }
                 // ],
                 columns: [
-                    { title: metric },
-                    { title: "Value" },
+                    { title: TitleColumn1 },
+                    { title: TitleColumn2 },
                 ],
                 "scrollY": "200px",     //scroll function and the default size of the table
                 "searching": false,     //disabled the search function
@@ -442,7 +480,7 @@ var hardCopybcdfr;
 
 //var titles=["Departments", "Members"]; 
 //var columnColors = [rgb(31, 119, 180), rgb(255, 127, 14), rgb(44, 160, 44), rgb(214, 39, 40), rgb(148, 103, 189), rgb(140, 86, 75), rgb(227, 119, 194), rgb(127, 127, 127), rgb(188, 189, 34), rgb(23, 190, 207)];
-var columnColors = ['#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177'];
+var columnColors = ['#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177'];
 
         
 document.getElementById("DownloadCSVBar1").addEventListener("click", function(){
@@ -470,15 +508,42 @@ document.getElementById("DownloadCSVBar2").addEventListener("click", function(){
 // });
 
 function mainBar(num, stringy, barChartData){
+    console.log(currentLang)
+    console.log(num)
     if(stringy == 'departments'){
         x = prepareTableDataBar(barChartData)
+    }
+    if(num==1){
+        if(currentLang == "EN"){
+            console.log("english1")
+            var TitleColumn1 = "Department";
+            var TitleColumn2 = "Members";
+        }
+        else{
+            console.log("fr1")
+            var TitleColumn1 = "Départment";
+            var TitleColumn2 = "Membres du groupe";
+        }
     }
     else if(stringy == 'topContent'){
         //console.log(barChartData);
         x = prepareTableDataBar2(barChartData);
     }
+    if(num==2){
+        if(currentLang == "EN"){
+            console.log("en2")
+            var TitleColumn1 = "Title";
+            var TitleColumn2 = "Views";
+        }
+        else{
+            console.log("fr2")
+            var TitleColumn1 = "Titre";
+            var TitleColumn2 = "Pages consultées";
+        }
+    }
+    console.log(TitleColumn1, TitleColumn2)
     createChartBar(barChartData, '#barChart'.concat(String(num)));
-    createTable(x, '#test'.concat(String(num)), stringy);
+    createTable(x, '#test'.concat(String(num)), TitleColumn1, TitleColumn2);
 }
         
 function prepareTableDataBar(chartData){
