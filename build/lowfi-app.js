@@ -141,6 +141,19 @@ function departmentsToFrench (barchartData1){
     return barChartData1FR;
 }
 
+function toFrench (typeStr){
+    let validTypes = ['file','discussion','event_calendar','groups','blog',
+                    'bookmarks','pages',];
+    let validTypesFR = ['fichier','discussion','calendrier des événements','groupes ','blog',
+    'signets','pages',];
+    for(var i=0; i<validTypes.length; i++){
+        if(typeStr == validTypes[i]){
+            typeStr = validTypesFR[i];
+        }
+    }
+    return typeStr;
+}
+
 var groupNameEN;
 var groupNameFR;
 var hardCopyURLTitle;
@@ -195,6 +208,8 @@ $("#eng-toggle").on('click', function(event) {
     document.getElementById("departmentTitle").innerHTML="Group Members by Department";
     document.getElementById("topContentTitle").innerHTML="Top Group Content";
     document.getElementById("getStatss").innerHTML="Get Stats";
+    var enHelper = $.extend(true, {}, hardCopybcden);
+    mainBar(2, 'topContent', enHelper)
     mainBar(1, 'departments', barChartData1);
 });
 
@@ -225,7 +240,8 @@ $("#fr-toggle").on('click', function(event) {
     barChartData1[zeroethKey].shift(); //adds "department" to start of department array 
     barChartData1[firstKey].shift();
     frenchDepartments = departmentsToFrench(barChartData1);
-    console.log(frenchDepartments);
+    var frHelper = $.extend(true, {}, hardCopybcdfr);
+    mainBar(2, 'topContent', frHelper)
     mainBar(1, 'departments', frenchDepartments);
 });
 
@@ -421,6 +437,9 @@ function downloadCSVLine(timeFrame){
 //BARCHART STUFF
 var barChartData1;
 var barChartData2;
+var hardCopybcden;
+var hardCopybcdfr; 
+
 //var titles=["Departments", "Members"]; 
 //var columnColors = [rgb(31, 119, 180), rgb(255, 127, 14), rgb(44, 160, 44), rgb(214, 39, 40), rgb(148, 103, 189), rgb(140, 86, 75), rgb(227, 119, 194), rgb(127, 127, 127), rgb(188, 189, 34), rgb(23, 190, 207)];
 var columnColors = ['#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177'];
@@ -785,6 +804,11 @@ function requestData(reqType) {
                     p3 = false;
                     barChartData2 = resp;
                     console.log(barChartData2);
+                    hardCopybcden = $.extend(true, {}, barChartData2);
+                    hardCopybcdfr = $.extend(true, {}, barChartData2);
+                    for (var i = 0; i < hardCopybcden['urls'].length; i++){
+                        hardCopybcdfr['urls'][i] = toFrench(hardCopybcdfr['urls'][i])
+                    }
                     mainBar(2, 'topContent', resp);
                     $('.loading3').hide();
                     break;
@@ -806,46 +830,8 @@ function requestData(reqType) {
     xmlHttp.open("POST", "/api", true); // false for synchronous request
     xmlHttp.setRequestHeader("Content-type", "application/json");
     xmlHttp.send(reqStatement);
-    // $.ajax({
-    //     type: 'post',
-    //     contentType: 'application/json',
-    //     dataType: 'json',
-    //     url: '/getData/request',
-    //     body: reqStatement,
-    //     processData: false,
-    //     success: function(resp) {  
-    //         console.log(resp);
-    //         console.log(typeof(resp));
-    //         //resp = JSON.parse(resp);
-    //         switch(reqType) {
-    //             case 'membersOverTime':
-    //                 chartData2 = resp;
-    //                 console.log(chartData2);
-    //                 mainLine(2);
-    //                 break;
-    //             case 'departments':
-    //                 barChartData1 = resp;
-    //                 console.log(barChartData1);
-    //                 mainBar(1, 'departments', resp);
-    //                 break;
-    //             case 'topContent':
-    //                 barChartData2 = resp;
-    //                 console.log(barChartData2);
-    //                 mainBar(2, 'topContent', resp);
-    //                 break;
-    //             case 'pageViews':
-    //                 chartData1 = resp;
-    //                 console.log(chartData1);
-    //                 mainLine(1)
-    //                 break;
-    //         }
-    //     }
-    // });
 }
 
 $(document).ready(function(){
     $('.white-box').hide();
 });
-// $(window).load(function() {
-//     $('#loading').hide();
-// });
