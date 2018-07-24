@@ -141,6 +141,19 @@ function departmentsToFrench (barchartData1){
     return barChartData1FR;
 }
 
+function toFrench (typeStr){
+    let validTypes = ['file','discussion','event_calendar','groups','blog',
+                    'bookmarks','pages',];
+    let validTypesFR = ['fichier','discussion','calendrier des événements','groupes ','blog',
+    'signets','pages',];
+    for(var i=0; i<validTypes.length; i++){
+        if(typeStr == validTypes[i]){
+            typeStr = validTypesFR[i];
+        }
+    }
+    return typeStr;
+}
+
 var groupNameEN;
 var groupNameFR;
 var hardCopyURLTitle;
@@ -165,6 +178,12 @@ function updatedTitle (){
             groupNameEN = replaceAll(hardCopyURLTitle.group_name, "-", " ");
             groupNameFR = replaceAll(hardCopyURLTitle.group_name, "-", " ");
         }
+    if(groupNameFR === undefined){
+        groupNameFR = replaceAll(hardCopyURLTitle.group_name, "-", " ");   
+    }
+    if(groupNameEN === undefined){
+        groupNameEN = replaceAll(hardCopyURLTitle.group_name, "-", " ");   
+    }
 }
 
 $("#eng-toggle").on('click', function(event) {
@@ -176,6 +195,7 @@ $("#eng-toggle").on('click', function(event) {
         console.log("languagetitleerror");
     }
     currentLang = "EN";
+    $.datepicker.setDefaults($.datepicker.regional['en']);
     document.getElementById("h11").innerHTML="<strong>GC</strong>collab Group Stats Page";
     document.getElementById("url-message").innerHTML="Paste the group URL above and set your desired start and end dates to retrieve relevant statistics.";
     document.getElementById("pageViewsTitle").innerHTML="Page Views";
@@ -188,6 +208,8 @@ $("#eng-toggle").on('click', function(event) {
     document.getElementById("departmentTitle").innerHTML="Group Members by Department";
     document.getElementById("topContentTitle").innerHTML="Top Group Content";
     document.getElementById("getStatss").innerHTML="Get Stats";
+    var enHelper = $.extend(true, {}, hardCopybcden);
+    mainBar(2, 'topContent', enHelper)
     mainBar(1, 'departments', barChartData1);
 });
 
@@ -200,6 +222,7 @@ $("#fr-toggle").on('click', function(event) {
         console.log("languagetitleerror");
     }
     currentLang = "FR";
+    $.datepicker.setDefaults($.datepicker.regional['fr']);
     document.getElementById("h11").innerHTML="Page des statistiques des groupes <strong>GC</strong>collab";
     document.getElementById("url-message").innerHTML="Collez l'URL du groupe ci-dessus et choisissez les dates de début et de fin pour récupérer les statistiques pertinentes.";
     document.getElementById("pageViewsTitle").innerHTML="Pages consultées";
@@ -217,9 +240,59 @@ $("#fr-toggle").on('click', function(event) {
     barChartData1[zeroethKey].shift(); //adds "department" to start of department array 
     barChartData1[firstKey].shift();
     frenchDepartments = departmentsToFrench(barChartData1);
-    console.log(frenchDepartments);
+    var frHelper = $.extend(true, {}, hardCopybcdfr);
+    mainBar(2, 'topContent', frHelper)
     mainBar(1, 'departments', frenchDepartments);
 });
+
+$(function() {
+    $.datepicker.regional['fr'] = {clearText: 'Effacer', clearStatus: '',
+        closeText: 'Fermer', closeStatus: 'Fermer sans modifier',
+        prevText: '<Préc', prevStatus: 'Voir le mois précédent',
+        nextText: 'Suiv>', nextStatus: 'Voir le mois suivant',
+        currentText: 'Courant', currentStatus: 'Voir le mois courant',
+        monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin',
+        'Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+        monthNamesShort: ['Jan','Fév','Mar','Avr','Mai','Jun',
+        'Jul','Aoû','Sep','Oct','Nov','Déc'],
+        monthStatus: 'Voir un autre mois', yearStatus: 'Voir un autre année',
+        weekHeader: 'Sm', weekStatus: '',
+        dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+        dayNamesShort: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
+        dayNamesMin: ['Di','Lu','Ma','Me','Je','Ve','Sa'],
+        dayStatus: 'Utiliser DD comme premier jour de la semaine', dateStatus: 'Choisir le DD, MM d',
+        dateFormat: 'dd/mm/yy', firstDay: 0, 
+        initStatus: 'Choisir la date', isRTL: false};
+    $( "#datepicker1" ).datepicker();
+    var d = new Date();
+    d.setDate(d.getDate() - 90);
+    $( "#datepicker1" ).datepicker("setDate", d);
+} );
+
+$(function() {
+    $.datepicker.regional['fr'] = {clearText: 'Effacer', clearStatus: '',
+        closeText: 'Fermer', closeStatus: 'Fermer sans modifier',
+        prevText: '<Préc', prevStatus: 'Voir le mois précédent',
+        nextText: 'Suiv>', nextStatus: 'Voir le mois suivant',
+        currentText: 'Courant', currentStatus: 'Voir le mois courant',
+        monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin',
+        'Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+        monthNamesShort: ['Jan','Fév','Mar','Avr','Mai','Jun',
+        'Jul','Aoû','Sep','Oct','Nov','Déc'],
+        monthStatus: 'Voir un autre mois', yearStatus: 'Voir un autre année',
+        weekHeader: 'Sm', weekStatus: '',
+        dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+        dayNamesShort: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
+        dayNamesMin: ['Di','Lu','Ma','Me','Je','Ve','Sa'],
+        dayStatus: 'Utiliser DD comme premier jour de la semaine', dateStatus: 'Choisir le DD, MM d',
+        dateFormat: 'dd/mm/yy', firstDay: 0, 
+        initStatus: 'Choisir la date', isRTL: false};
+    console.log(currentLang)
+    $.datepicker.setDefaults($.datepicker.regional[currentLang.toLowerCase()]);
+    $( "#datepicker2" ).datepicker();
+    $( "#datepicker2" ).datepicker("setDate", new Date());
+} );
+
 
 function mainLine(num) {
     if (time1 == 'monthly' && num==1) {    //time is changed based on the last button clicked
@@ -364,9 +437,12 @@ function downloadCSVLine(timeFrame){
 //BARCHART STUFF
 var barChartData1;
 var barChartData2;
+var hardCopybcden;
+var hardCopybcdfr; 
+
 //var titles=["Departments", "Members"]; 
 //var columnColors = [rgb(31, 119, 180), rgb(255, 127, 14), rgb(44, 160, 44), rgb(214, 39, 40), rgb(148, 103, 189), rgb(140, 86, 75), rgb(227, 119, 194), rgb(127, 127, 127), rgb(188, 189, 34), rgb(23, 190, 207)];
-var columnColors = ['rgb(31, 119, 180)', 'rgb(255, 127, 14)', 'rgb(44, 160, 44)', 'rgb(214, 39, 40)', 'rgb(148, 103, 189)', 'rgb(140, 86, 75)', 'rgb(227, 119, 194)', 'rgb(127, 127, 127)', 'rgb(188, 189, 34)', 'rgb(23, 190, 207)', 'rgb(31, 119, 180)', 'rgb(255, 127, 14)', 'rgb(44, 160, 44)', 'rgb(214, 39, 40)', 'rgb(148, 103, 189)', 'rgb(140, 86, 75)', 'rgb(227, 119, 194)', 'rgb(127, 127, 127)', 'rgb(188, 189, 34)', 'rgb(23, 190, 207)'];
+var columnColors = ['#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177', '#047177'];
 
         
 document.getElementById("DownloadCSVBar1").addEventListener("click", function(){
@@ -431,6 +507,7 @@ function createChartBar(chartData, chartID){
                 dataa,
             ],
             type: 'bar',
+            labels: true,
             color: function (color, d) {
                 // d will be 'id' when called for legends
                 return columnColors[d.index];
@@ -441,7 +518,7 @@ function createChartBar(chartData, chartID){
         },
         bar: {
             width: {
-                ratio: 1 // this makes bar width 50% of length between ticks
+                ratio: 0.9 // this makes bar width 50% of length between ticks
             }
             // or
             //width: 100 // this makes bar width 100px
@@ -618,7 +695,9 @@ function helperRequestData() {
 document.getElementById("getStatss").addEventListener("click", function(){
     //console.log(document.getElementById("statsurl").value);
     state.groupURL = document.getElementById("statsurl").value;
-    helperRequestData(); 
+    if(state.groupURL != ""){
+        helperRequestData(); 
+    }
 });
 
 var state = {
@@ -725,6 +804,11 @@ function requestData(reqType) {
                     p3 = false;
                     barChartData2 = resp;
                     console.log(barChartData2);
+                    hardCopybcden = $.extend(true, {}, barChartData2);
+                    hardCopybcdfr = $.extend(true, {}, barChartData2);
+                    for (var i = 0; i < hardCopybcden['urls'].length; i++){
+                        hardCopybcdfr['urls'][i] = toFrench(hardCopybcdfr['urls'][i])
+                    }
                     mainBar(2, 'topContent', resp);
                     $('.loading3').hide();
                     break;
@@ -746,46 +830,8 @@ function requestData(reqType) {
     xmlHttp.open("POST", "/api", true); // false for synchronous request
     xmlHttp.setRequestHeader("Content-type", "application/json");
     xmlHttp.send(reqStatement);
-    // $.ajax({
-    //     type: 'post',
-    //     contentType: 'application/json',
-    //     dataType: 'json',
-    //     url: '/getData/request',
-    //     body: reqStatement,
-    //     processData: false,
-    //     success: function(resp) {  
-    //         console.log(resp);
-    //         console.log(typeof(resp));
-    //         //resp = JSON.parse(resp);
-    //         switch(reqType) {
-    //             case 'membersOverTime':
-    //                 chartData2 = resp;
-    //                 console.log(chartData2);
-    //                 mainLine(2);
-    //                 break;
-    //             case 'departments':
-    //                 barChartData1 = resp;
-    //                 console.log(barChartData1);
-    //                 mainBar(1, 'departments', resp);
-    //                 break;
-    //             case 'topContent':
-    //                 barChartData2 = resp;
-    //                 console.log(barChartData2);
-    //                 mainBar(2, 'topContent', resp);
-    //                 break;
-    //             case 'pageViews':
-    //                 chartData1 = resp;
-    //                 console.log(chartData1);
-    //                 mainLine(1)
-    //                 break;
-    //         }
-    //     }
-    // });
 }
 
 $(document).ready(function(){
     $('.white-box').hide();
 });
-// $(window).load(function() {
-//     $('#loading').hide();
-// });
