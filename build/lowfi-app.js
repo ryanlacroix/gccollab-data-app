@@ -168,6 +168,7 @@ function updatedTitle (){
 }
 
 $("#eng-toggle").on('click', function(event) {
+    currentLang = "EN";
     try{
         updatedTitle();
         document.getElementById("title").innerHTML=groupNameEN;
@@ -175,7 +176,6 @@ $("#eng-toggle").on('click', function(event) {
     catch(err){
         console.log("languagetitleerror");
     }
-    currentLang = "EN";
     document.getElementById("h11").innerHTML="<strong>GC</strong>collab Group Stats Page";
     document.getElementById("url-message").innerHTML="Paste the group URL above and set your desired start and end dates to retrieve relevant statistics.";
     document.getElementById("pageViewsTitle").innerHTML="Page Views";
@@ -198,6 +198,7 @@ $("#eng-toggle").on('click', function(event) {
 });
 
 $("#fr-toggle").on('click', function(event) {
+    currentLang = "FR";
     try{
         updatedTitle();
         document.getElementById("title").innerHTML=groupNameFR;
@@ -205,7 +206,6 @@ $("#fr-toggle").on('click', function(event) {
     catch(err){
         console.log("languagetitleerror");
     }
-    currentLang = "FR";
     document.getElementById("h11").innerHTML="Page des statistiques des groupes <strong>GC</strong>collab";
     document.getElementById("url-message").innerHTML="Collez l'URL du groupe ci-dessus et choisissez les dates de début et de fin pour récupérer les statistiques pertinentes.";
     document.getElementById("pageViewsTitle").innerHTML="Pages consultées";
@@ -621,10 +621,13 @@ function helperRequestData() {
     })
 }
 
+document.getElementById('getStatss').title="URLs should be of the format https://gcollab.ca/groups/profile...";
+
 tippy('.ui button', {
     createPopperInstanceOnInit: false,
     hideOnClick: false,
     trigger: 'click',
+    trigger: 'mouseenter focus',
     dynamicTitle: true,
     // animateFill: true,
     animation: 'fade',
@@ -635,18 +638,52 @@ tippy('.ui button', {
 
 document.getElementById("getStatss").addEventListener("mouseover", function(){
     state.groupURL = document.getElementById("statsurl").value;
+    try{
+        document.getElementById("getStatss")._tippy.destroy();
+    }
+    catch(err){
+        console.log('errorrrrrr');
+    }
     if(!URLIsValid(state.groupURL)){
         document.getElementById('getStatss').title=URLErrorMessage(state.groupURL)
         tippy('.ui button', {
             createPopperInstanceOnInit: false,
             hideOnClick: false,
             trigger: 'click',
-            dynamicTitle: true
+            trigger: 'mouseenter focus',
+            dynamicTitle: true,
+            animation: 'fade',
+            arrow: true,
+            arrowType: 'round'
         })
     }
     else{
-        document.getElementById("getStatss")._tippy.destroy();
+        // document.getElementById("getStatss")._tippy.destroy();
         document.getElementById('getStatss').removeAttribute("title");
+    }
+});
+
+jQuery('#statsurl').on('input', function() {
+    state.groupURL = document.getElementById("statsurl").value;
+    if(!URLIsValid(state.groupURL)){
+        document.getElementById('getStatss').title=URLErrorMessage(state.groupURL)
+        console.log(URLErrorMessage(state.groupURL));
+        if(state.groupURL!=""){
+            document.getElementById("statsurl").style.backgroundColor='#fff6f6';
+            document.getElementById("statsurl").style.borderColor='#e0b4b4';
+            document.getElementById("statsurl").style.color='#9f3a38';
+        }
+        else{
+            document.getElementById("statsurl").style.backgroundColor='#fff';
+            document.getElementById("statsurl").style.borderColor='rgba(34,36,38,.15)';
+            document.getElementById("statsurl").style.color='rgba(0,0,0,.87)';
+        }
+    }
+    else{
+        document.getElementById('getStatss').removeAttribute("title");
+        document.getElementById("statsurl").style.backgroundColor='#fff';
+        document.getElementById("statsurl").style.borderColor='rgba(34,36,38,.15)';
+        document.getElementById("statsurl").style.color='rgba(0,0,0,.87)';
     }
 });
 
