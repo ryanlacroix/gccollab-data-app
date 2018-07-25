@@ -1,11 +1,14 @@
-var time1 = 'monthly'; //var to store value of monthly/daily dropdown
-var time2 = 'monthly';
+var time1 = 'daily'; //var to store value of monthly/daily dropdown
+var time2 = 'daily';
 
 var chartData1;  //var to store data from the json file
 var chartData2;
 
 var currentLang = 'EN'; //var to store current language of page
 
+
+var lineChartViews;
+var lineChartMembers;
 // $.ajax({
 //     dataType: "json",
 //     url: 'lineChartData1.json',
@@ -28,9 +31,10 @@ var progress1 = false;
 var p2 = false;
 var p3 = false;
 var p4 = false; 
+var p5 = false;
 
 var beforeSend = function(){
-    if (progress1 == true && p2 == true && p3 == true && p4 == true){
+    if (progress1 == true && p2 == true && p3 == true && p4 == true && p5 == true){
         xmlHttp.abort();
     }
 }
@@ -424,41 +428,57 @@ function createChartLine(timeFrame, chartID){
     valueKey = Object.keys(thisTime)[1];
     thisTime[valueKey].unshift(valueKey);
     dataa = thisTime[valueKey];
-    var chart = c3.generate({
-            bindto: chartID,
-            size: {
-                height: 200,    //size set same the datatable
-                //width: 480    //default size is full width of page
-            },
-            data: {
-                x: 'dates',
-                xFormat: '%Y-%m-%d',
-                columns: [
-                    columnss,   // example of what is being passed ['x', "20170831", "20170930", "20171031", "20171130", "20171231", "20180131", "20180228", "20180331", "20180430", "20180531"],
-                    dataa,      // example of what is being passed ['users', 20, 26, 26, 27, 27, 31, 34, 34, 34, 43]
-                ],
-                color: function (color, d) {
-                    // d will be 'id' when called for legends
-                    return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
-                    },
-            },
-            legend: {
-                show: false
-            },
-            axis: {
-                x: {
-                    type: 'timeseries',
-                tick: {
-                    format: '%Y-%m-%d'
-                    }
-                }
-            },
-            groupName: '',
-            onrendered: function() {
-                d3.selectAll(".c3-axis.c3-axis-x .tick text")
-                    .style("display", "none");
-            }
-        });
+    // var chart = c3.generate({
+    //         bindto: chartID,
+    //         size: {
+    //             height: 200,    //size set same the datatable
+    //             //width: 480    //default size is full width of page
+    //         },
+    //         data: {
+    //             x: 'dates',
+    //             xFormat: '%Y-%m-%d',
+    //             columns: [
+    //                 columnss,   // example of what is being passed ['x', "20170831", "20170930", "20171031", "20171130", "20171231", "20180131", "20180228", "20180331", "20180430", "20180531"],
+    //                 dataa,      // example of what is being passed ['users', 20, 26, 26, 27, 27, 31, 34, 34, 34, 43]
+    //             ],
+    //             color: function (color, d) {
+    //                 // d will be 'id' when called for legends
+    //                 return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
+    //                 },
+    //         },
+    //         legend: {
+    //             show: false
+    //         },
+    //         axis: {
+    //             x: {
+    //                 type: 'timeseries',
+    //             tick: {
+    //                 format: '%Y-%m-%d'
+    //                 }
+    //             }
+    //         },
+    //         groupName: '',
+    //         onrendered: function() {
+    //             d3.selectAll(".c3-axis.c3-axis-x .tick text")
+    //                 .style("display", "none");
+    //         }
+    //     });
+    if (dataa[0]=='pageviews' || dataa[0]=='uniquePageviews'){
+        lineChartViews.load({
+            columns: [
+                columnss,
+                dataa
+            ]
+        });  
+    }
+    else if(dataa[0]=='users'){
+        lineChartMembers.load({
+            columns: [
+                columnss,
+                dataa
+            ]
+        })
+    }
     }
 
 function downloadCSVLine(timeFrame){
@@ -760,6 +780,7 @@ function helperRequestData() {
         requestData('departments');
         requestData('topContent');
         requestData('pageViews');
+        requestData('uniquePageviews');
     })
 }
 
@@ -916,6 +937,76 @@ function replaceAll(str, find, replace) {
 }
 
 function requestData(reqType) {
+    lineChartViews = c3.generate({
+        bindto: '#chart1',
+        size: {
+            height: 200,    //size set same the datatable
+            //width: 480    //default size is full width of page
+        },
+        data: {
+            x: 'dates',
+            xFormat: '%Y-%m-%d',
+            columns: [
+                // columnss,   // example of what is being passed ['x', "20170831", "20170930", "20171031", "20171130", "20171231", "20180131", "20180228", "20180331", "20180430", "20180531"],
+                // dataa,      // example of what is being passed ['users', 20, 26, 26, 27, 27, 31, 34, 34, 34, 43]
+            ],
+            // color: function (color, d) {
+            //     // d will be 'id' when called for legends
+            //     return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
+            //     },
+        },
+        legend: {
+            show: false
+        },
+        axis: {
+            x: {
+                type: 'timeseries',
+            tick: {
+                format: '%Y-%m-%d'
+                }
+            }
+        },
+        groupName: '',
+        onrendered: function() {
+            d3.selectAll(".c3-axis.c3-axis-x .tick text")
+                .style("display", "none");
+        }
+    });
+    lineChartMembers = c3.generate({
+        bindto: '#chart2',
+        size: {
+            height: 200,    //size set same the datatable
+            //width: 480    //default size is full width of page
+        },
+        data: {
+            x: 'dates',
+            xFormat: '%Y-%m-%d',
+            columns: [
+                // columnss,   // example of what is being passed ['x', "20170831", "20170930", "20171031", "20171130", "20171231", "20180131", "20180228", "20180331", "20180430", "20180531"],
+                // dataa,      // example of what is being passed ['users', 20, 26, 26, 27, 27, 31, 34, 34, 34, 43]
+            ],
+            // color: function (color, d) {
+            //     // d will be 'id' when called for legends
+            //     return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
+            //     },
+        },
+        legend: {
+            show: false
+        },
+        axis: {
+            x: {
+                type: 'timeseries',
+            tick: {
+                format: '%Y-%m-%d'
+                }
+            }
+        },
+        groupName: '',
+        onrendered: function() {
+            d3.selectAll(".c3-axis.c3-axis-x .tick text")
+                .style("display", "none");
+        }
+    });
     // Form correct request based on request type
     // Really ugly, needs back end changes
     var reqStatement = ""; // Populate this with the request
@@ -956,6 +1047,14 @@ function requestData(reqType) {
                 end_date: state.endDate
             });
             break;
+        case 'uniquePageviews':
+            reqStatement = JSON.stringify({
+                type: 'pages',
+                stat: 'uniquePageviews',
+                url: state.groupURL,
+                start_date: state.startDate,
+                end_date: state.endDate
+            });
         }
     // Send the request
     //reqStatement = JSON.parse('{"stepIndex":4,"reqType":{"category":1,"filter":"https://gccollab.ca/groups/profile/718/canada-indigenous-relations-creating-awareness-fostering-reconciliation-and-contributing-to-a-shared-future-relations-canada-et-peuples-indigenes-promouvoir-la-sensibilisation-favoriser-la-reconciliation-et-contribuer-a-un-avenir-partager"},"metric":2,"metric2":0,"time":{"startDate":"2017-02-12","endDate":"2018-02-12","allTime":true},"errorFlag":false}');
@@ -966,6 +1065,7 @@ function requestData(reqType) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
+            
             resp = JSON.parse(this.response);
             console.log(this.response);
             switch(reqType) {
@@ -1002,8 +1102,14 @@ function requestData(reqType) {
                     document.getElementById("title").innerHTML=replaceAll(chartData1.group_name, "-", " ");
                     console.log(chartData1.group_name)
                     mainLine(1)
-                    $('.loading').hide();
+                    
                     break;
+                case 'uniquePageviews':
+                    p5 = false;
+                    chartData1 = resp;
+                    console.log(chartData1);
+                    mainLine(1)
+                    $('.loading').hide();
             }
             setTimeout(function() {
                 $(window).trigger('resize');
