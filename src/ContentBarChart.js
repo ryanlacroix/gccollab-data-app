@@ -7,12 +7,15 @@ import * as fileDownloader from 'js-file-download';
 import * as Papa from 'papaparse'
 
 import FileFileDownload from 'material-ui/svg-icons/file/file-download';
+import Help from 'material-ui/svg-icons/action/help'
 
 import { Loader, Segment, Button } from 'semantic-ui-react';
 
 import 'c3/c3.css';
 
 import './ContentBarChart.css';
+
+import {Header, Image, Modal } from 'semantic-ui-react'
 
 class ContentBarChart extends Component {
     /* Call each time step changes. Inserts correct component accordingly*/
@@ -45,9 +48,13 @@ class ContentBarChart extends Component {
             partialDataEN: {},
             partialDataFR: {},
             groupNameEN: '',
-            groupNameFR: ''
+            groupNameFR: '',
+            open: false
         }
     }
+
+    open = () => this.setState({ open: true });
+    close = () => this.setState({ open: false });
 
     validTypeCheck (typeStr) {
          let validTypes = ['file','discussion','event_calendar','groups','blog',
@@ -306,9 +313,12 @@ class ContentBarChart extends Component {
                     <tr>
                         <td>
                             <span className = 'outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h3> {this.state.title} </h3>
-                                <IconButton className = 'innercsv' tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
+                                <IconButton className = 'innercsv' tooltip={this.state.downloadCSVmessage} style={{padding: 0, height:'40px', width:'40px', marginLeft: '10px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
+                                <IconButton onClick={this.open}>
+                                    <Help/>
+                                </IconButton>
                             </span>
                             
                         </td>
@@ -358,6 +368,19 @@ class ContentBarChart extends Component {
                         > {this.state.showAll ? this.state.contentButton2 : this.state.contentButton} </Button>
                     </div>
                 </div>
+                <Modal open={this.state.open} onClose={this.close}>
+                    <Modal.Header>Select a Photo</Modal.Header>
+                    <Modal.Content>
+                    <Modal.Description>
+                        <Header>Default Profile Image</Header>
+                        <p>We've found the following gravatar image associated with your e-mail address.</p>
+                        <p>Is it okay to use this photo?</p>
+                    </Modal.Description>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button onClick={this.close}>Nope</Button>
+                    </Modal.Actions>
+                </Modal>
             </Segment>
         );
     }
