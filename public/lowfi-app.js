@@ -31,11 +31,11 @@ var p3 = false;
 var p4 = false; 
 var p5 = false;
 
-var beforeSend = function(){
-    if (progress1 == true && p2 == true && p3 == true && p4 == true && p5 == true){
-        xmlHttp.abort();
-    }
-}
+// var beforeSend = function(){
+//     if (progress1 == true && p2 == true && p3 == true && p4 == true && p5 == true){
+//         xmlHttp.abort();
+//     }
+// }
 
 var menu = document.getElementById("select");
 menu.addEventListener("change", helper1);
@@ -340,7 +340,12 @@ function mainLine(num) {
     }
     tester = avgTimeOnPageResp;
     if(num == 3){
-        document.getElementById("avgTimeOnPage").innerHTML="Average time on page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " seconds" ;
+        if(currentLang == "EN"){
+            document.getElementById("avgTimeOnPage").innerHTML="Average time on page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " seconds" ;
+        }
+        else{
+            document.getElementById("avgTimeOnPage").innerHTML="Temps moyen sur la page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " secondes" ;
+        }
     }
     // x = prepareTableDataLine(time);
     // createTable(x);
@@ -766,6 +771,19 @@ $("#datepicker2").on("change keyup paste", function(){
     }
 })
 
+$("#helpButtonDiv").on('click', function(event) {
+    $('.ui.modal')
+        .modal('show')
+    ;
+})
+
+function myFunction () {
+    $('.ui.modal')
+        .modal('show')
+    ;
+    console.log("MOOODDDAL")
+}
+
 function helperRequestData() {
     $('.loading').show();
     $('.loading1').show();
@@ -946,6 +964,11 @@ var finishedLoadingPageViews = false;
 var finishedLoadingAvgTimeOnPAge = false;
 
 function requestData(reqType) {
+    progress1 = true;
+    p2 = true;
+    p3 = true;
+    p4 = true;
+    p5 = true;
     // Form correct request based on request type
     // Really ugly, needs back end changes
     var reqStatement = ""; // Populate this with the request
@@ -1063,6 +1086,15 @@ function requestData(reqType) {
             setTimeout(function() {
                 $(window).trigger('resize');
             }, 0);
+       }
+       if(progress1 == false && p2 == false && p3 == false && p4 == false && p5 == false){
+           setTimeout(function(){
+            if (currentLang == "FR"){
+                $("#fr-toggle").trigger("click");
+           }
+           if (currentLang == "EN"){
+                $("#eng-toggle").trigger("click");
+           }}, 250);
        }
     };
     xmlHttp.open("POST", "/api", true); // false for synchronous request
