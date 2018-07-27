@@ -162,17 +162,27 @@ function updatedTitle (){
     if (groupNameFR === undefined || groupNameFR == ""){
         groupNameFR = replaceAll(chartData1.group_name, "-", " ")
     }
+    if (currentLang == "EN"){
+        try{ //need try catch as user may press language toggle before content returned
+            document.getElementById("title").innerHTML=groupNameEN;
+        }
+        catch(err){
+            console.log("languagetitleerror");
+        }
+    }
+    else{ //currentLang FR
+        try{
+            document.getElementById("title").innerHTML=groupNameFR;
+        }
+        catch(err){
+            console.log("languagetitleerror");
+        }
+    }
 }
 
 $("#eng-toggle").on('click', function(event) {
     currentLang = "EN";
-    try{
-        updatedTitle();
-        document.getElementById("title").innerHTML=groupNameEN;
-    }
-    catch(err){
-        console.log("languagetitleerror");
-    }
+    updatedTitle();
     $.datepicker.setDefaults($.datepicker.regional['en']);
     document.getElementById("h11").innerHTML="<strong>GC</strong>collab Group Stats Page";
     document.getElementById("url-message").innerHTML="Paste the group URL above and set your desired start and end dates to retrieve relevant statistics.";
@@ -196,13 +206,7 @@ $("#eng-toggle").on('click', function(event) {
 
 $("#fr-toggle").on('click', function(event) {
     currentLang = "FR";
-    try{
-        updatedTitle();
-        document.getElementById("title").innerHTML=groupNameFR;
-    }
-    catch(err){
-        console.log("languagetitleerror");
-    }
+    updatedTitle();
     $.datepicker.setDefaults($.datepicker.regional['fr']);
     document.getElementById("h11").innerHTML="Page des statistiques des groupes <strong>GC</strong>collab";
     document.getElementById("url-message").innerHTML="Collez l'URL du groupe ci-dessus et choisissez les dates de début et de fin pour récupérer les statistiques pertinentes.";
@@ -435,10 +439,17 @@ function createChartLine(timeFrame, chartID){
                     columnss,   // example of what is being passed ['x', "20170831", "20170930", "20171031", "20171130", "20171231", "20180131", "20180228", "20180331", "20180430", "20180531"],
                     dataa,      // example of what is being passed ['users', 20, 26, 26, 27, 27, 31, 34, 34, 34, 43]
                 ],
-                color: function (color, d) {
-                    // d will be 'id' when called for legends
-                    return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
-                    },
+                color: '#047177'
+                // color: function (color, d) {
+                //     // d will be 'id' when called for legends
+                //     return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
+                //     },
+            },
+            point: {
+                show: false
+            },
+            color: {
+                pattern: ['#047177']
             },
             legend: {
                 show: false
@@ -1002,6 +1013,7 @@ function requestData(reqType) {
                     for (var i = 0; i < hardCopybcden['urls'].length; i++){
                         hardCopybcdfr['urls'][i] = toFrench(hardCopybcdfr['urls'][i])
                     }
+                    updatedTitle();
                     mainBar(2, 'topContent', resp);
                     $('.loading3').hide();
                     break;
@@ -1015,7 +1027,7 @@ function requestData(reqType) {
                     }
                     chartData1 = resp;
                     console.log(chartData1);
-                    document.getElementById("title").innerHTML=replaceAll(chartData1.group_name, "-", " ");
+                    // document.getElementById("title").innerHTML=replaceAll(chartData1.group_name, "-", " ");
                     mainLine(1)
                     break;
                 case "avgTimeOnPage":
@@ -1035,7 +1047,7 @@ function requestData(reqType) {
             }, 0);
        }
        if(progress1 == false && p2 == false && p3 == false && p4 == false && p5 == false){
-           setTimeout(function(){
+            setTimeout(function(){
             if (currentLang == "FR"){
                 $("#fr-toggle").trigger("click");
             }}, 250);
