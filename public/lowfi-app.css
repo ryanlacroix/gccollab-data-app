@@ -252,6 +252,7 @@ div.ui.action.input{
     position: absolute;
     left: 50%;
     top: 35%;
+    z-index: 100000;
  }
  #loading1 {
     /* margin-left: 48%;
@@ -259,6 +260,7 @@ div.ui.action.input{
     position: absolute;
     left: 50%;
     top: 35%;
+    z-index: 100000;
  }
  #loading2 {
     /* margin-left: 48%;
@@ -266,6 +268,7 @@ div.ui.action.input{
     position: absolute;
     left: 50%;
     top: 35%;
+    z-index: 100000;
  }
  #loading3 {
     /* margin-left: 48%;
@@ -273,6 +276,7 @@ div.ui.action.input{
     position: absolute;
     left: 50%;
     top: 35%;
+    z-index: 100000;
  }
  #helpButton{
     cursor: pointer;
