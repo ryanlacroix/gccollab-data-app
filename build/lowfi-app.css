@@ -18,14 +18,17 @@ a:hover{
 #avgTimeOnPage{
     margin-left: 62% !important;
     margin-right: 12%;
-    font-weight: bold;
+    font-weight: 500;
     margin-top: 0px;
     margin-bottom: 0px;
     transform: translate(0%, -75%);
-    font-family: 'Rubik';
+    font-family: 'Rubik', sans-serif;
+    font-size: 15px;
 }
 #ignore{
     height: 35px;
+    background-color: rgb(70, 123, 141);
+    color: white;
 }
 #lang-toggle{
     margin-left: 90%;
@@ -46,9 +49,10 @@ a:hover{
     box-shadow: rgba(0, 0, 0, 0.31) 0px -1px 80px -4px;
 }
 .h11{
-    font-family: Helvetica, Arial, sans-serif; 
-    text-shadow: rgb(85, 85, 85) 2px 2px; 
-    background-color: #047177; 
+    font-family: 'Rubik', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    background-color: rgb(70, 123, 141);
     color: white; 
     border-top-left-radius: 5px; 
     border-top-right-radius: 5px;
@@ -124,6 +128,23 @@ a:hover{
 .title{
     display: inline-block; 
     margin-left: 20px;
+    font-family: 'Rubik', sans-serif;
+    font-size: 1.5em;
+    font-weight: 700;
+}
+
+#browser-warning {
+    font-family: 'Rubik', sans-serif;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+#unsupported-browser {
+    background-color: lightgoldenrodyellow;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 .csv-button{
     border: 10px; 
@@ -172,6 +193,7 @@ select.ui.dropdown{
     width: 475px; 
     height: 200px;
     margin-bottom: 68px;
+    font-family: 'Rubik', sans-serif;
 }
 div.ui.action.input{
     float: right; 
@@ -288,7 +310,11 @@ div.ui.action.input{
     } */
     #avgTimeOnPage{
         margin: 0 auto !important;
-        width: 300px 
+        width: 300pxl;
+        font-family: "Rubik", sans-serif;
+        font-size: 15px;
+        font-weight: 500;
+
     }
     .getStats{
         display: inline;
