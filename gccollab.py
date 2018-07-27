@@ -213,7 +213,10 @@ class groups(object):
 
         group_row = pd.read_sql(statement, conn)
 
-        return group_row['name'].tolist()[0]
+        try:
+            return group_row['name'].tolist()[0]
+        except:
+            return ''
 
     def get_all(tags=False):
 
