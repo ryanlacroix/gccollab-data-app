@@ -8,7 +8,7 @@ a:hover{
 }
 #title{
     font-size: 100%;
-    font-family: 'Rubik', sans-serif;
+    font-family: Roboto, sans-serif;
     margin-right: 5px;
     margin-left: 5px;
     text-align: center;
@@ -46,12 +46,12 @@ a:hover{
     box-shadow: rgba(0, 0, 0, 0.31) 0px -1px 80px -4px;
 }
 .h11{
-    font-family: 'Rubik', sans-serif;
+    font-family: Helvetica, Arial, sans-serif; 
+    text-shadow: rgb(85, 85, 85) 2px 2px; 
     background-color: #047177; 
     color: white; 
     border-top-left-radius: 5px; 
     border-top-right-radius: 5px;
-    text-align: center;
 }
 .div3{
     height: 50px; 
@@ -124,17 +124,12 @@ a:hover{
 .title{
     display: inline-block; 
     margin-left: 20px;
-    font-family: 'Rubik', sans-serif;
-}
-
-#browser-warning {
-    font-family: 'Rubik', sans-serif;     
 }
 .csv-button{
     border: 10px; 
     box-sizing: border-box; 
     display: inline-block; 
-    font-family: 'Rubik', sans-serif; 
+    font-family: Roboto, sans-serif; 
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0); 
     cursor: pointer; 
     text-decoration: none; 
@@ -187,7 +182,7 @@ div.ui.action.input{
 }
 .div1button{
     position: absolute;
-    font-family: 'Rubik', sans-serif;
+    font-family: Roboto, sans-serif; 
     font-size: 10px; 
     line-height: 22px; 
     padding: 0px 8px; 
@@ -249,7 +244,7 @@ div.ui.action.input{
     transform: translateY(-50%);
     margin: auto;
     margin-left: 250px;
-    font-family: 'Rubik', sans-serif; 
+    font-family: Helvetica, Arial, sans-serif; 
 }
 #loading {
     /* margin-left: 48%;

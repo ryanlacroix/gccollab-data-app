@@ -571,6 +571,23 @@ function createChartBar(chartData, chartID){
     chartData[firstKey].unshift(firstKey);
     columnss = chartData[zeroethKey].slice(1,21); 
     dataa = chartData[firstKey].slice(0,21);
+    if (firstKey == 'members'){
+        if (currentLang == "EN"){
+            dataa[0] = "Members"
+        }
+        else{
+            dataa[0] = "Membres"
+        }
+    }
+    if (firstKey == "pageviews"){
+        if (currentLang == "EN"){
+            dataa[0] = "Views"
+        }
+        else{
+            dataa[0] = "Pages Consultées"
+        }
+    }
+    console.log(dataa)
     var str = firstKey;
     var chart = c3.generate({
         bindto: chartID,
