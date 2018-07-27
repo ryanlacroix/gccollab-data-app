@@ -162,29 +162,13 @@ var hardCopyURLTitle;
 
 function updatedTitle (){
     hardCopyBarChart2 = $.extend(true, {}, barChartData2);
-        try{ 
-            var enFrTitles = replaceAll(JSON.parse(hardCopyBarChart2.group_name).en, "-", " ").split(" / ");
-            try{
-                groupNameEN = enFrTitles[0];
-            }
-            catch (err){
-                groupNameEN = replaceAll(hardCopyURLTitle.group_name, "-", " ");
-            }
-            try{
-                groupNameFR = enFrTitles[1];
-            }
-            catch(err){
-                groupNameEN = replaceAll(hardCopyURLTitle.group_name, "-", " ");
-            }
-        } catch (err) {
-            groupNameEN = replaceAll(hardCopyURLTitle.group_name, "-", " ");
-            groupNameFR = replaceAll(hardCopyURLTitle.group_name, "-", " ");
-        }
-    if(groupNameFR === undefined){
-        groupNameFR = replaceAll(hardCopyURLTitle.group_name, "-", " ");   
+    groupNameEN = JSON.parse(hardCopyBarChart2["group_name"]).en
+    groupNameFR = JSON.parse(hardCopyBarChart2["group_name"]).fr
+    if (groupNameEN === undefined || groupNameEN == ""){
+        groupNameEN = replaceAll(chartData1.group_name, "-", " ")
     }
-    if(groupNameEN === undefined){
-        groupNameEN = replaceAll(hardCopyURLTitle.group_name, "-", " ");   
+    if (groupNameFR === undefined || groupNameFR == ""){
+        groupNameFR = replaceAll(chartData1.group_name, "-", " ")
     }
 }
 
@@ -1091,10 +1075,7 @@ function requestData(reqType) {
            setTimeout(function(){
             if (currentLang == "FR"){
                 $("#fr-toggle").trigger("click");
-           }
-           if (currentLang == "EN"){
-                $("#eng-toggle").trigger("click");
-           }}, 250);
+            }}, 250);
        }
     };
     xmlHttp.open("POST", "/api", true); // false for synchronous request
