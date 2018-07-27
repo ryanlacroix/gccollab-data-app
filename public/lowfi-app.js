@@ -96,30 +96,22 @@ var fr_dict = {};
 var fr_list = [];
 var inverse_fr_dict = {};
 $.getJSON("fr_dict.json", function(result){
-    //console.log(result);
     fr_dict = result;
     var values = $.map(fr_dict, function(value,key) {return value});
     var keys = $.map(fr_dict, function(value, key) {return key});
-    // console.log(values);
-    // console.log(keys);
     fr_list = Array(values);
     inverse_fr_dict = swap(fr_dict);
-    //console.log(inverse_fr_dict);
 });
 
 var en_dict = {};
 var en_list = [];
 var inverse_en_dict = {};
 $.getJSON("en_dict.json", function(result){
-    //console.log(result);
     en_dict = result;
     var values = $.map(en_dict, function(value,key) {return value});
     var keys = $.map(en_dict, function(value, key) {return key});
-    // console.log(values);
-    // console.log(keys);
     en_list = Array(values);
     inverse_en_dict = swap(en_dict);
-    //console.log(inverse_fr_dict);
 });
 
 //Returns the bilingual version of the name given
@@ -200,12 +192,6 @@ $("#eng-toggle").on('click', function(event) {
     mainLine(2)
     mainBar(2, 'topContent', enHelper)
     mainBar(1, 'departments', barChartData1);
-    // state.groupURL = document.getElementById("statsurl").value;
-    // console.log(!URLIsValid(state.groupURL));
-    // if(!URLIsValid(state.groupURL)){
-    //     console.log('efowebfuewbfoweiubfewuifbuwafbuiwef');
-    //     document.getElementById('getStatss').title=URLErrorMessage(state.groupURL)
-    // }s
 });
 
 $("#fr-toggle").on('click', function(event) {
@@ -285,7 +271,6 @@ $(function() {
         dayStatus: 'Utiliser DD comme premier jour de la semaine', dateStatus: 'Choisir le DD, MM d',
         dateFormat: 'dd/mm/yy', firstDay: 0, 
         initStatus: 'Choisir la date', isRTL: false};
-    console.log(currentLang)
     $.datepicker.setDefaults($.datepicker.regional[currentLang.toLowerCase()]);
     $( "#datepicker2" ).datepicker();
     $( "#datepicker2" ).datepicker("setDate", new Date());
@@ -339,7 +324,6 @@ function mainLine(num) {
 }    
 
 function prepareTableDataLine(timeFrame){
-    //console.log(timeFrame);
     valueKey = Object.keys(timeFrame)[1];
     if(timeFrame.dates[0] == 'Dates'){      //formatting the data to be used for making the table
         timeFrame.dates.splice(0,1);
@@ -363,7 +347,6 @@ function prepareTableDataLine(timeFrame){
 }
 
 function createTable(tableData, tableID, TitleColumn1, TitleColumn2){
-    console.log(tableData['departments']);
     if ( $.fn.dataTable.isDataTable( tableID ) ) { //check if this is already a datatable
         $(tableID).DataTable().destroy();              //clear its data
         $(document).ready(function() {
@@ -529,40 +512,32 @@ document.getElementById("DownloadCSVBar2").addEventListener("click", function(){
 // });
 
 function mainBar(num, stringy, barChartData){
-    console.log(currentLang)
-    console.log(num)
     if(stringy == 'departments'){
         x = prepareTableDataBar(barChartData)
     }
     if(num==1){
         if(currentLang == "EN"){
-            console.log("english1")
             var TitleColumn1 = "Department";
             var TitleColumn2 = "Members";
         }
         else{
-            console.log("fr1")
             var TitleColumn1 = "Départment";
             var TitleColumn2 = "Membres du groupe";
         }
     }
     else if(stringy == 'topContent'){
-        //console.log(barChartData);
         x = prepareTableDataBar2(barChartData);
     }
     if(num==2){
         if(currentLang == "EN"){
-            console.log("en2")
             var TitleColumn1 = "Title";
             var TitleColumn2 = "Views";
         }
         else{
-            console.log("fr2")
             var TitleColumn1 = "Titre";
             var TitleColumn2 = "Pages consultées";
         }
     }
-    console.log(TitleColumn1, TitleColumn2)
     createChartBar(barChartData, '#barChart'.concat(String(num)));
     createTable(x, '#test'.concat(String(num)), TitleColumn1, TitleColumn2);
 }
@@ -725,10 +700,7 @@ String.prototype.replaceAll = function(search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
-$("#datepicker1").on("change keyup paste", function(){
-    //console.log(this.value);
-    
-    console.log($("#datepicker2").datepicker("getDate"));
+$("#datepicker1").on("change keyup paste", function(){    
     if($("#datepicker2").datepicker("getDate") < $("#datepicker1").datepicker("getDate")){
         document.getElementById("getStatss").disabled = true;
     }
@@ -742,7 +714,6 @@ $("#datepicker1").on("change keyup paste", function(){
 })
 
 $("#datepicker2").on("change keyup paste", function(){
-    //console.log(this.value);
     if($("#datepicker2").datepicker("getDate") < $("#datepicker1").datepicker("getDate")){
         document.getElementById("getStatss").disabled = true;
     }
@@ -765,7 +736,6 @@ function myFunction () {
     $('.ui.modal')
         .modal('show')
     ;
-    console.log("MOOODDDAL")
 }
 
 function helperRequestData() {
@@ -813,7 +783,7 @@ document.getElementById("getStatss").addEventListener("mouseover", function(){
         document.getElementById("getStatss")._tippy.destroy();
     }
     catch(err){
-        console.log('errorrrrrr');
+        console.log('error destroying tippys');
     }
     if(!URLIsValid(state.groupURL)){
         document.getElementById('getStatss').title=URLErrorMessage(state.groupURL)
@@ -838,7 +808,6 @@ jQuery('#statsurl').on('input', function() {
     state.groupURL = document.getElementById("statsurl").value;
     if(!URLIsValid(state.groupURL)){
         document.getElementById('getStatss').title=URLErrorMessage(state.groupURL)
-        console.log(URLErrorMessage(state.groupURL));
         if(state.groupURL!=""){
             document.getElementById("statsurl").style.backgroundColor='#fff6f6';
             document.getElementById("statsurl").style.borderColor='#e0b4b4';
@@ -862,7 +831,6 @@ document.getElementById("getStatss").addEventListener("click", function(){
     state.groupURL = document.getElementById("statsurl").value;
     if(!URLIsValid(state.groupURL)){
         document.getElementById('getStatss').title=URLErrorMessage(state.groupURL)
-        console.log(URLErrorMessage(state.groupURL));
         document.getElementById("statsurl").style.backgroundColor='#fff6f6';
         document.getElementById("statsurl").style.borderColor='#e0b4b4';
         document.getElementById("statsurl").style.color='#9f3a38';
@@ -921,11 +889,8 @@ var state = {
 };
 function dateConverter(d) {
     year = String(d.getFullYear());
-    console.log(year);
     day = String(d.getDate());
-    console.log(day);
     month = String(d.getMonth() + 1);
-    console.log(month);
     if (day.length == 1){
         day = "0" + day;
     }
@@ -1013,7 +978,6 @@ function requestData(reqType) {
     xmlHttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             resp = JSON.parse(this.response);
-            console.log(this.response);
             switch(reqType) {
                 case 'membersOverTime':
                     progress1 = false;
@@ -1052,7 +1016,6 @@ function requestData(reqType) {
                     chartData1 = resp;
                     console.log(chartData1);
                     document.getElementById("title").innerHTML=replaceAll(chartData1.group_name, "-", " ");
-                    console.log(chartData1.group_name)
                     mainLine(1)
                     break;
                 case "avgTimeOnPage":
