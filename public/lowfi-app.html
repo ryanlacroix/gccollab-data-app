@@ -17,7 +17,14 @@
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/components/button.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/components/input.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/components/dropdown.min.css"/>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/components/dropdown.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/components/modal.min.css">
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/components/modal.min.js"></script>
+        <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script> 
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/components/modal.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/components/dimmer.min.css">
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/components/dimmer.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/components/transition.min.css">
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/components/transition.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"/>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.js"></script>
@@ -39,7 +46,7 @@
                 <!-- <img src="C:/Users/trinet.tbs-004409/Desktop/DataApp/DataAppJune6v2/DataAppC3Graphs4graph test-88af208f96310a0ec090fe13664d582b2f2733a3/server/public/iebad.jpeg"> -->
                 <button class="ui right floated button" id="ignore" onclick="ignore()">Ignore</button>
                 <h5 id="browser-warning">
-                    Please note that Internet Explorer 11 and below is outdated. You've therefore been redirected to a simplified version of the GCcollab stats page. We recommed upgrading to the latest <a href="https://www.microsoft.com/en-us/windows/microsoft-edge">Microsoft Edge</a>, <a href="https://chrome.google.com">Google Chrome</a>, or <a href="https://mozilla.org/firefox">Firefox</a>.
+                    Please note that Internet Explorer is outdated. You have been redirected to a simplified version of the GCcollab stats page. We recommed upgrading to the latest <a href="https://chrome.google.com">Google Chrome</a> or <a href="https://mozilla.org/firefox">Firefox</a>.
                 </h5>
             </div>
         </div>
@@ -106,6 +113,8 @@
                                                     </svg>
                                                 </div>
                                             </button>
+                                            <!--Help button-->
+                                            <i class="fas fa-question-circle" id="helpButton" onclick="myFunction()"></i>
                                             <!-- Monthly/daily dropdown-->
                                             <select class="ui dropdown" id="select">
                                                     <option value="monthly1" id='month' selected>Monthly</option>
@@ -121,7 +130,7 @@
                                                 <div class="spacing" id = "spacing"></div>
                                                 <div class="table" id = "table1"><table id="theTable1" class="display"></table></div>
                                             </div>
-                                            <p id = 'avgTimeOnPage'></p>
+                                            <h4 id='avgTimeOnPage'></h4>
                                         </div>
                                         <!–– box around indivial graph ––>
                                         <div class="ui-segment-ind-content-box" id="box2">
@@ -138,6 +147,7 @@
                                                     </svg>
                                                 </div>
                                             </button>
+                                            <i class="fas fa-question-circle" id="helpButton" onclick="myFunction()"></i>
                                             <!-- Monthly/daily dropdown-->
                                             <select class="ui dropdown" id="select2">
                                                     <option value="monthly2" id="month2" selected>Monthly</option>
@@ -172,6 +182,7 @@
                                                         </svg>
                                                     </div>
                                                 </button>
+                                                <i class="fas fa-question-circle" id="helpButton" onclick="myFunction()"></i>
                                             </div>
                                             <!-- loading symbol-->
                                             <div id="loading2" class="loading2">
@@ -201,6 +212,7 @@
                                                         </svg>
                                                     </div>
                                                 </button>
+                                                <i class="fas fa-question-circle" id="helpButton" onclick="myFunction()"></i>
                                             </div>
                                             <!-- loading symbol-->
                                             <div id="loading3" class="loading3">
@@ -226,5 +238,21 @@
         </div>
         <!–– Connection to javascript ––>
         <script src="lowfi-app.js"></script>
+        <!–– Help Modal ––>
+        <div class="ui modal" style="margin-top: 0px !important; margin-left: 7%; margin-right: 10%; width: 80%; position: relative; z-index: 3;">
+            <div class="header">
+                Help Content
+            </div>
+            <div class="description" style="height: 200px">
+                <p style = "padding-left: 10px">Helpful instuctions and such</p>
+                <p style = "padding-left: 10px">More helpful instuctions</p>
+                <p style = "padding-left: 10px">Guess what?! ... More helpful stuff</p>
+            </div>
+            <div class="actions">
+                <div class="ui black deny button">
+                    Nope
+                </div>
+            </div>
+        </div>
     </body>
 </html>

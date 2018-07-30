@@ -10,6 +10,7 @@ import * as Papa from 'papaparse'
 
 //import DownloadButton from './ic_file_download_black_24px.svg'
 import FileFileDownload from 'material-ui/svg-icons/file/file-download'
+import Help from 'material-ui/svg-icons/action/help'
 
 import 'c3/c3.css';
 
@@ -18,6 +19,8 @@ import moment from 'moment';
 import { Segment, Loader } from 'semantic-ui-react';
 
 import './LineChartMembers.css';
+
+import { Button, Header, Image, Modal } from 'semantic-ui-react'
 
 class LineChartMembers extends Component {
     /* Call each time step changes. Inserts correct component accordingly*/
@@ -59,9 +62,13 @@ class LineChartMembers extends Component {
             header1: 'Date',
             header2: 'Members',
             downloadCSVmessage: "Download Data as CSV",
-            intervalWord: "Interval"
+            intervalWord: "Interval",
+            open: false
         }
     }
+
+    open = () => this.setState({ open: true });
+    close = () => this.setState({ open: false });
 
     requestData = (nextProps=null) => {
         
@@ -310,9 +317,12 @@ class LineChartMembers extends Component {
                     <tr>
                         <td>
                             <span className = 'outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h3> {this.state.title} </h3>
-                                <IconButton tooltip={this.props.language=="EN" ? "Download data as CSV" : "Télécharger les données au format CSV"} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
+                                <IconButton tooltip={this.props.language=="EN" ? "Download data as CSV" : "Télécharger les données au format CSV"} style={{padding: 0, height:'40px', width:'40px', marginLeft: '10px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
+                                <IconButton onClick={this.open}>
+                                    <Help/>
+                                </IconButton>
                             </span>
                             
                         </td>
@@ -342,6 +352,24 @@ class LineChartMembers extends Component {
                     className={this.state.contentClass + scrollTable}
                     headers={[this.state.header1,this.state.header2]}
                 />
+                <Modal open={this.state.open} onClose={this.close}>
+                    <Modal.Header>Select a Photo</Modal.Header>
+                    <Modal.Content image>
+                    <Image
+                        wrapped
+                        size='medium'
+                        src='https://react.semantic-ui.com/images/avatar/large/rachel.png'
+                    />
+                    <Modal.Description>
+                        <Header>Default Profile Image</Header>
+                        <p>We've found the following gravatar image associated with your e-mail address.</p>
+                        <p>Is it okay to use this photo?</p>
+                    </Modal.Description>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button onClick={this.close}>Nope</Button>
+                    </Modal.Actions>
+                </Modal>
             </Segment>
         );
     }

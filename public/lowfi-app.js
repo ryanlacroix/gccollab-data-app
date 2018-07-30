@@ -31,11 +31,11 @@ var p3 = false;
 var p4 = false; 
 var p5 = false;
 
-var beforeSend = function(){
-    if (progress1 == true && p2 == true && p3 == true && p4 == true && p5 == true){
-        xmlHttp.abort();
-    }
-}
+// var beforeSend = function(){
+//     if (progress1 == true && p2 == true && p3 == true && p4 == true && p5 == true){
+//         xmlHttp.abort();
+//     }
+// }
 
 var menu = document.getElementById("select");
 menu.addEventListener("change", helper1);
@@ -96,30 +96,22 @@ var fr_dict = {};
 var fr_list = [];
 var inverse_fr_dict = {};
 $.getJSON("fr_dict.json", function(result){
-    //console.log(result);
     fr_dict = result;
     var values = $.map(fr_dict, function(value,key) {return value});
     var keys = $.map(fr_dict, function(value, key) {return key});
-    // console.log(values);
-    // console.log(keys);
     fr_list = Array(values);
     inverse_fr_dict = swap(fr_dict);
-    //console.log(inverse_fr_dict);
 });
 
 var en_dict = {};
 var en_list = [];
 var inverse_en_dict = {};
 $.getJSON("en_dict.json", function(result){
-    //console.log(result);
     en_dict = result;
     var values = $.map(en_dict, function(value,key) {return value});
     var keys = $.map(en_dict, function(value, key) {return key});
-    // console.log(values);
-    // console.log(keys);
     en_list = Array(values);
     inverse_en_dict = swap(en_dict);
-    //console.log(inverse_fr_dict);
 });
 
 //Returns the bilingual version of the name given
@@ -162,41 +154,35 @@ var hardCopyURLTitle;
 
 function updatedTitle (){
     hardCopyBarChart2 = $.extend(true, {}, barChartData2);
-        try{ 
-            var enFrTitles = replaceAll(JSON.parse(hardCopyBarChart2.group_name).en, "-", " ").split(" / ");
-            try{
-                groupNameEN = enFrTitles[0];
-            }
-            catch (err){
-                groupNameEN = replaceAll(hardCopyURLTitle.group_name, "-", " ");
-            }
-            try{
-                groupNameFR = enFrTitles[1];
-            }
-            catch(err){
-                groupNameEN = replaceAll(hardCopyURLTitle.group_name, "-", " ");
-            }
-        } catch (err) {
-            groupNameEN = replaceAll(hardCopyURLTitle.group_name, "-", " ");
-            groupNameFR = replaceAll(hardCopyURLTitle.group_name, "-", " ");
-        }
-    if(groupNameFR === undefined){
-        groupNameFR = replaceAll(hardCopyURLTitle.group_name, "-", " ");   
+    groupNameEN = JSON.parse(hardCopyBarChart2["group_name"]).en
+    groupNameFR = JSON.parse(hardCopyBarChart2["group_name"]).fr
+    if (groupNameEN === undefined || groupNameEN == ""){
+        groupNameEN = replaceAll(chartData1.group_name, "-", " ")
     }
-    if(groupNameEN === undefined){
-        groupNameEN = replaceAll(hardCopyURLTitle.group_name, "-", " ");   
+    if (groupNameFR === undefined || groupNameFR == ""){
+        groupNameFR = replaceAll(chartData1.group_name, "-", " ")
+    }
+    if (currentLang == "EN"){
+        try{ //need try catch as user may press language toggle before content returned
+            document.getElementById("title").innerHTML=groupNameEN;
+        }
+        catch(err){
+            console.log("languagetitleerror");
+        }
+    }
+    else{ //currentLang FR
+        try{
+            document.getElementById("title").innerHTML=groupNameFR;
+        }
+        catch(err){
+            console.log("languagetitleerror");
+        }
     }
 }
 
 $("#eng-toggle").on('click', function(event) {
     currentLang = "EN";
-    try{
-        updatedTitle();
-        document.getElementById("title").innerHTML=groupNameEN;
-    }
-    catch(err){
-        console.log("languagetitleerror");
-    }
+    updatedTitle();
     $.datepicker.setDefaults($.datepicker.regional['en']);
     document.getElementById("h11").innerHTML="<strong>GC</strong>collab Group Stats Page";
     document.getElementById("url-message").innerHTML="Paste the group URL above and set your desired start and end dates to retrieve relevant statistics.";
@@ -216,23 +202,11 @@ $("#eng-toggle").on('click', function(event) {
     mainLine(2)
     mainBar(2, 'topContent', enHelper)
     mainBar(1, 'departments', barChartData1);
-    // state.groupURL = document.getElementById("statsurl").value;
-    // console.log(!URLIsValid(state.groupURL));
-    // if(!URLIsValid(state.groupURL)){
-    //     console.log('efowebfuewbfoweiubfewuifbuwafbuiwef');
-    //     document.getElementById('getStatss').title=URLErrorMessage(state.groupURL)
-    // }s
 });
 
 $("#fr-toggle").on('click', function(event) {
     currentLang = "FR";
-    try{
-        updatedTitle();
-        document.getElementById("title").innerHTML=groupNameFR;
-    }
-    catch(err){
-        console.log("languagetitleerror");
-    }
+    updatedTitle();
     $.datepicker.setDefaults($.datepicker.regional['fr']);
     document.getElementById("h11").innerHTML="Page des statistiques des groupes <strong>GC</strong>collab";
     document.getElementById("url-message").innerHTML="Collez l'URL du groupe ci-dessus et choisissez les dates de début et de fin pour récupérer les statistiques pertinentes.";
@@ -301,7 +275,6 @@ $(function() {
         dayStatus: 'Utiliser DD comme premier jour de la semaine', dateStatus: 'Choisir le DD, MM d',
         dateFormat: 'dd/mm/yy', firstDay: 0, 
         initStatus: 'Choisir la date', isRTL: false};
-    console.log(currentLang)
     $.datepicker.setDefaults($.datepicker.regional[currentLang.toLowerCase()]);
     $( "#datepicker2" ).datepicker();
     $( "#datepicker2" ).datepicker("setDate", new Date());
@@ -340,7 +313,12 @@ function mainLine(num) {
     }
     tester = avgTimeOnPageResp;
     if(num == 3){
-        document.getElementById("avgTimeOnPage").innerHTML="Average time on page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " seconds" ;
+        if(currentLang == "EN"){
+            document.getElementById("avgTimeOnPage").innerHTML="Average time on page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " seconds" ;
+        }
+        else{
+            document.getElementById("avgTimeOnPage").innerHTML="Temps moyen sur la page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " secondes" ;
+        }
     }
     // x = prepareTableDataLine(time);
     // createTable(x);
@@ -350,7 +328,6 @@ function mainLine(num) {
 }    
 
 function prepareTableDataLine(timeFrame){
-    //console.log(timeFrame);
     valueKey = Object.keys(timeFrame)[1];
     if(timeFrame.dates[0] == 'Dates'){      //formatting the data to be used for making the table
         timeFrame.dates.splice(0,1);
@@ -374,7 +351,6 @@ function prepareTableDataLine(timeFrame){
 }
 
 function createTable(tableData, tableID, TitleColumn1, TitleColumn2){
-    console.log(tableData['departments']);
     if ( $.fn.dataTable.isDataTable( tableID ) ) { //check if this is already a datatable
         $(tableID).DataTable().destroy();              //clear its data
         $(document).ready(function() {
@@ -463,10 +439,17 @@ function createChartLine(timeFrame, chartID){
                     columnss,   // example of what is being passed ['x', "20170831", "20170930", "20171031", "20171130", "20171231", "20180131", "20180228", "20180331", "20180430", "20180531"],
                     dataa,      // example of what is being passed ['users', 20, 26, 26, 27, 27, 31, 34, 34, 34, 43]
                 ],
-                color: function (color, d) {
-                    // d will be 'id' when called for legends
-                    return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
-                    },
+                color: '#047177'
+                // color: function (color, d) {
+                //     // d will be 'id' when called for legends
+                //     return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
+                //     },
+            },
+            point: {
+                show: false
+            },
+            color: {
+                pattern: ['#047177']
             },
             legend: {
                 show: false
@@ -540,40 +523,32 @@ document.getElementById("DownloadCSVBar2").addEventListener("click", function(){
 // });
 
 function mainBar(num, stringy, barChartData){
-    console.log(currentLang)
-    console.log(num)
     if(stringy == 'departments'){
         x = prepareTableDataBar(barChartData)
     }
     if(num==1){
         if(currentLang == "EN"){
-            console.log("english1")
             var TitleColumn1 = "Department";
             var TitleColumn2 = "Members";
         }
         else{
-            console.log("fr1")
             var TitleColumn1 = "Départment";
             var TitleColumn2 = "Membres du groupe";
         }
     }
     else if(stringy == 'topContent'){
-        //console.log(barChartData);
         x = prepareTableDataBar2(barChartData);
     }
     if(num==2){
         if(currentLang == "EN"){
-            console.log("en2")
             var TitleColumn1 = "Title";
             var TitleColumn2 = "Views";
         }
         else{
-            console.log("fr2")
             var TitleColumn1 = "Titre";
             var TitleColumn2 = "Pages consultées";
         }
     }
-    console.log(TitleColumn1, TitleColumn2)
     createChartBar(barChartData, '#barChart'.concat(String(num)));
     createTable(x, '#test'.concat(String(num)), TitleColumn1, TitleColumn2);
 }
@@ -596,6 +571,23 @@ function createChartBar(chartData, chartID){
     chartData[firstKey].unshift(firstKey);
     columnss = chartData[zeroethKey].slice(1,21); 
     dataa = chartData[firstKey].slice(0,21);
+    if (firstKey == 'members'){
+        if (currentLang == "EN"){
+            dataa[0] = "Members"
+        }
+        else{
+            dataa[0] = "Membres"
+        }
+    }
+    if (firstKey == "pageviews"){
+        if (currentLang == "EN"){
+            dataa[0] = "Views"
+        }
+        else{
+            dataa[0] = "Pages Consultées"
+        }
+    }
+    console.log(dataa)
     var str = firstKey;
     var chart = c3.generate({
         bindto: chartID,
@@ -736,10 +728,7 @@ String.prototype.replaceAll = function(search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
-$("#datepicker1").on("change keyup paste", function(){
-    //console.log(this.value);
-    
-    console.log($("#datepicker2").datepicker("getDate"));
+$("#datepicker1").on("change keyup paste", function(){    
     if($("#datepicker2").datepicker("getDate") < $("#datepicker1").datepicker("getDate")){
         document.getElementById("getStatss").disabled = true;
     }
@@ -753,7 +742,6 @@ $("#datepicker1").on("change keyup paste", function(){
 })
 
 $("#datepicker2").on("change keyup paste", function(){
-    //console.log(this.value);
     if($("#datepicker2").datepicker("getDate") < $("#datepicker1").datepicker("getDate")){
         document.getElementById("getStatss").disabled = true;
     }
@@ -765,6 +753,18 @@ $("#datepicker2").on("change keyup paste", function(){
         helperRequestData();
     }
 })
+
+$("#helpButtonDiv").on('click', function(event) {
+    $('.ui.modal')
+        .modal('show')
+    ;
+})
+
+function myFunction () {
+    $('.ui.modal')
+        .modal('show')
+    ;
+}
 
 function helperRequestData() {
     $('.loading').show();
@@ -811,7 +811,7 @@ document.getElementById("getStatss").addEventListener("mouseover", function(){
         document.getElementById("getStatss")._tippy.destroy();
     }
     catch(err){
-        console.log('errorrrrrr');
+        console.log('error destroying tippys');
     }
     if(!URLIsValid(state.groupURL)){
         document.getElementById('getStatss').title=URLErrorMessage(state.groupURL)
@@ -836,7 +836,6 @@ jQuery('#statsurl').on('input', function() {
     state.groupURL = document.getElementById("statsurl").value;
     if(!URLIsValid(state.groupURL)){
         document.getElementById('getStatss').title=URLErrorMessage(state.groupURL)
-        console.log(URLErrorMessage(state.groupURL));
         if(state.groupURL!=""){
             document.getElementById("statsurl").style.backgroundColor='#fff6f6';
             document.getElementById("statsurl").style.borderColor='#e0b4b4';
@@ -860,7 +859,6 @@ document.getElementById("getStatss").addEventListener("click", function(){
     state.groupURL = document.getElementById("statsurl").value;
     if(!URLIsValid(state.groupURL)){
         document.getElementById('getStatss').title=URLErrorMessage(state.groupURL)
-        console.log(URLErrorMessage(state.groupURL));
         document.getElementById("statsurl").style.backgroundColor='#fff6f6';
         document.getElementById("statsurl").style.borderColor='#e0b4b4';
         document.getElementById("statsurl").style.color='#9f3a38';
@@ -919,11 +917,8 @@ var state = {
 };
 function dateConverter(d) {
     year = String(d.getFullYear());
-    console.log(year);
     day = String(d.getDate());
-    console.log(day);
     month = String(d.getMonth() + 1);
-    console.log(month);
     if (day.length == 1){
         day = "0" + day;
     }
@@ -946,6 +941,11 @@ var finishedLoadingPageViews = false;
 var finishedLoadingAvgTimeOnPAge = false;
 
 function requestData(reqType) {
+    progress1 = true;
+    p2 = true;
+    p3 = true;
+    p4 = true;
+    p5 = true;
     // Form correct request based on request type
     // Really ugly, needs back end changes
     var reqStatement = ""; // Populate this with the request
@@ -1006,7 +1006,6 @@ function requestData(reqType) {
     xmlHttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             resp = JSON.parse(this.response);
-            console.log(this.response);
             switch(reqType) {
                 case 'membersOverTime':
                     progress1 = false;
@@ -1031,6 +1030,7 @@ function requestData(reqType) {
                     for (var i = 0; i < hardCopybcden['urls'].length; i++){
                         hardCopybcdfr['urls'][i] = toFrench(hardCopybcdfr['urls'][i])
                     }
+                    updatedTitle();
                     mainBar(2, 'topContent', resp);
                     $('.loading3').hide();
                     break;
@@ -1044,8 +1044,7 @@ function requestData(reqType) {
                     }
                     chartData1 = resp;
                     console.log(chartData1);
-                    document.getElementById("title").innerHTML=replaceAll(chartData1.group_name, "-", " ");
-                    console.log(chartData1.group_name)
+                    // document.getElementById("title").innerHTML=replaceAll(chartData1.group_name, "-", " ");
                     mainLine(1)
                     break;
                 case "avgTimeOnPage":
@@ -1063,6 +1062,12 @@ function requestData(reqType) {
             setTimeout(function() {
                 $(window).trigger('resize');
             }, 0);
+       }
+       if(progress1 == false && p2 == false && p3 == false && p4 == false && p5 == false){
+            setTimeout(function(){
+            if (currentLang == "FR"){
+                $("#fr-toggle").trigger("click");
+            }}, 250);
        }
     };
     xmlHttp.open("POST", "/api", true); // false for synchronous request

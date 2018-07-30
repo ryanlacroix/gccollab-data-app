@@ -8,6 +8,7 @@ import * as fileDownloader from 'js-file-download';
 import * as Papa from 'papaparse'
 
 import FileFileDownload from 'material-ui/svg-icons/file/file-download'
+import Help from 'material-ui/svg-icons/action/help'
 
 import { Loader, Segment, Button } from 'semantic-ui-react';
 
@@ -17,6 +18,8 @@ import './MemberDepChart.css';
 
 import enDict from './en_dict.json'
 import frDict from './fr_dict.json'
+
+import {Header, Image, Modal } from 'semantic-ui-react'
 
 class MemberDepChart extends Component {
     /* Call each time step changes. Inserts correct component accordingly*/
@@ -45,10 +48,13 @@ class MemberDepChart extends Component {
             deptsfr: [],
             deptsen: [],
             fullfr: {},
-            fullen: {}
-
+            fullen: {},
+            open: false
         }
     }
+
+    open = () => this.setState({ open: true });
+    close = () => this.setState({ open: false });
 
     validTypeCheck (typeStr) {
          let validTypes = ['file','discussion','event_calendar','groups','blog',
@@ -326,9 +332,12 @@ class MemberDepChart extends Component {
                     <tr>
                         <td>
                             <span className = 'outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h3> {this.state.title} </h3>
-                                <IconButton tooltip={this.props.language=="EN" ? "Download data as CSV" : "Télécharger les données au format CSV"} style={{padding: 0, height:'40px', width:'40px'}} onClick={this.downloadCSV}>
+                                <IconButton tooltip={this.props.language=="EN" ? "Download data as CSV" : "Télécharger les données au format CSV"} style={{padding: 0, height:'40px', width:'40px', marginLeft: '10px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
+                                <IconButton onClick={this.open}>
+                                    <Help/>
+                                </IconButton>
                             </span>
                         </td>
                         <td>
@@ -378,6 +387,24 @@ class MemberDepChart extends Component {
                     > {this.state.showAll ? this.state.contentButton2 : this.state.contentButton} </Button>
                     </div>
                 </div>
+                <Modal open={this.state.open} onClose={this.close}>
+                    <Modal.Header>Help Content</Modal.Header>
+                    <Modal.Content image>
+                    <Image
+                        wrapped
+                        size='medium'
+                        src='https://react.semantic-ui.com/images/avatar/large/rachel.png'
+                    />
+                    <Modal.Description>
+                        <Header>Default Profile Image</Header>
+                        <p>{this.props.language == "EN" ? "ENGLISH" : "FRENCH"}</p>
+                        <p>Is it okay to use this photo?</p>
+                    </Modal.Description>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button onClick={this.close}>Nope</Button>
+                    </Modal.Actions>
+                </Modal>
             </Segment>
         );
     }

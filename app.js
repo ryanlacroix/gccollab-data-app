@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var os = require('os');
 var spawn = require('child_process').spawn
+var browserDetector = require('./browser-detector.js');
 
 var app = express();
 var PORT = 2112;
@@ -55,7 +56,12 @@ app.post('/api', (req, res) => {
 
 // Prod server
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    // Serve light version for non-modern browsers
+    br = browserDetector.detect(req.headers['user-agent']);
+    if (br === 'noMatch' || br === 'edge')
+        res.sendFile(path.join(__dirname, 'build', 'lowfi-app.html'));
+    else
+        res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 app.listen(PORT);
