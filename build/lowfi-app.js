@@ -1,8 +1,12 @@
 var time1 = 'daily'; //var to store value of monthly/daily dropdown
 var time2 = 'daily';
 
+var time;
+
 var chartData1;  //var to store data from the json file
 var chartData2;
+var avgTimeOnPageResp;
+var uniqueViewsResp;
 
 var currentLang = 'EN'; //var to store current language of page
 
@@ -32,9 +36,10 @@ var p2 = false;
 var p3 = false;
 var p4 = false; 
 var p5 = false;
+var p6 = false;
 
 var beforeSend = function(){
-    if (progress1 == true && p2 == true && p3 == true && p4 == true && p5 == true){
+    if (progress1 == true && p2 == true && p3 == true && p4 == true && p5 == true && p6 == true){
         xmlHttp.abort();
     }
 }
@@ -45,11 +50,13 @@ menu.addEventListener("change", helper1);
 function helper1(event) {
     if (menu.value == "monthly1"){
         time1 = 'monthly';
-        mainLine(1);
+        mainLine(1, chartData1);
+        mainLine(1, uniqueViewsResp);
     }
     if (menu.value == "daily1"){
         time1 = 'daily';
-        mainLine(1);
+        mainLine(1, chartData1);
+        mainLine(1, uniqueViewsResp);
     }
 }
 
@@ -213,6 +220,7 @@ $("#eng-toggle").on('click', function(event) {
     document.getElementById("topContentTitle").innerHTML="Top Group Content";
     document.getElementById("getStatss").innerHTML="Get Stats";
     var enHelper = $.extend(true, {}, hardCopybcden);
+    document.getElementById("avgTimeOnPage").innerHTML="Average time on page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " seconds" ;
     mainLine(1)
     mainLine(2)
     mainBar(2, 'topContent', enHelper)
@@ -253,6 +261,7 @@ $("#fr-toggle").on('click', function(event) {
     barChartData1[firstKey].shift();
     frenchDepartments = departmentsToFrench(barChartData1);
     var frHelper = $.extend(true, {}, hardCopybcdfr);
+    document.getElementById("avgTimeOnPage").innerHTML="Temps moyen sur la page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " secondes" ;
     mainLine(1)
     mainLine(2)
     mainBar(2, 'topContent', frHelper)
@@ -307,13 +316,14 @@ $(function() {
     $( "#datepicker2" ).datepicker("setDate", new Date());
 } );
 
+var tester; 
 
-function mainLine(num) {
+function mainLine(num, theData) {
     if (time1 == 'monthly' && num==1) {    //time is changed based on the last button clicked
-        time = chartData1.monthly;
+        time = theData.monthly;
     }
     else if(time1 == 'daily' && num==1) {
-        time = chartData1.daily;
+        time = theData.daily;
     }
     else if (time2 == 'monthly' && num==2) {  
         time = chartData2.monthly;
@@ -326,7 +336,7 @@ function mainLine(num) {
             var TitleColumn2 = "Page Views";
         }
         else{
-            var TitleColumn2 = "Pages consultées"
+            var TitleColumn2 = "Pages consultées";
         }
     }
     else{
@@ -334,15 +344,20 @@ function mainLine(num) {
             var TitleColumn2 = "Members";
         }
         else{
-            var TitleColumn2 = "Membres"
+            var TitleColumn2 = "Membres";
         }
     }
+    tester = avgTimeOnPageResp;
+    if(num == 3){
+        document.getElementById("avgTimeOnPage").innerHTML="Average time on page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " seconds" ;
+    }
+    
     // x = prepareTableDataLine(time);
     // createTable(x);
     x = prepareTableDataLine(time);
     createTable(x, '#theTable'.concat(String(num)), "Date", TitleColumn2);
     createChartLine(time, '#chart'.concat(String(num)));
-}    
+}
 
 function prepareTableDataLine(timeFrame){
     //console.log(timeFrame);
@@ -371,6 +386,7 @@ function prepareTableDataLine(timeFrame){
 function createTable(tableData, tableID, TitleColumn1, TitleColumn2){
     console.log(tableData['departments']);
     if ( $.fn.dataTable.isDataTable( tableID ) ) { //check if this is already a datatable
+        console.log("REPLACINGGGGGGGG");
         $(tableID).DataTable().destroy();              //clear its data
         $(document).ready(function() {
             $(tableID).DataTable( {      //initialization of the datatable
@@ -428,42 +444,35 @@ function createChartLine(timeFrame, chartID){
     valueKey = Object.keys(thisTime)[1];
     thisTime[valueKey].unshift(valueKey);
     dataa = thisTime[valueKey];
-    // var chart = c3.generate({
-    //         bindto: chartID,
-    //         size: {
-    //             height: 200,    //size set same the datatable
-    //             //width: 480    //default size is full width of page
-    //         },
-    //         data: {
-    //             x: 'dates',
-    //             xFormat: '%Y-%m-%d',
-    //             columns: [
-    //                 columnss,   // example of what is being passed ['x', "20170831", "20170930", "20171031", "20171130", "20171231", "20180131", "20180228", "20180331", "20180430", "20180531"],
-    //                 dataa,      // example of what is being passed ['users', 20, 26, 26, 27, 27, 31, 34, 34, 34, 43]
-    //             ],
-    //             color: function (color, d) {
-    //                 // d will be 'id' when called for legends
-    //                 return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
-    //                 },
-    //         },
-    //         legend: {
-    //             show: false
-    //         },
-    //         axis: {
-    //             x: {
-    //                 type: 'timeseries',
-    //             tick: {
-    //                 format: '%Y-%m-%d'
-    //                 }
-    //             }
-    //         },
-    //         groupName: '',
-    //         onrendered: function() {
-    //             d3.selectAll(".c3-axis.c3-axis-x .tick text")
-    //                 .style("display", "none");
-    //         }
-    //     });
-    if (dataa[0]=='pageviews' || dataa[0]=='uniquePageviews'){
+    
+    //setting tooltips in if else below
+    if(chartID == "#chart1"){
+        if(currentLang == "EN"){
+            if(dataa[0] == "pageviews"){
+                dataa[0] = "Page Views";
+            }
+            else if(dataa[0] == "uniquePageviews"){
+                dataa[0] = "Unique Page Views";
+            } 
+        }
+        else{ //lang is french
+            if(dataa[0] == "pageviews"){
+                dataa[0] = "Pages consultées";
+            }
+            else if(dataa[0] == "uniquePageviews"){
+                dataa[0] = "Consultées uniques";
+            } 
+        }
+    }
+    else{ //chart2
+        if(currentLang == "EN"){
+            dataa[0] = "Members"
+        }
+        else{ //lang is french
+            dataa[0] = "Membres"
+        }
+    }
+    if (dataa[0]=='Page Views' || dataa[0]=='Unique Page Views' || dataa[0]=='Pages consultées' || dataa[0]=='Consultées uniques'){
         lineChartViews.load({
             columns: [
                 columnss,
@@ -471,7 +480,7 @@ function createChartLine(timeFrame, chartID){
             ]
         });  
     }
-    else if(dataa[0]=='users'){
+    else if(dataa[0]=='Members' ||  dataa[0]=='Membres'){
         lineChartMembers.load({
             columns: [
                 columnss,
@@ -479,6 +488,23 @@ function createChartLine(timeFrame, chartID){
             ]
         })
     }
+    // if (dataa[0]=='Page Views' || dataa[0]=='uniquePageviews' || dataa[0]=='Pages consultées' || dataa[0]=='pageviews'){
+    //     console.log("LOAAAAAAAAAAADDDDDDING");
+    //     lineChartViews.load({
+    //         columns: [
+    //             columnss,
+    //             dataa
+    //         ]
+    //     });  
+    // }
+    // else if(dataa[0]=='users' || dataa[0]=='Members' || dataa[0]=='Membres'){
+    //     lineChartMembers.load({
+    //         columns: [
+    //             columnss,
+    //             dataa
+    //         ]
+    //     })
+    // }
     }
 
 function downloadCSVLine(timeFrame){
@@ -781,6 +807,7 @@ function helperRequestData() {
         requestData('topContent');
         requestData('pageViews');
         requestData('uniquePageviews');
+        requestData('avgTimeOnPage');
     })
 }
 
@@ -936,6 +963,10 @@ function replaceAll(str, find, replace) {
     return str.replace(new RegExp(find, 'g'), replace);
 }
 
+var finishedLoadingPageViews = false;
+var finishedLoadingAvgTimeOnPAge = false;
+var finishedLoadingUniqueViews = false;
+
 function requestData(reqType) {
     lineChartViews = c3.generate({
         bindto: '#chart1',
@@ -1055,6 +1086,16 @@ function requestData(reqType) {
                 start_date: state.startDate,
                 end_date: state.endDate
             });
+            break;
+        case 'avgTimeOnPage':
+            reqStatement = JSON.stringify({
+                type: 'pages',
+                stat: 'avgTimeOnPage',
+                url: state.groupURL,
+                start_date: state.startDate,
+                end_date: state.endDate
+            });
+            break;
         }
     // Send the request
     //reqStatement = JSON.parse('{"stepIndex":4,"reqType":{"category":1,"filter":"https://gccollab.ca/groups/profile/718/canada-indigenous-relations-creating-awareness-fostering-reconciliation-and-contributing-to-a-shared-future-relations-canada-et-peuples-indigenes-promouvoir-la-sensibilisation-favoriser-la-reconciliation-et-contribuer-a-un-avenir-partager"},"metric":2,"metric2":0,"time":{"startDate":"2017-02-12","endDate":"2018-02-12","allTime":true},"errorFlag":false}');
@@ -1097,19 +1138,46 @@ function requestData(reqType) {
                     break;
                 case 'pageViews':
                     p4 = false;
+                    finishedLoadingPageViews = true;
+                    if(finishedLoadingAvgTimeOnPAge == true && finishedLoadingPageViews == true && finishedLoadingUniqueViews == true){
+                        finishedLoadingAvgTimeOnPAge = false;
+                        finishedLoadingPageViews = false;
+                        finishedLoadingUniqueViews = false;
+                        $('.loading').hide();
+                    }
                     chartData1 = resp;
                     console.log(chartData1);
                     document.getElementById("title").innerHTML=replaceAll(chartData1.group_name, "-", " ");
                     console.log(chartData1.group_name)
-                    mainLine(1)
+                    mainLine(1, chartData1)
                     
                     break;
-                case 'uniquePageviews':
+                case "avgTimeOnPage":
                     p5 = false;
-                    chartData1 = resp;
+                    finishedLoadingAvgTimeOnPAge = true;
+                    if(finishedLoadingAvgTimeOnPAge == true && finishedLoadingPageViews == true && finishedLoadingUniqueViews == true){
+                        finishedLoadingAvgTimeOnPAge = false;
+                        finishedLoadingPageViews = false;
+                        finishedLoadingUniqueViews = false;
+                        $('.loading').hide();
+                    }
+                    avgTimeOnPageResp = resp;
+                    mainLine(3)
+                    break;
+                case 'uniquePageviews':
+                    p6 = false;
+                    finishedLoadingUniqueViews = true;
+                    if(finishedLoadingAvgTimeOnPAge == true && finishedLoadingPageViews == true && finishedLoadingUniqueViews == true){
+                        finishedLoadingAvgTimeOnPAge = false;
+                        finishedLoadingPageViews = false;
+                        finishedLoadingUniqueViews = false;
+                        $('.loading').hide();
+                    }
+                    uniqueViewsResp = resp;
                     console.log(chartData1);
-                    mainLine(1)
-                    $('.loading').hide();
+                    mainLine(1, uniqueViewsResp);
+                    // $('.loading').hide();
+                    break;
             }
             setTimeout(function() {
                 $(window).trigger('resize');

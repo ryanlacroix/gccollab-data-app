@@ -15,6 +15,15 @@ a:hover{
     font-weight: bold;
     text-transform: capitalize;
 }
+#avgTimeOnPage{
+    margin-left: 62% !important;
+    margin-right: 12%;
+    font-weight: bold;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    transform: translate(0%, -75%);
+    font-family: 'Rubik';
+}
 #ignore{
     height: 35px;
 }
@@ -270,6 +279,10 @@ div.ui.action.input{
     /* .App{
         background-color: lightblue;
     } */
+    #avgTimeOnPage{
+        margin: 0 auto !important;
+        width: 300px 
+    }
     .getStats{
         display: inline;
         position: absolute;
@@ -374,6 +387,15 @@ div.ui.action.input{
     /* .App{
         background-color: lightgreen;
     } */
+    #avgTimeOnPage{
+        width: 300px;
+        margin: 0 auto !important;
+        font-weight: bold;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        transform: translate(0%, -75%);
+        font-family: 'Rubik';
+    }
     .field{
         display: inline-block;
         margin: auto;
@@ -458,6 +480,10 @@ div.ui.action.input{
     /* .App{
         background-color: red;
     } */
+    #avgTimeOnPage{
+        margin: 0 auto !important;
+        width: 300px 
+    }
     .field{
         display: inline-block;
         margin: auto;
@@ -547,6 +573,10 @@ div.ui.action.input{
     /* .App{
         background-color: darkblue;
     } */
+    #avgTimeOnPage{
+        margin: 0 auto !important;
+        width: 300px; 
+    }
     .field{
         display: inline-block;
         margin: auto;
@@ -637,6 +667,10 @@ div.ui.action.input{
     /* .App{
         background-color: yellow;
     } */
+    #avgTimeOnPage{
+        width: 150px;
+        margin: 0 auto !important;
+    }
     .field{
         display: inline-block;
         margin: auto;

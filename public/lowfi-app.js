@@ -3,6 +3,7 @@ var time2 = 'monthly';
 
 var chartData1;  //var to store data from the json file
 var chartData2;
+var avgTimeOnPageResp;
 
 var currentLang = 'EN'; //var to store current language of page
 
@@ -28,9 +29,10 @@ var progress1 = false;
 var p2 = false;
 var p3 = false;
 var p4 = false; 
+var p5 = false;
 
 var beforeSend = function(){
-    if (progress1 == true && p2 == true && p3 == true && p4 == true){
+    if (progress1 == true && p2 == true && p3 == true && p4 == true && p5 == true){
         xmlHttp.abort();
     }
 }
@@ -209,6 +211,7 @@ $("#eng-toggle").on('click', function(event) {
     document.getElementById("topContentTitle").innerHTML="Top Group Content";
     document.getElementById("getStatss").innerHTML="Get Stats";
     var enHelper = $.extend(true, {}, hardCopybcden);
+    document.getElementById("avgTimeOnPage").innerHTML="Average time on page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " seconds" ;
     mainLine(1)
     mainLine(2)
     mainBar(2, 'topContent', enHelper)
@@ -249,6 +252,7 @@ $("#fr-toggle").on('click', function(event) {
     barChartData1[firstKey].shift();
     frenchDepartments = departmentsToFrench(barChartData1);
     var frHelper = $.extend(true, {}, hardCopybcdfr);
+    document.getElementById("avgTimeOnPage").innerHTML="Temps moyen sur la page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " secondes" ;
     mainLine(1)
     mainLine(2)
     mainBar(2, 'topContent', frHelper)
@@ -303,6 +307,7 @@ $(function() {
     $( "#datepicker2" ).datepicker("setDate", new Date());
 } );
 
+var tester; 
 
 function mainLine(num) {
     if (time1 == 'monthly' && num==1) {    //time is changed based on the last button clicked
@@ -332,6 +337,10 @@ function mainLine(num) {
         else{
             var TitleColumn2 = "Membres"
         }
+    }
+    tester = avgTimeOnPageResp;
+    if(num == 3){
+        document.getElementById("avgTimeOnPage").innerHTML="Average time on page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " seconds" ;
     }
     // x = prepareTableDataLine(time);
     // createTable(x);
@@ -424,6 +433,23 @@ function createChartLine(timeFrame, chartID){
     valueKey = Object.keys(thisTime)[1];
     thisTime[valueKey].unshift(valueKey);
     dataa = thisTime[valueKey];
+    //setting tooltips in if else below
+    if(chartID == "#chart1"){
+        if(currentLang == "EN"){
+            dataa[0] = "Page Views"
+        }
+        else{ //lang is french
+            dataa[0] = "Pages consultées"
+        }
+    }
+    else{ //chart2
+        if(currentLang == "EN"){
+            dataa[0] = "Members"
+        }
+        else{ //lang is french
+            dataa[0] = "Membres"
+        }
+    }
     var chart = c3.generate({
             bindto: chartID,
             size: {
@@ -760,6 +786,7 @@ function helperRequestData() {
         requestData('departments');
         requestData('topContent');
         requestData('pageViews');
+        requestData('avgTimeOnPage')
     })
 }
 
@@ -915,6 +942,9 @@ function replaceAll(str, find, replace) {
     return str.replace(new RegExp(find, 'g'), replace);
 }
 
+var finishedLoadingPageViews = false;
+var finishedLoadingAvgTimeOnPAge = false;
+
 function requestData(reqType) {
     // Form correct request based on request type
     // Really ugly, needs back end changes
@@ -951,6 +981,15 @@ function requestData(reqType) {
             reqStatement = JSON.stringify({
                 type: 'groups',
                 stat: 'pageviews',
+                url: state.groupURL,
+                start_date: state.startDate,
+                end_date: state.endDate
+            });
+            break;
+        case 'avgTimeOnPage':
+            reqStatement = JSON.stringify({
+                type: 'pages',
+                stat: 'avgTimeOnPage',
                 url: state.groupURL,
                 start_date: state.startDate,
                 end_date: state.endDate
@@ -997,12 +1036,28 @@ function requestData(reqType) {
                     break;
                 case 'pageViews':
                     p4 = false;
+                    finishedLoadingPageViews = true;
+                    if(finishedLoadingAvgTimeOnPAge == true && finishedLoadingPageViews == true){
+                        finishedLoadingAvgTimeOnPAge = false;
+                        finishedLoadingPageViews = false;
+                        $('.loading').hide();
+                    }
                     chartData1 = resp;
                     console.log(chartData1);
                     document.getElementById("title").innerHTML=replaceAll(chartData1.group_name, "-", " ");
                     console.log(chartData1.group_name)
                     mainLine(1)
-                    $('.loading').hide();
+                    break;
+                case "avgTimeOnPage":
+                    p5 = false;
+                    finishedLoadingAvgTimeOnPAge = true;
+                    if(finishedLoadingAvgTimeOnPAge == true && finishedLoadingPageViews == true){
+                        finishedLoadingAvgTimeOnPAge = false;
+                        finishedLoadingPageViews = false;
+                        $('.loading').hide();
+                    }
+                    avgTimeOnPageResp = resp;
+                    mainLine(3)
                     break;
             }
             setTimeout(function() {
