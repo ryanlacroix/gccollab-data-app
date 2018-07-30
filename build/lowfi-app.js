@@ -452,7 +452,7 @@ function createChartLine(timeFrame, chartID){
                 pattern: ['#047177']
             },
             legend: {
-                show: false
+                show: true
             },
             axis: {
                 x: {

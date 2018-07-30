@@ -439,7 +439,10 @@ function createChartLine(timeFrame, chartID){
                     columnss,   // example of what is being passed ['x', "20170831", "20170930", "20171031", "20171130", "20171231", "20180131", "20180228", "20180331", "20180430", "20180531"],
                     dataa,      // example of what is being passed ['users', 20, 26, 26, 27, 27, 31, 34, 34, 34, 43]
                 ],
-                color: '#047177'
+                color: '#047177',
+                axes:{
+                    x: dataa[0]
+                }
                 // color: function (color, d) {
                 //     // d will be 'id' when called for legends
                 //     return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
