@@ -496,7 +496,5 @@ class LineChart2 extends Component {
         );
     }
 }
-
 export default LineChart2;
-
 // <img src={loader} alt="loading" className={this.state.loaderClass} />

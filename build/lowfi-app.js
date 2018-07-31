@@ -205,6 +205,7 @@ $("#eng-toggle").on('click', function(event) {
     document.getElementById("departmentTitle").innerHTML="Group Members by Department";
     document.getElementById("topContentTitle").innerHTML="Top Group Content";
     document.getElementById("getStatss").innerHTML="Get Stats";
+    document.getElementsByName('pasteURLhere')[0].placeholder='Paste group URL here...';
 });
 
 $("#fr-toggle").on('click', function(event) {
@@ -237,6 +238,7 @@ $("#fr-toggle").on('click', function(event) {
     document.getElementById("departmentTitle").innerHTML="Membres du groupe par département";
     document.getElementById("topContentTitle").innerHTML="Top contenu du groupe";
     document.getElementById("getStatss").innerHTML="Obtenir des stats";
+    document.getElementsByName('pasteURLhere')[0].placeholder="Collez l'URL du groupe ici";
 });
 
 $(function() {

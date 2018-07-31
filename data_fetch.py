@@ -44,7 +44,10 @@ def get_group_name(urlString, req_obj):
 
 def get_pageviews(req_obj):
     ga = gcga()
-    ga.set_platform('gccollab')
+    try:
+        ga.set_platform(req_obj['platform'])
+    except:
+        ga.set_platform('gccollab')
     url = req_obj['url']
     group_name = get_group_name(url, req_obj)
     # Request a dataframe containing pageviews and corresponding dates
@@ -53,10 +56,12 @@ def get_pageviews(req_obj):
     ret['group_name'] = group_name
     print(json.dumps(ret))
 
-
 def get_unique_pageviews(req_obj):
     ga = gcga()
-    ga.set_platform('gccollab')
+    try:
+        ga.set_platform(req_obj['platform'])
+    except:
+        ga.set_platform('gccollab')
     # Request a dataframe containing pageviews and corresponding dates
     ret = ga.get_stats([req_obj['url'], 'NOToffset'], intervals=True,
                        start_date=req_obj['start_date'], end_date=req_obj['end_date'], metric='uniquePageviews')
@@ -65,7 +70,10 @@ def get_unique_pageviews(req_obj):
 
 def get_avg_time_on_page(req_obj):
     ga = gcga()
-    ga.set_platform('gccollab')
+    try:
+        ga.set_platform(req_obj['platform'])
+    except:
+        ga.set_platform('gccollab')
     ret = ga.avg_time_on_page(
         req_obj['url'], start_date=req_obj['start_date'], end_date=req_obj['end_date'])
     print(json.dumps({'avgTime': ret}))
@@ -259,11 +267,11 @@ def main(testing=False):
         elif req_obj['stat'] == 'uniquePageviews':
             get_unique_pageviews(req_obj)
 
-
 # Start process
 if __name__ == '__main__':
-    inStr = '{"type":"groups","stat":"pageviews","url":"https://gccollab.ca//profile/103347/esdc-innovation-lab-lab-dinnovation-demploi-et-developpement-social-canada","start_date":"2018-04-20","end_date":"2018-07-19"}'
-    main()
+    inStr = '{"type":"pages","stat":"pageviews","url":"https://gccollab.ca//profile/103347/esdc-innovation-lab-lab-dinnovation-demploi-et-developpement-social-canada","start_date":"2018-04-20","end_date":"2018-07-19"}'
+    # inStr = '{"platform": "gcconnex", "type":"pages","stat":"uniquePageviews","url":"https://gcconnex.gc.ca/groups/profile/31045361/temporary-resident-program-delivery-functional-direction-division-de-lexecution-du-programme-des-residents-temporaires-orientation-fonctionelle?language=en","start_date":"2018-04-20","end_date":"2018-07-19"}'
+    main(inStr)
     # If collab db was used be sure to close the tunnel properly
     try:
         gc.close_tunnel()
