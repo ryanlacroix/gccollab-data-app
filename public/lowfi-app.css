@@ -303,6 +303,9 @@ div.ui.action.input{
  #helpButton{
     cursor: pointer;
 }
+#helpButton1{
+    cursor: pointer;
+}
 
  @media only screen and (max-width: 1175px) and (min-width: 680px){
     /* .App{
@@ -376,6 +379,7 @@ div.ui.action.input{
         margin-right: 5px;
         margin-top: 5%;
         margin: 0 auto;
+        margin-bottom: 50px
     }
     .chart2{
         margin-top: 0px;
@@ -386,6 +390,7 @@ div.ui.action.input{
         margin-right: 5px;
         margin-top: 5%;
         margin: 0 auto;
+        margin-bottom: 50px;
     }
     .table{
         margin-left: 5px;
@@ -417,6 +422,13 @@ div.ui.action.input{
         margin-top: 12px;
         z-index: 2;
         position: relative;
+    }
+    #helpButton1{
+        float: left;
+        margin-top: 12px;
+        z-index: 2;
+        position: relative;
+        margin-right: 70px;
     }
 }
 

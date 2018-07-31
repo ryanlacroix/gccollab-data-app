@@ -928,7 +928,7 @@ function dateConverter(d) {
     return year + "-" + month + "-" + day;
 }
 var d = new Date();
-d.setFullYear(d.getFullYear()-1);
+d.setMonth(d.getMonth()-3);
 state.startDate = dateConverter(d);
 state.endDate = dateConverter(new Date());
 state.groupURL = "";
