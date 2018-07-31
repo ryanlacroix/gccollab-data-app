@@ -182,7 +182,16 @@ function updatedTitle (){
 
 $("#eng-toggle").on('click', function(event) {
     currentLang = "EN";
-    updatedTitle();
+    try{ 
+        updatedTitle();
+        document.getElementById("avgTimeOnPage").innerHTML="Average time on page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " seconds" ;
+        var enHelper = $.extend(true, {}, hardCopybcden);
+        mainLine(1)
+        mainLine(2)
+        mainBar(2, 'topContent', enHelper)
+        mainBar(1, 'departments', barChartData1);
+    }
+    catch (err){}
     $.datepicker.setDefaults($.datepicker.regional['en']);
     document.getElementById("h11").innerHTML="<strong>GC</strong>collab Group Stats Page";
     document.getElementById("url-message").innerHTML="Paste the group URL above and set your desired start and end dates to retrieve relevant statistics.";
@@ -196,17 +205,25 @@ $("#eng-toggle").on('click', function(event) {
     document.getElementById("departmentTitle").innerHTML="Group Members by Department";
     document.getElementById("topContentTitle").innerHTML="Top Group Content";
     document.getElementById("getStatss").innerHTML="Get Stats";
-    var enHelper = $.extend(true, {}, hardCopybcden);
-    document.getElementById("avgTimeOnPage").innerHTML="Average time on page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " seconds" ;
-    mainLine(1)
-    mainLine(2)
-    mainBar(2, 'topContent', enHelper)
-    mainBar(1, 'departments', barChartData1);
 });
 
 $("#fr-toggle").on('click', function(event) {
     currentLang = "FR";
-    updatedTitle();
+    try{
+        updatedTitle();
+        document.getElementById("avgTimeOnPage").innerHTML="Temps moyen sur la page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " secondes" ;
+        zeroethKey = Object.keys(barChartData1)[0]; //name of first column ie "departments"
+        firstKey = Object.keys(barChartData1)[1]; //name of second column ie "members"
+        barChartData1[zeroethKey].shift(); //adds "department" to start of department array 
+        barChartData1[firstKey].shift();
+        frenchDepartments = departmentsToFrench(barChartData1);
+        var frHelper = $.extend(true, {}, hardCopybcdfr);
+        mainLine(1)
+        mainLine(2)
+        mainBar(2, 'topContent', frHelper)
+        mainBar(1, 'departments', frenchDepartments);
+    }
+    catch(err){}
     $.datepicker.setDefaults($.datepicker.regional['fr']);
     document.getElementById("h11").innerHTML="Page des statistiques des groupes <strong>GC</strong>collab";
     document.getElementById("url-message").innerHTML="Collez l'URL du groupe ci-dessus et choisissez les dates de début et de fin pour récupérer les statistiques pertinentes.";
@@ -220,17 +237,6 @@ $("#fr-toggle").on('click', function(event) {
     document.getElementById("departmentTitle").innerHTML="Membres du groupe par département";
     document.getElementById("topContentTitle").innerHTML="Top contenu du groupe";
     document.getElementById("getStatss").innerHTML="Obtenir des stats";
-    zeroethKey = Object.keys(barChartData1)[0]; //name of first column ie "departments"
-    firstKey = Object.keys(barChartData1)[1]; //name of second column ie "members"
-    barChartData1[zeroethKey].shift(); //adds "department" to start of department array 
-    barChartData1[firstKey].shift();
-    frenchDepartments = departmentsToFrench(barChartData1);
-    var frHelper = $.extend(true, {}, hardCopybcdfr);
-    document.getElementById("avgTimeOnPage").innerHTML="Temps moyen sur la page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " secondes" ;
-    mainLine(1)
-    mainLine(2)
-    mainBar(2, 'topContent', frHelper)
-    mainBar(1, 'departments', frenchDepartments);
 });
 
 $(function() {
