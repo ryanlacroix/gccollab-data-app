@@ -363,7 +363,7 @@ function mainLine(num, theData, unique) {
     
     // x = prepareTableDataLine(time);
     // createTable(x);
-    
+    x = prepareTableDataLine(time);
     if(pageViewsDone == true && uniqueViewsDone == true){
         if (time1 == 'monthly') {    //time is changed based on the last button clicked
             time = chartData1.monthly;
@@ -372,7 +372,7 @@ function mainLine(num, theData, unique) {
             time = chartData1.daily;
         }
     }
-    x = prepareTableDataLine(time);
+    
     if(pageViewsDone == true && uniqueViewsDone == true){ //if both the unique and page views have been done
         if(currentLang == "EN"){
             var TitleColumn2 = "Page Views";
@@ -1329,7 +1329,3 @@ $(document).ready(function(){
     $('.white-box').hide();
     helper1Copy();
 });
-
-setTimeout(function(){
-    helper1Copy();
-    }, 250);
