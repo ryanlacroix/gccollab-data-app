@@ -145,7 +145,7 @@ function departmentsToFrench (barchartData1){
 function toFrench (typeStr){
     let validTypes = ['file','discussion','event_calendar','groups','blog',
                     'bookmarks','pages',];
-    let validTypesFR = ['fichier','discussion','calendrier des événements','groupes ','blog',
+    let validTypesFR = ['dossier','discussion','calendrier des événements','groupe','blogue',
     'signets','pages',];
     for(var i=0; i<validTypes.length; i++){
         if(typeStr == validTypes[i]){
@@ -189,7 +189,16 @@ function updatedTitle (){
 
 $("#eng-toggle").on('click', function(event) {
     currentLang = "EN";
-    updatedTitle();
+    try{ 
+        updatedTitle();
+        document.getElementById("avgTimeOnPage").innerHTML="Average time on page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " seconds" ;
+        var enHelper = $.extend(true, {}, hardCopybcden);
+        mainLine(1)
+        mainLine(2)
+        mainBar(2, 'topContent', enHelper)
+        mainBar(1, 'departments', barChartData1);
+    }
+    catch (err){}
     $.datepicker.setDefaults($.datepicker.regional['en']);
     document.getElementById("h11").innerHTML="<strong>GC</strong>collab Group Stats Page";
     document.getElementById("url-message").innerHTML="Paste the group URL above and set your desired start and end dates to retrieve relevant statistics.";
@@ -203,41 +212,40 @@ $("#eng-toggle").on('click', function(event) {
     document.getElementById("departmentTitle").innerHTML="Group Members by Department";
     document.getElementById("topContentTitle").innerHTML="Top Group Content";
     document.getElementById("getStatss").innerHTML="Get Stats";
-    var enHelper = $.extend(true, {}, hardCopybcden);
-    document.getElementById("avgTimeOnPage").innerHTML="Average time on page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " seconds" ;
-    mainLine(1)
-    mainLine(2)
-    mainBar(2, 'topContent', enHelper)
-    mainBar(1, 'departments', barChartData1);
+    document.getElementsByName('pasteURLhere')[0].placeholder='Paste group URL here...';
 });
 
 $("#fr-toggle").on('click', function(event) {
     currentLang = "FR";
-    updatedTitle();
+    try{
+        updatedTitle();
+        document.getElementById("avgTimeOnPage").innerHTML="Temps moyen sur la page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " secondes" ;
+        zeroethKey = Object.keys(barChartData1)[0]; //name of first column ie "departments"
+        firstKey = Object.keys(barChartData1)[1]; //name of second column ie "members"
+        barChartData1[zeroethKey].shift(); //adds "department" to start of department array 
+        barChartData1[firstKey].shift();
+        frenchDepartments = departmentsToFrench(barChartData1);
+        var frHelper = $.extend(true, {}, hardCopybcdfr);
+        mainLine(1)
+        mainLine(2)
+        mainBar(2, 'topContent', frHelper)
+        mainBar(1, 'departments', frenchDepartments);
+    }
+    catch(err){}
     $.datepicker.setDefaults($.datepicker.regional['fr']);
-    document.getElementById("h11").innerHTML="Page des statistiques des groupes <strong>GC</strong>collab";
-    document.getElementById("url-message").innerHTML="Collez l'URL du groupe ci-dessus et choisissez les dates de début et de fin pour récupérer les statistiques pertinentes.";
-    document.getElementById("pageViewsTitle").innerHTML="Pages consultées";
-    document.getElementById("downloadCSV").innerHTML="Télécharger les données au format CSV";
-    document.getElementById("month").innerHTML="Mensuel";
-    document.getElementById("day").innerHTML="Quotidien";
-    document.getElementById("month2").innerHTML="Mensuel";
-    document.getElementById("day2").innerHTML="Quotidien";
-    document.getElementById("groupMemebershipTitle").innerHTML="Appartenance au groupe";
-    document.getElementById("departmentTitle").innerHTML="Membres du groupe par département";
-    document.getElementById("topContentTitle").innerHTML="Top contenu du groupe";
-    document.getElementById("getStatss").innerHTML="Obtenir des stats";
-    zeroethKey = Object.keys(barChartData1)[0]; //name of first column ie "departments"
-    firstKey = Object.keys(barChartData1)[1]; //name of second column ie "members"
-    barChartData1[zeroethKey].shift(); //adds "department" to start of department array 
-    barChartData1[firstKey].shift();
-    frenchDepartments = departmentsToFrench(barChartData1);
-    var frHelper = $.extend(true, {}, hardCopybcdfr);
-    document.getElementById("avgTimeOnPage").innerHTML="Temps moyen sur la page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " secondes" ;
-    mainLine(1)
-    mainLine(2)
-    mainBar(2, 'topContent', frHelper)
-    mainBar(1, 'departments', frenchDepartments);
+    document.getElementById("h11").innerHTML="Page de statistiques du groupe <strong>GC</strong>collab";
+    document.getElementById("url-message").innerHTML="Copiez l’URL du groupe ci-dessus et spécifiez les dates de début et de fin souhaitées pour extraire les données pertinentes.";
+    document.getElementById("pageViewsTitle").innerHTML="Visionnement de la page";
+    document.getElementById("downloadCSV").innerHTML="Télécharger les données en format CSV";
+    document.getElementById("month").innerHTML="Mensuellement";
+    document.getElementById("day").innerHTML="Quotidiennement";
+    document.getElementById("month2").innerHTML="Mensuellement";
+    document.getElementById("day2").innerHTML="Quotidiennement";
+    document.getElementById("groupMemebershipTitle").innerHTML="Abonnements au groupe";
+    document.getElementById("departmentTitle").innerHTML="Membres du groupe par ministère";
+    document.getElementById("topContentTitle").innerHTML="Principal contenu du groupe";
+    document.getElementById("getStatss").innerHTML="Obtenir des statistiques";
+    document.getElementsByName('pasteURLhere')[0].placeholder="Copiez l’URL du groupe ici...";
 });
 
 $(function() {
@@ -311,7 +319,7 @@ function mainLine(num, theData, unique=false) {
             var TitleColumn2 = "Page Views";
         }
         else{
-            var TitleColumn2 = "Pages consultées";
+            var TitleColumn2 = "Visionnement de la page"
         }
     }
     else if(num == 2){
@@ -527,7 +535,7 @@ function createChartLine(timeFrame, chartID){
         }
         else{ //lang is french
             if(dataa[0] == "pageviews"){
-                dataa[0] = "Pages consultées";
+                dataa[0] = "Visionnement de la page";
             }
             else if(dataa[0] == "uniquePageviews"){
                 dataa[0] = "Consultées uniques";
@@ -542,7 +550,7 @@ function createChartLine(timeFrame, chartID){
             dataa[0] = "Membres"
         }
     }
-    if (dataa[0]=='Page Views' || dataa[0]=='Unique Page Views' || dataa[0]=='Pages consultées' || dataa[0]=='Consultées uniques'){
+    if (dataa[0]=='Page Views' || dataa[0]=='Unique Page Views' || dataa[0]=='Visionnement de la page' || dataa[0]=='Consultées uniques'){
         lineChartViews.load({
             columns: [
                 columnss,
@@ -635,7 +643,7 @@ function mainBar(num, stringy, barChartData){
     }
     if(num==1){
         if(currentLang == "EN"){
-            var TitleColumn1 = "Department";
+            var TitleColumn1 = "Ministère";
             var TitleColumn2 = "Members";
         }
         else{
@@ -653,7 +661,7 @@ function mainBar(num, stringy, barChartData){
         }
         else{
             var TitleColumn1 = "Titre";
-            var TitleColumn2 = "Pages consultées";
+            var TitleColumn2 = "Vues";
         }
     }
     createChartBar(barChartData, '#barChart'.concat(String(num)));
@@ -996,21 +1004,21 @@ function URLErrorMessage(url){
             return "This tool currently only supports group stats. Enter a group's main page URL (https://gcollab.gc.ca/groups/profile...)"
         }
         else{
-            return "Cet outil prend actuellement en charge uniquement les statistiques de groupe. Entrez l'URL de la page principale d'un groupe (https: //gcollab.gc.ca/groups/profile ...)"
+            return "Cet outil autorise uniquement les statistiques de groupe actuellement. Entrez l’URL de la page d’accueil du groupe (https://gcollab.gc.ca/groups/profile...)"
         }
     } else if (url.indexOf('https://gcconnex') === 0) {
         if(currentLang=='EN'){
             return "This tool is currently only available for GCcollab groups."
         }
         else{
-            return "Cet outil est actuellement disponible uniquement pour les groupes GCcollab."
+            return "Cet outil est uniquement disponible pour les groupes GCcollab pour l’instant."
         }
     } else {
         if(currentLang=='EN'){
             return "URLs should be of the format https://gcollab.ca/groups/profile...";
         }
         else{
-            return "Les URL doivent être au format https: //gcollab.ca/groups/profile ...";
+            return "Les URL devraient être dans le format suivant : https://gcollab.ca/groups/profile...";
         }
     }
 }
@@ -1035,7 +1043,7 @@ function dateConverter(d) {
     return year + "-" + month + "-" + day;
 }
 var d = new Date();
-d.setFullYear(d.getFullYear()-1);
+d.setMonth(d.getMonth()-3);
 state.startDate = dateConverter(d);
 state.endDate = dateConverter(new Date());
 state.groupURL = "";

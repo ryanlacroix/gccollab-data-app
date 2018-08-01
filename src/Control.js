@@ -77,11 +77,11 @@ class Control extends Component {
             // URL is from collab, but not a group's main page.
             // In the future relevant stats will be served for whatever content is requested.
             // Right now, provide an error + explanation
-            return "Cet outil ne prend que les stats pour les groupes. Entrez l'URL de la page principale du groupe (https://gcollab.gc.ca/groups/profile ...)"
+            return "Cet outil autorise uniquement les statistiques de groupe actuellement. Entrez l’URL de la page d’accueil du groupe (https://gcollab.gc.ca/groups/profile...)"
         } else if (url.indexOf('https://gcconnex') === 0) {
-            return "Cet outil est maintenant disponible juste pour les groupes de GCcollab."
+            return "Cet outil est uniquement disponible pour les groupes GCcollab pour l’instant."
         } else {
-            return "Les URL doivent être au format https: //gcollab.ca/groups/profile ..."
+            return "Les URL devraient être dans le format suivant : https://gcollab.ca/groups/profile..."
         }
     }
 
@@ -155,7 +155,7 @@ class Control extends Component {
                 </div>
                 <Input className="searchBar" action={
                     <Popup trigger={
-                        <Button content={this.props.language=="EN" ? "Get stats" : "Obtenir des stats"}
+                        <Button content={this.props.language=="EN" ? "Get stats" : "Obtenir des statistiques"}
                         onClick={
                             (event, data) => {
                                 if (this.state.validURL) {
@@ -166,7 +166,7 @@ class Control extends Component {
                     } content={this.props.language == "EN" ? this.state.errorMessageEN : this.state.errorMessageFR} 
                     style={popupStyle} />
                 }
-                    placeholder={this.props.language=="EN" ? "Paste Group URL here..." : "Collez l'URL du groupe ici..."}
+                    placeholder={this.props.language=="EN" ? "Paste Group URL here..." : "Copiez l’URL du groupe ici : "}
                     style={{ float: 'right', width: '500px' }}
                     error={this.state.showError}
                     onChange={(event, data) => {

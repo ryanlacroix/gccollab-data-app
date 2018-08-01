@@ -24,6 +24,7 @@ a:hover{
     transform: translate(0%, -75%);
     font-family: 'Rubik', sans-serif;
     font-size: 15px;
+    width: 300px
 }
 #ignore{
     height: 35px;
@@ -99,7 +100,7 @@ a:hover{
     border-radius: 5px; 
     width: 95%;
 }
-.ui-segment-ind-content-box{
+#box1{
     margin-top: 10px; 
     margin-left: 10px; 
     margin-right: 10px; 
@@ -110,7 +111,29 @@ a:hover{
     border: 2px solid lightgray;
     position: relative;
 }
-.ui-segment-ind-content-box-final{
+#box2{
+    margin-top: 10px; 
+    margin-left: 10px; 
+    margin-right: 10px; 
+    display: inline-block; 
+    width: 98%; 
+    border-radius: 5px; 
+    background-color: rgb(249, 249, 249); 
+    border: 2px solid lightgray;
+    position: relative;
+}
+#box3{
+    margin-top: 10px; 
+    margin-left: 10px; 
+    margin-right: 10px; 
+    display: inline-block; 
+    width: 98%; 
+    border-radius: 5px; 
+    background-color: rgb(249, 249, 249); 
+    border: 2px solid lightgray;
+    position: relative;
+}
+#box4{
     margin-top: 10px; 
     margin-left: 10px; 
     margin-right: 10px; 
@@ -191,9 +214,12 @@ select.ui.dropdown{
 .table{
     display: inline-block; 
     width: 475px; 
-    height: 200px;
-    margin-bottom: 68px;
+    height: auto;
+    margin-bottom: 0px !important;
     font-family: 'Rubik', sans-serif;
+    position: relative;
+    vertical-align: top;
+    bottom: 20px;
 }
 div.ui.action.input{
     float: right; 
@@ -303,6 +329,9 @@ div.ui.action.input{
  #helpButton{
     cursor: pointer;
 }
+#helpButton1{
+    cursor: pointer;
+}
 
  @media only screen and (max-width: 1175px) and (min-width: 680px){
     /* .App{
@@ -314,7 +343,7 @@ div.ui.action.input{
         font-family: "Rubik", sans-serif;
         font-size: 15px;
         font-weight: 500;
-
+        margin-top: 10px !important;
     }
     .getStats{
         display: inline;
@@ -329,7 +358,7 @@ div.ui.action.input{
     div.ui.action.input{
         margin-left: 33px;
     }
-    .ui-segment-ind-content-box{
+    #box1{
         margin-right: 1.25%;
         margin-left: 1.25%; 
         display: inline-block; 
@@ -339,8 +368,33 @@ div.ui.action.input{
         border: 2px solid lightgray;
         position: relative;
         text-align: center;
+        height: auto !important;
     }
-    .ui-segment-ind-content-box-final{
+    #box2{
+        margin-right: 1.25%;
+        margin-left: 1.25%; 
+        display: inline-block; 
+        width: 97%; 
+        border-radius: 5px; 
+        background-color: rgb(249, 249, 249); 
+        border: 2px solid lightgray;
+        position: relative;
+        text-align: center;
+        height: auto !important;
+    }
+    #box3{
+        margin-right: 1.25%;
+        margin-left: 1.25%; 
+        display: inline-block; 
+        width: 97%; 
+        border-radius: 5px; 
+        background-color: rgb(249, 249, 249); 
+        border: 2px solid lightgray;
+        position: relative;
+        text-align: center;
+        height: auto !important;
+    }
+    #box4{
         margin-top: 10px; 
         margin-left: 1.25%; 
         margin-right: 1.25%; 
@@ -352,6 +406,8 @@ div.ui.action.input{
         margin-bottom: 10px;
         position: relative;
         text-align: center;
+        height: auto !important;
+
     }
     .field{
         display: inline-block;
@@ -376,6 +432,7 @@ div.ui.action.input{
         margin-right: 5px;
         margin-top: 5%;
         margin: 0 auto;
+        margin-bottom: 50px
     }
     .chart2{
         margin-top: 0px;
@@ -386,21 +443,24 @@ div.ui.action.input{
         margin-right: 5px;
         margin-top: 5%;
         margin: 0 auto;
+        margin-bottom: 50px;
     }
     .table{
         margin-left: 5px;
         margin-left: 5px;
         display: inline-block; 
         width: 475px; 
-        height: 200px;
         padding: 5px;
+        height: auto !important;
+        margin-bottom: 10px !important;
+        position: static;
     }
     .table2{
         margin-left: 5px;
         margin-left: 5px;
         display: inline-block; 
         width: 475px; 
-        height: 200px;
+        height: auto;
         padding: 5px;
     }
     .title{
@@ -418,6 +478,18 @@ div.ui.action.input{
         z-index: 2;
         position: relative;
     }
+    #helpButton1{
+        float: left;
+        margin-top: 12px;
+        z-index: 2;
+        position: relative;
+        margin-right: 70px;
+    }
+    .spacing{
+        display: inline-block; 
+        width: 0%; 
+        height: 0px;
+    }
 }
 
 @media only screen and (max-width: 689px) and (min-width: 560px){
@@ -428,7 +500,7 @@ div.ui.action.input{
         width: 300px;
         margin: 0 auto !important;
         font-weight: bold;
-        margin-top: 0px;
+        margin-top: 20px !important;
         margin-bottom: 0px;
         transform: translate(0%, -75%);
         font-family: 'Rubik';
@@ -473,6 +545,7 @@ div.ui.action.input{
         height: 200px; 
         padding: 5px;
         margin-right: 5px;
+        margin-bottom: 0px !important;
     }
     .chart2{
         display: inline-block; 
@@ -480,16 +553,18 @@ div.ui.action.input{
         height: 200px; 
         padding: 5px;
         margin-right: 5px;
+        margin-bottom: 0px !important;
     }
     .table{
         margin-left: 5px;
         margin-left: 5px;
         display: inline-block; 
         width: 95%; 
-        height: 200px;
+        height: auto !important;
         padding: 5px;
+        position: static !important;
     }
-    .ui-segment-ind-content-box{
+    #box1{
         margin-right: 1%;
         margin-left: 1%; 
         display: inline-block; 
@@ -499,7 +574,27 @@ div.ui.action.input{
         border: 2px solid lightgray;
         position: relative;
     }
-    .ui-segment-ind-content-box-final{
+    #box2{
+        margin-right: 1%;
+        margin-left: 1%; 
+        display: inline-block; 
+        width: 97%; 
+        border-radius: 5px; 
+        background-color: rgb(249, 249, 249); 
+        border: 2px solid lightgray;
+        position: relative;
+    }
+    #box3{
+        margin-right: 1%;
+        margin-left: 1%; 
+        display: inline-block; 
+        width: 97%; 
+        border-radius: 5px; 
+        background-color: rgb(249, 249, 249); 
+        border: 2px solid lightgray;
+        position: relative;
+    }
+    #box4{
         margin-top: 10px; 
         margin-left: 1%; 
         margin-right: 1%; 
@@ -519,7 +614,8 @@ div.ui.action.input{
     } */
     #avgTimeOnPage{
         margin: 0 auto !important;
-        width: 300px 
+        width: 300px;
+        margin-top: 20px !important;
     }
     .field{
         display: inline-block;
@@ -572,10 +668,12 @@ div.ui.action.input{
         margin-left: 5px;
         display: inline-block; 
         width: 95%; 
-        height: 200px;
+        height: auto !important;
         padding: 5px;
+        position: static !important;
+        margin-bottom: 10px;
     }
-    .ui-segment-ind-content-box{
+    #box1{
         margin-right: 1%;
         margin-left: 1%; 
         display: inline-block; 
@@ -585,7 +683,27 @@ div.ui.action.input{
         border: 2px solid lightgray;
         position: relative;
     }
-    .ui-segment-ind-content-box-final{
+    #box2{
+        margin-right: 1%;
+        margin-left: 1%; 
+        display: inline-block; 
+        width: 97%; 
+        border-radius: 5px; 
+        background-color: rgb(249, 249, 249); 
+        border: 2px solid lightgray;
+        position: relative;
+    }
+    #box3{
+        margin-right: 1%;
+        margin-left: 1%; 
+        display: inline-block; 
+        width: 97%; 
+        border-radius: 5px; 
+        background-color: rgb(249, 249, 249); 
+        border: 2px solid lightgray;
+        position: relative;
+    }
+    #box4{
         margin-top: 10px; 
         margin-left: 1%; 
         margin-right: 1%; 
@@ -613,6 +731,7 @@ div.ui.action.input{
     #avgTimeOnPage{
         margin: 0 auto !important;
         width: 300px; 
+        margin-top: 20px !important;
     }
     .field{
         display: inline-block;
@@ -666,10 +785,11 @@ div.ui.action.input{
         margin-left: 5px;
         display: inline-block; 
         width: 95%; 
-        height: 200px;
+        height: auto !important;
         padding: 5px;
+        position: static !important;
     }
-    .ui-segment-ind-content-box{
+    #box1{
         margin-right: 1%;
         margin-left: 1%; 
         display: inline-block; 
@@ -679,7 +799,27 @@ div.ui.action.input{
         border: 2px solid lightgray;
         position: relative;
     }
-    .ui-segment-ind-content-box-final{
+    #box2{
+        margin-right: 1%;
+        margin-left: 1%; 
+        display: inline-block; 
+        width: 97%; 
+        border-radius: 5px; 
+        background-color: rgb(249, 249, 249); 
+        border: 2px solid lightgray;
+        position: relative;
+    }
+    #box3{
+        margin-right: 1%;
+        margin-left: 1%; 
+        display: inline-block; 
+        width: 97%; 
+        border-radius: 5px; 
+        background-color: rgb(249, 249, 249); 
+        border: 2px solid lightgray;
+        position: relative;
+    }
+    #box4{
         margin-top: 10px; 
         margin-left: 1%; 
         margin-right: 1%; 
@@ -707,6 +847,7 @@ div.ui.action.input{
     #avgTimeOnPage{
         width: 150px;
         margin: 0 auto !important;
+        margin-top: 50px !important;
     }
     .field{
         display: inline-block;
@@ -760,10 +901,11 @@ div.ui.action.input{
         margin-left: 5px;
         display: inline-block; 
         width: 95%; 
-        height: 200px;
+        height: auto !important;
         padding: 5px;
+        position: static !important;
     }
-    .ui-segment-ind-content-box{
+    #box1{
         margin-right: 1.25%;
         margin-left: 1%; 
         display: inline-block; 
@@ -773,7 +915,27 @@ div.ui.action.input{
         border: 2px solid lightgray;
         position: relative;
     }
-    .ui-segment-ind-content-box-final{
+    #box2{
+        margin-right: 1.25%;
+        margin-left: 1%; 
+        display: inline-block; 
+        width: 97%; 
+        border-radius: 5px; 
+        background-color: rgb(249, 249, 249); 
+        border: 2px solid lightgray;
+        position: relative;
+    }
+    #box3{
+        margin-right: 1.25%;
+        margin-left: 1%; 
+        display: inline-block; 
+        width: 97%; 
+        border-radius: 5px; 
+        background-color: rgb(249, 249, 249); 
+        border: 2px solid lightgray;
+        position: relative;
+    }
+    #box4{
         margin-top: 10px; 
         margin-left: 1%; 
         margin-right: 1%; 
