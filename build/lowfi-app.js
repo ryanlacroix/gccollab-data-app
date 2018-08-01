@@ -1,12 +1,18 @@
-var time1 = 'monthly'; //var to store value of monthly/daily dropdown
-var time2 = 'monthly';
+var time1 = 'daily'; //var to store value of monthly/daily dropdown
+var time2 = 'daily';
+
+var time;
 
 var chartData1;  //var to store data from the json file
 var chartData2;
 var avgTimeOnPageResp;
+var uniqueViewsResp;
 
 var currentLang = 'EN'; //var to store current language of page
 
+
+var lineChartViews;
+var lineChartMembers;
 // $.ajax({
 //     dataType: "json",
 //     url: 'lineChartData1.json',
@@ -30,6 +36,7 @@ var p2 = false;
 var p3 = false;
 var p4 = false; 
 var p5 = false;
+var p6 = false;
 
 // var beforeSend = function(){
 //     if (progress1 == true && p2 == true && p3 == true && p4 == true && p5 == true){
@@ -43,12 +50,23 @@ menu.addEventListener("change", helper1);
 function helper1(event) {
     if (menu.value == "monthly1"){
         time1 = 'monthly';
-        mainLine(1);
     }
     if (menu.value == "daily1"){
         time1 = 'daily';
-        mainLine(1);
     }
+    mainLine(1, uniqueViewsResp, true);
+    mainLine(1, chartData1, false);
+}
+
+function helper1Copy(){
+    if (menu.value == "monthly1"){
+        time1 = 'monthly';
+    }
+    if (menu.value == "daily1"){
+        time1 = 'daily';
+    }
+    mainLine(1, uniqueViewsResp, true);
+    mainLine(1, chartData1, false);
 }
 
 var menu2 = document.getElementById("select2");
@@ -289,13 +307,16 @@ $(function() {
 } );
 
 var tester; 
+var pageViewsDone = false;
+var uniqueViewsDone = false;
+var TitleColumn3;
 
-function mainLine(num) {
+function mainLine(num, theData, unique) {
     if (time1 == 'monthly' && num==1) {    //time is changed based on the last button clicked
-        time = chartData1.monthly;
+        time = theData.monthly;
     }
     else if(time1 == 'daily' && num==1) {
-        time = chartData1.daily;
+        time = theData.daily;
     }
     else if (time2 == 'monthly' && num==2) {  
         time = chartData2.monthly;
@@ -303,7 +324,8 @@ function mainLine(num) {
     else if (time2 == 'daily' && num==2) {
         time = chartData2.daily;
     }
-    if (num == 1){
+    if (num == 1 && unique == false){
+        pageViewsDone = true;
         if(currentLang == "EN"){
             var TitleColumn2 = "Page Views";
         }
@@ -311,14 +333,24 @@ function mainLine(num) {
             var TitleColumn2 = "Visionnement de la page"
         }
     }
-    else{
+    else if(num == 2){
         if(currentLang == "EN"){
             var TitleColumn2 = "Members";
         }
         else{
-            var TitleColumn2 = "Membres"
+            var TitleColumn2 = "Membres";
         }
     }
+    if(unique == true){
+        uniqueViewsDone = true;
+        if(currentLang == "EN"){
+            TitleColumn3 = "Unique Page Views"
+        }
+        else{
+            TitleColumn3 = "Consultées uniques";
+        }
+    }
+    
     tester = avgTimeOnPageResp;
     if(num == 3){
         if(currentLang == "EN"){
@@ -328,12 +360,65 @@ function mainLine(num) {
             document.getElementById("avgTimeOnPage").innerHTML="Temps moyen sur la page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " secondes" ;
         }
     }
+    
     // x = prepareTableDataLine(time);
     // createTable(x);
+    
+    if(pageViewsDone == true && uniqueViewsDone == true){
+        if (time1 == 'monthly') {    //time is changed based on the last button clicked
+            time = chartData1.monthly;
+        }
+        else if(time1 == 'daily') {
+            time = chartData1.daily;
+        }
+    }
     x = prepareTableDataLine(time);
-    createTable(x, '#theTable'.concat(String(num)), "Date", TitleColumn2);
-    createChartLine(time, '#chart'.concat(String(num)));
-}    
+    if(pageViewsDone == true && uniqueViewsDone == true){ //if both the unique and page views have been done
+        if(currentLang == "EN"){
+            var TitleColumn2 = "Page Views";
+        }
+        else{
+            var TitleColumn2 = "Pages consultées";
+        }
+        y = uniqueDataPrep(x);
+        createTable(y, '#theTable1', "Date", TitleColumn2, TitleColumn3);
+        pageViewsDone = false;
+        uniqueViewsDone = false;
+        if (time1 == 'monthly' && num==1) {    //time is changed based on the last button clicked
+            time = theData.monthly;
+        }
+        else if(time1 == 'daily' && num==1) {
+            time = theData.daily;
+        }
+        createChartLine(time, '#chart'.concat(String(num)));
+    }
+    else if(unique == true && pageViewsDone == false){
+        createChartLine(time, '#chart'.concat(String(num)));
+    }
+    else{
+        createTable(x, '#theTable2', "Date", TitleColumn2);
+        createChartLine(time, '#chart'.concat(String(num)));
+    }
+    // createTable(x, '#theTable'.concat(String(num)), "Date", TitleColumn2);
+    
+}
+
+var theLooped;
+
+function uniqueDataPrep(data){
+    if(time1 == "daily"){
+        theLooped = uniqueViewsResp.daily.uniquePageviews;
+    }
+    else if(time1 == "monthly"){
+        theLooped = uniqueViewsResp.monthly.uniquePageviews;
+    }
+    console.log("theLooped");
+    console.log(theLooped);
+    for(var i = 0; i < data.length; i++){
+        data[i].push(theLooped[i]);
+    }
+    return data;
+}
 
 function prepareTableDataLine(timeFrame){
     valueKey = Object.keys(timeFrame)[1];
@@ -358,49 +443,98 @@ function prepareTableDataLine(timeFrame){
     return dataSet;
 }
 
-function createTable(tableData, tableID, TitleColumn1, TitleColumn2){
-    if ( $.fn.dataTable.isDataTable( tableID ) ) { //check if this is already a datatable
-        $(tableID).DataTable().destroy();              //clear its data
-        $(document).ready(function() {
-            $(tableID).DataTable( {      //initialization of the datatable
-                data: tableData,
-                // "columnDefs": [
-                //     { "width": "20%", "targets": 0 }
-                // ],
-                columns: [
-                    { title: TitleColumn1 },
-                    { title: TitleColumn2 },
-                ],
-                "scrollY": "200px",     //scroll function and the default size of the table
-                "searching": false,     //disabled the search function
-                "paging":   false,      //disabled paging
-                scrollCollapse: true, //shortens the height of the table if there isnt much data to fill up its height
-                "deferRender": true,    //renders one page at a time to speed up intialization if we're using a paginated table(but we're not lol)
-                "processing": true,     //displays a 'processing' indicator while the table is being processed
-                "bInfo": false,         //the table by default states "show 1 to N entries of N entries" so i got rid of that
+function createTable(tableData, tableID, TitleColumn1, TitleColumn2, Column3){
+    if(Column3 == "Unique Page Views"){
+        if ( $.fn.dataTable.isDataTable( tableID ) ) { //check if this is already a datatable
+            $(tableID).DataTable().destroy();              //clear its data
+            $(document).ready(function() {
+                $(tableID).DataTable( {      //initialization of the datatable
+                    data: tableData,
+                    // "columnDefs": [
+                    //     { "width": "20%", "targets": 0 }
+                    // ],
+                    columns: [
+                        { title: TitleColumn1 },
+                        { title: TitleColumn2 },
+                        { title: Column3 }
+                    ],
+                    "scrollY": "200px",     //scroll function and the default size of the table
+                    "searching": false,     //disabled the search function
+                    "paging":   false,      //disabled paging
+                    scrollCollapse: true, //shortens the height of the table if there isnt much data to fill up its height
+                    "deferRender": true,    //renders one page at a time to speed up intialization if we're using a paginated table(but we're not lol)
+                    "processing": true,     //displays a 'processing' indicator while the table is being processed
+                    "bInfo": false,         //the table by default states "show 1 to N entries of N entries" so i got rid of that
+                } );
             } );
-        } );
+        }
+        else{
+            $(document).ready(function() {
+                $(tableID).DataTable( {      //initialization of the datatable
+                    data: tableData,
+                    // "columnDefs": [
+                    //     { "width": "20%", "targets": 0 }
+                    // ],
+                    columns: [
+                        { title: TitleColumn1 },
+                        { title: TitleColumn2 },
+                        { title: Column3 }
+                    ],
+                    "scrollY": "200px",     //scroll function and the default size of the table
+                    "searching": false,     //disabled the search function
+                    "paging":   false,      //disabled paging
+                    scrollCollapse: true, //shortens the height of the table if there isnt much data to fill up its height
+                    "deferRender": true,    //renders one page at a time to speed up intialization if we're using a paginated table(but we're not lol)
+                    "processing": true,     //displays a 'processing' indicator while the table is being processed
+                    "bInfo": false,         //the table by default states "show 1 to N entries of N entries" so i got rid of that
+                } );
+            } );
+        }
     }
     else{
-        $(document).ready(function() {
-            $(tableID).DataTable( {      //initialization of the datatable
-                data: tableData,
-                // "columnDefs": [
-                //     { "width": "20%", "targets": 0 }
-                // ],
-                columns: [
-                    { title: TitleColumn1 },
-                    { title: TitleColumn2 },
-                ],
-                "scrollY": "200px",     //scroll function and the default size of the table
-                "searching": false,     //disabled the search function
-                "paging":   false,      //disabled paging
-                scrollCollapse: true, //shortens the height of the table if there isnt much data to fill up its height
-                "deferRender": true,    //renders one page at a time to speed up intialization if we're using a paginated table(but we're not lol)
-                "processing": true,     //displays a 'processing' indicator while the table is being processed
-                "bInfo": false,         //the table by default states "show 1 to N entries of N entries" so i got rid of that
+        if ( $.fn.dataTable.isDataTable( tableID ) ) { //check if this is already a datatable
+            $(tableID).DataTable().destroy();              //clear its data
+            $(document).ready(function() {
+                $(tableID).DataTable( {      //initialization of the datatable
+                    data: tableData,
+                    // "columnDefs": [
+                    //     { "width": "20%", "targets": 0 }
+                    // ],
+                    columns: [
+                        { title: TitleColumn1 },
+                        { title: TitleColumn2 },
+                    ],
+                    "scrollY": "200px",     //scroll function and the default size of the table
+                    "searching": false,     //disabled the search function
+                    "paging":   false,      //disabled paging
+                    scrollCollapse: true, //shortens the height of the table if there isnt much data to fill up its height
+                    "deferRender": true,    //renders one page at a time to speed up intialization if we're using a paginated table(but we're not lol)
+                    "processing": true,     //displays a 'processing' indicator while the table is being processed
+                    "bInfo": false,         //the table by default states "show 1 to N entries of N entries" so i got rid of that
+                } );
             } );
-        } );
+        }
+        else{
+            $(document).ready(function() {
+                $(tableID).DataTable( {      //initialization of the datatable
+                    data: tableData,
+                    // "columnDefs": [
+                    //     { "width": "20%", "targets": 0 }
+                    // ],
+                    columns: [
+                        { title: TitleColumn1 },
+                        { title: TitleColumn2 },
+                    ],
+                    "scrollY": "200px",     //scroll function and the default size of the table
+                    "searching": false,     //disabled the search function
+                    "paging":   false,      //disabled paging
+                    scrollCollapse: true, //shortens the height of the table if there isnt much data to fill up its height
+                    "deferRender": true,    //renders one page at a time to speed up intialization if we're using a paginated table(but we're not lol)
+                    "processing": true,     //displays a 'processing' indicator while the table is being processed
+                    "bInfo": false,         //the table by default states "show 1 to N entries of N entries" so i got rid of that
+                } );
+            } );
+        }
     }
 }
         
@@ -417,13 +551,24 @@ function createChartLine(timeFrame, chartID){
     valueKey = Object.keys(thisTime)[1];
     thisTime[valueKey].unshift(valueKey);
     dataa = thisTime[valueKey];
+    
     //setting tooltips in if else below
     if(chartID == "#chart1"){
         if(currentLang == "EN"){
-            dataa[0] = "Page Views"
+            if(dataa[0] == "pageviews"){
+                dataa[0] = "Page Views";
+            }
+            else if(dataa[0] == "uniquePageviews"){
+                dataa[0] = "Unique Page Views";
+            } 
         }
         else{ //lang is french
-            dataa[0] = "Visionnement de la page"
+            if(dataa[0] == "pageviews"){
+                dataa[0] = "Visionnement de la page";
+            }
+            else if(dataa[0] == "uniquePageviews"){
+                dataa[0] = "Consultées uniques";
+            } 
         }
     }
     else{ //chart2
@@ -434,48 +579,39 @@ function createChartLine(timeFrame, chartID){
             dataa[0] = "Membres"
         }
     }
-    var chart = c3.generate({
-            bindto: chartID,
-            size: {
-                height: 200,    //size set same the datatable
-                //width: 480    //default size is full width of page
-            },
-            data: {
-                x: 'dates',
-                xFormat: '%Y-%m-%d',
-                columns: [
-                    columnss,   // example of what is being passed ['x', "20170831", "20170930", "20171031", "20171130", "20171231", "20180131", "20180228", "20180331", "20180430", "20180531"],
-                    dataa,      // example of what is being passed ['users', 20, 26, 26, 27, 27, 31, 34, 34, 34, 43]
-                ],
-                color: '#047177'
-                // color: function (color, d) {
-                //     // d will be 'id' when called for legends
-                //     return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
-                //     },
-            },
-            point: {
-                show: false
-            },
-            color: {
-                pattern: ['#047177']
-            },
-            legend: {
-                show: false
-            },
-            axis: {
-                x: {
-                    type: 'timeseries',
-                tick: {
-                    format: '%Y-%m-%d'
-                    }
-                }
-            },
-            groupName: '',
-            onrendered: function() {
-                d3.selectAll(".c3-axis.c3-axis-x .tick text")
-                    .style("display", "none");
-            }
-        });
+    if (dataa[0]=='Page Views' || dataa[0]=='Unique Page Views' || dataa[0]=='Visionnement de la page' || dataa[0]=='Consultées uniques'){
+        lineChartViews.load({
+            columns: [
+                columnss,
+                dataa
+            ]
+        });  
+    }
+    else if(dataa[0]=='Members' ||  dataa[0]=='Membres'){
+        lineChartMembers.load({
+            columns: [
+                columnss,
+                dataa
+            ]
+        })
+    }
+    // if (dataa[0]=='Page Views' || dataa[0]=='uniquePageviews' || dataa[0]=='Pages consultées' || dataa[0]=='pageviews'){
+    //     console.log("LOAAAAAAAAAAADDDDDDING");
+    //     lineChartViews.load({
+    //         columns: [
+    //             columnss,
+    //             dataa
+    //         ]
+    //     });  
+    // }
+    // else if(dataa[0]=='users' || dataa[0]=='Members' || dataa[0]=='Membres'){
+    //     lineChartMembers.load({
+    //         columns: [
+    //             columnss,
+    //             dataa
+    //         ]
+    //     })
+    // }
     }
 
 function downloadCSVLine(timeFrame){
@@ -595,7 +731,6 @@ function createChartBar(chartData, chartID){
             dataa[0] = "Pages Consultées"
         }
     }
-    console.log(dataa)
     var str = firstKey;
     var chart = c3.generate({
         bindto: chartID,
@@ -790,11 +925,12 @@ function helperRequestData() {
     // }
     //xmlHttp.abort();
     $('.white-box').show("slow", function(){
+        requestData('uniquePageviews');
         requestData('membersOverTime');
         requestData('departments');
         requestData('topContent');
         requestData('pageViews');
-        requestData('avgTimeOnPage')
+        requestData('avgTimeOnPage');
     })
 }
 
@@ -947,8 +1083,84 @@ function replaceAll(str, find, replace) {
 
 var finishedLoadingPageViews = false;
 var finishedLoadingAvgTimeOnPAge = false;
+var finishedLoadingUniqueViews = false;
 
 function requestData(reqType) {
+    setTimeout(function() {
+        lineChartViews = c3.generate({
+            bindto: '#chart1',
+            size: {
+                height: 200,    //size set same the datatable
+                //width: 480    //default size is full width of page
+            },
+            data: {
+                x: 'dates',
+                xFormat: '%Y-%m-%d',
+                columns: [
+                    // columnss,   // example of what is being passed ['x', "20170831", "20170930", "20171031", "20171130", "20171231", "20180131", "20180228", "20180331", "20180430", "20180531"],
+                    // dataa,      // example of what is being passed ['users', 20, 26, 26, 27, 27, 31, 34, 34, 34, 43]
+                ],
+                // color: function (color, d) {
+                //     // d will be 'id' when called for legends
+                //     return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
+                //     },
+            },
+            legend: {
+                show: false
+            },
+            axis: {
+                x: {
+                    type: 'timeseries',
+                tick: {
+                    format: '%Y-%m-%d'
+                    }
+                }
+            },
+            groupName: '',
+            onrendered: function() {
+                d3.selectAll(".c3-axis.c3-axis-x .tick text")
+                    .style("display", "none");
+            }
+        });
+        lineChartMembers = c3.generate({
+            bindto: '#chart2',
+            size: {
+                height: 200,    //size set same the datatable
+                //width: 480    //default size is full width of page
+            },
+            data: {
+                x: 'dates',
+                xFormat: '%Y-%m-%d',
+                columns: [
+                    // columnss,   // example of what is being passed ['x', "20170831", "20170930", "20171031", "20171130", "20171231", "20180131", "20180228", "20180331", "20180430", "20180531"],
+                    // dataa,      // example of what is being passed ['users', 20, 26, 26, 27, 27, 31, 34, 34, 34, 43]
+                ],
+                // color: function (color, d) {
+                //     // d will be 'id' when called for legends
+                //     return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
+                //     },
+            },
+            legend: {
+                show: false
+            },
+            axis: {
+                x: {
+                    type: 'timeseries',
+                tick: {
+                    format: '%Y-%m-%d'
+                    }
+                }
+            },
+            groupName: '',
+            onrendered: function() {
+                d3.selectAll(".c3-axis.c3-axis-x .tick text")
+                    .style("display", "none");
+            }
+        });
+        $('#chart1').hide(); 
+        $('#chart2').hide();
+    }, 4000);
+    
     progress1 = true;
     p2 = true;
     p3 = true;
@@ -994,6 +1206,15 @@ function requestData(reqType) {
                 end_date: state.endDate
             });
             break;
+        case 'uniquePageviews':
+            reqStatement = JSON.stringify({
+                type: 'pages',
+                stat: 'uniquePageviews',
+                url: state.groupURL,
+                start_date: state.startDate,
+                end_date: state.endDate
+            });
+            break;
         case 'avgTimeOnPage':
             reqStatement = JSON.stringify({
                 type: 'pages',
@@ -1009,30 +1230,31 @@ function requestData(reqType) {
     //console.log(reqStatement);
     //reqStatement = JSON.stringify(reqStatement);
     //var data = {name:"John"}
-    console.log(reqStatement);
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
+            
             resp = JSON.parse(this.response);
             switch(reqType) {
                 case 'membersOverTime':
                     progress1 = false;
                     chartData2 = resp;
-                    console.log(chartData2);
+                    // console.log(chartData2);
                     mainLine(2);
                     $('.loading1').hide();
+                    $('#chart2').show(); 
                     break;
                 case 'departments':
                     p2 = false;
                     barChartData1 = resp;
-                    console.log(barChartData1);
+                    // console.log(barChartData1);
                     mainBar(1, 'departments', resp);
                     $('.loading2').hide();
                     break;
                 case 'topContent':
                     p3 = false;
                     barChartData2 = resp;
-                    console.log(barChartData2);
+                    // console.log(barChartData2);
                     hardCopybcden = $.extend(true, {}, barChartData2);
                     hardCopybcdfr = $.extend(true, {}, barChartData2);
                     for (var i = 0; i < hardCopybcden['urls'].length; i++){
@@ -1045,26 +1267,46 @@ function requestData(reqType) {
                 case 'pageViews':
                     p4 = false;
                     finishedLoadingPageViews = true;
-                    if(finishedLoadingAvgTimeOnPAge == true && finishedLoadingPageViews == true){
+                    if(finishedLoadingAvgTimeOnPAge == true && finishedLoadingPageViews == true && finishedLoadingUniqueViews == true){
                         finishedLoadingAvgTimeOnPAge = false;
                         finishedLoadingPageViews = false;
+                        finishedLoadingUniqueViews = false;
                         $('.loading').hide();
+                        $('#chart1').show(); 
                     }
                     chartData1 = resp;
-                    console.log(chartData1);
-                    // document.getElementById("title").innerHTML=replaceAll(chartData1.group_name, "-", " ");
-                    mainLine(1)
+                    // console.log(chartData1);
+                    document.getElementById("title").innerHTML=replaceAll(chartData1.group_name, "-", " ");
+                    // console.log(chartData1.group_name)
+                    mainLine(1, chartData1, false);
+                    
                     break;
                 case "avgTimeOnPage":
                     p5 = false;
                     finishedLoadingAvgTimeOnPAge = true;
-                    if(finishedLoadingAvgTimeOnPAge == true && finishedLoadingPageViews == true){
+                    if(finishedLoadingAvgTimeOnPAge == true && finishedLoadingPageViews == true && finishedLoadingUniqueViews == true){
                         finishedLoadingAvgTimeOnPAge = false;
                         finishedLoadingPageViews = false;
+                        finishedLoadingUniqueViews = false;
                         $('.loading').hide();
+                        $('#chart1').show(); 
                     }
                     avgTimeOnPageResp = resp;
                     mainLine(3)
+                    break;
+                case 'uniquePageviews':
+                    p6 = false;
+                    finishedLoadingUniqueViews = true;
+                    if(finishedLoadingAvgTimeOnPAge == true && finishedLoadingPageViews == true && finishedLoadingUniqueViews == true){
+                        finishedLoadingAvgTimeOnPAge = false;
+                        finishedLoadingPageViews = false;
+                        finishedLoadingUniqueViews = false;
+                        $('.loading').hide();
+                        $('#chart1').show(); 
+                    }
+                    var unique = true;
+                    uniqueViewsResp = resp;
+                    mainLine(1, uniqueViewsResp, unique);
                     break;
             }
             setTimeout(function() {
@@ -1085,4 +1327,9 @@ function requestData(reqType) {
 
 $(document).ready(function(){
     $('.white-box').hide();
+    helper1Copy();
 });
+
+setTimeout(function(){
+    helper1Copy();
+    }, 250);
