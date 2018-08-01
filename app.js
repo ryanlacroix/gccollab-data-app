@@ -23,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'build'), {
 // Route for data requests
 app.use( bodyParser.json() );
 app.post('/api', (req, res) => {
+    console.log(req.body);
     var py;
     var dataString = '';
     console.log('Data request received!');

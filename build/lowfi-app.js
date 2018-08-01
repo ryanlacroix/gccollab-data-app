@@ -55,7 +55,18 @@ function helper1(event) {
         time1 = 'daily';
     }
     mainLine(1, uniqueViewsResp, true);
-    mainLine(1, chartData1);
+    mainLine(1, chartData1, false);
+}
+
+function helper1Copy(){
+    if (menu.value == "monthly1"){
+        time1 = 'monthly';
+    }
+    if (menu.value == "daily1"){
+        time1 = 'daily';
+    }
+    mainLine(1, uniqueViewsResp, true);
+    mainLine(1, chartData1, false);
 }
 
 var menu2 = document.getElementById("select2");
@@ -300,7 +311,7 @@ var pageViewsDone = false;
 var uniqueViewsDone = false;
 var TitleColumn3;
 
-function mainLine(num, theData, unique=false) {
+function mainLine(num, theData, unique) {
     if (time1 == 'monthly' && num==1) {    //time is changed based on the last button clicked
         time = theData.monthly;
     }
@@ -352,6 +363,15 @@ function mainLine(num, theData, unique=false) {
     
     // x = prepareTableDataLine(time);
     // createTable(x);
+    
+    if(pageViewsDone == true && uniqueViewsDone == true){
+        if (time1 == 'monthly') {    //time is changed based on the last button clicked
+            time = chartData1.monthly;
+        }
+        else if(time1 == 'daily') {
+            time = chartData1.daily;
+        }
+    }
     x = prepareTableDataLine(time);
     if(pageViewsDone == true && uniqueViewsDone == true){ //if both the unique and page views have been done
         if(currentLang == "EN"){
@@ -364,14 +384,23 @@ function mainLine(num, theData, unique=false) {
         createTable(y, '#theTable1', "Date", TitleColumn2, TitleColumn3);
         pageViewsDone = false;
         uniqueViewsDone = false;
+        if (time1 == 'monthly' && num==1) {    //time is changed based on the last button clicked
+            time = theData.monthly;
+        }
+        else if(time1 == 'daily' && num==1) {
+            time = theData.daily;
+        }
+        createChartLine(time, '#chart'.concat(String(num)));
     }
     else if(unique == true && pageViewsDone == false){
+        createChartLine(time, '#chart'.concat(String(num)));
     }
     else{
         createTable(x, '#theTable2', "Date", TitleColumn2);
+        createChartLine(time, '#chart'.concat(String(num)));
     }
     // createTable(x, '#theTable'.concat(String(num)), "Date", TitleColumn2);
-    createChartLine(time, '#chart'.concat(String(num)));
+    
 }
 
 var theLooped;
@@ -414,7 +443,7 @@ function prepareTableDataLine(timeFrame){
     return dataSet;
 }
 
-function createTable(tableData, tableID, TitleColumn1, TitleColumn2, Column3=false){
+function createTable(tableData, tableID, TitleColumn1, TitleColumn2, Column3){
     if(Column3 == "Unique Page Views"){
         if ( $.fn.dataTable.isDataTable( tableID ) ) { //check if this is already a datatable
             $(tableID).DataTable().destroy();              //clear its data
@@ -1057,76 +1086,81 @@ var finishedLoadingAvgTimeOnPAge = false;
 var finishedLoadingUniqueViews = false;
 
 function requestData(reqType) {
-    lineChartViews = c3.generate({
-        bindto: '#chart1',
-        size: {
-            height: 200,    //size set same the datatable
-            //width: 480    //default size is full width of page
-        },
-        data: {
-            x: 'dates',
-            xFormat: '%Y-%m-%d',
-            columns: [
-                // columnss,   // example of what is being passed ['x', "20170831", "20170930", "20171031", "20171130", "20171231", "20180131", "20180228", "20180331", "20180430", "20180531"],
-                // dataa,      // example of what is being passed ['users', 20, 26, 26, 27, 27, 31, 34, 34, 34, 43]
-            ],
-            // color: function (color, d) {
-            //     // d will be 'id' when called for legends
-            //     return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
-            //     },
-        },
-        legend: {
-            show: false
-        },
-        axis: {
-            x: {
-                type: 'timeseries',
-            tick: {
-                format: '%Y-%m-%d'
+    setTimeout(function() {
+        lineChartViews = c3.generate({
+            bindto: '#chart1',
+            size: {
+                height: 200,    //size set same the datatable
+                //width: 480    //default size is full width of page
+            },
+            data: {
+                x: 'dates',
+                xFormat: '%Y-%m-%d',
+                columns: [
+                    // columnss,   // example of what is being passed ['x', "20170831", "20170930", "20171031", "20171130", "20171231", "20180131", "20180228", "20180331", "20180430", "20180531"],
+                    // dataa,      // example of what is being passed ['users', 20, 26, 26, 27, 27, 31, 34, 34, 34, 43]
+                ],
+                // color: function (color, d) {
+                //     // d will be 'id' when called for legends
+                //     return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
+                //     },
+            },
+            legend: {
+                show: false
+            },
+            axis: {
+                x: {
+                    type: 'timeseries',
+                tick: {
+                    format: '%Y-%m-%d'
+                    }
                 }
+            },
+            groupName: '',
+            onrendered: function() {
+                d3.selectAll(".c3-axis.c3-axis-x .tick text")
+                    .style("display", "none");
             }
-        },
-        groupName: '',
-        onrendered: function() {
-            d3.selectAll(".c3-axis.c3-axis-x .tick text")
-                .style("display", "none");
-        }
-    });
-    lineChartMembers = c3.generate({
-        bindto: '#chart2',
-        size: {
-            height: 200,    //size set same the datatable
-            //width: 480    //default size is full width of page
-        },
-        data: {
-            x: 'dates',
-            xFormat: '%Y-%m-%d',
-            columns: [
-                // columnss,   // example of what is being passed ['x', "20170831", "20170930", "20171031", "20171130", "20171231", "20180131", "20180228", "20180331", "20180430", "20180531"],
-                // dataa,      // example of what is being passed ['users', 20, 26, 26, 27, 27, 31, 34, 34, 34, 43]
-            ],
-            // color: function (color, d) {
-            //     // d will be 'id' when called for legends
-            //     return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
-            //     },
-        },
-        legend: {
-            show: false
-        },
-        axis: {
-            x: {
-                type: 'timeseries',
-            tick: {
-                format: '%Y-%m-%d'
+        });
+        lineChartMembers = c3.generate({
+            bindto: '#chart2',
+            size: {
+                height: 200,    //size set same the datatable
+                //width: 480    //default size is full width of page
+            },
+            data: {
+                x: 'dates',
+                xFormat: '%Y-%m-%d',
+                columns: [
+                    // columnss,   // example of what is being passed ['x', "20170831", "20170930", "20171031", "20171130", "20171231", "20180131", "20180228", "20180331", "20180430", "20180531"],
+                    // dataa,      // example of what is being passed ['users', 20, 26, 26, 27, 27, 31, 34, 34, 34, 43]
+                ],
+                // color: function (color, d) {
+                //     // d will be 'id' when called for legends
+                //     return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
+                //     },
+            },
+            legend: {
+                show: false
+            },
+            axis: {
+                x: {
+                    type: 'timeseries',
+                tick: {
+                    format: '%Y-%m-%d'
+                    }
                 }
+            },
+            groupName: '',
+            onrendered: function() {
+                d3.selectAll(".c3-axis.c3-axis-x .tick text")
+                    .style("display", "none");
             }
-        },
-        groupName: '',
-        onrendered: function() {
-            d3.selectAll(".c3-axis.c3-axis-x .tick text")
-                .style("display", "none");
-        }
-    });
+        });
+        $('#chart1').hide(); 
+        $('#chart2').hide();
+    }, 4000);
+    
     progress1 = true;
     p2 = true;
     p3 = true;
@@ -1208,6 +1242,7 @@ function requestData(reqType) {
                     // console.log(chartData2);
                     mainLine(2);
                     $('.loading1').hide();
+                    $('#chart2').show(); 
                     break;
                 case 'departments':
                     p2 = false;
@@ -1237,12 +1272,13 @@ function requestData(reqType) {
                         finishedLoadingPageViews = false;
                         finishedLoadingUniqueViews = false;
                         $('.loading').hide();
+                        $('#chart1').show(); 
                     }
                     chartData1 = resp;
                     // console.log(chartData1);
                     document.getElementById("title").innerHTML=replaceAll(chartData1.group_name, "-", " ");
                     // console.log(chartData1.group_name)
-                    mainLine(1, chartData1)
+                    mainLine(1, chartData1, false);
                     
                     break;
                 case "avgTimeOnPage":
@@ -1253,6 +1289,7 @@ function requestData(reqType) {
                         finishedLoadingPageViews = false;
                         finishedLoadingUniqueViews = false;
                         $('.loading').hide();
+                        $('#chart1').show(); 
                     }
                     avgTimeOnPageResp = resp;
                     mainLine(3)
@@ -1265,6 +1302,7 @@ function requestData(reqType) {
                         finishedLoadingPageViews = false;
                         finishedLoadingUniqueViews = false;
                         $('.loading').hide();
+                        $('#chart1').show(); 
                     }
                     var unique = true;
                     uniqueViewsResp = resp;
@@ -1289,4 +1327,9 @@ function requestData(reqType) {
 
 $(document).ready(function(){
     $('.white-box').hide();
+    helper1Copy();
 });
+
+setTimeout(function(){
+    helper1Copy();
+    }, 250);
