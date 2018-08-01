@@ -50,14 +50,12 @@ menu.addEventListener("change", helper1);
 function helper1(event) {
     if (menu.value == "monthly1"){
         time1 = 'monthly';
-        mainLine(1, chartData1);
-        mainLine(1, uniqueViewsResp);
     }
     if (menu.value == "daily1"){
         time1 = 'daily';
-        mainLine(1, chartData1);
-        mainLine(1, uniqueViewsResp);
     }
+    mainLine(1, uniqueViewsResp, true);
+    mainLine(1, chartData1);
 }
 
 var menu2 = document.getElementById("select2");
@@ -290,8 +288,11 @@ $(function() {
 } );
 
 var tester; 
+var pageViewsDone = false;
+var uniqueViewsDone = false;
+var TitleColumn3;
 
-function mainLine(num, theData) {
+function mainLine(num, theData, unique=false) {
     if (time1 == 'monthly' && num==1) {    //time is changed based on the last button clicked
         time = theData.monthly;
     }
@@ -304,7 +305,8 @@ function mainLine(num, theData) {
     else if (time2 == 'daily' && num==2) {
         time = chartData2.daily;
     }
-    if (num == 1){
+    if (num == 1 && unique == false){
+        pageViewsDone = true;
         if(currentLang == "EN"){
             var TitleColumn2 = "Page Views";
         }
@@ -312,7 +314,7 @@ function mainLine(num, theData) {
             var TitleColumn2 = "Pages consultées";
         }
     }
-    else{
+    else if(num == 2){
         if(currentLang == "EN"){
             var TitleColumn2 = "Members";
         }
@@ -320,6 +322,16 @@ function mainLine(num, theData) {
             var TitleColumn2 = "Membres";
         }
     }
+    if(unique == true){
+        uniqueViewsDone = true;
+        if(currentLang == "EN"){
+            TitleColumn3 = "Unique Page Views"
+        }
+        else{
+            TitleColumn3 = "Consultées uniques";
+        }
+    }
+    
     tester = avgTimeOnPageResp;
     if(num == 3){
         if(currentLang == "EN"){
@@ -333,8 +345,42 @@ function mainLine(num, theData) {
     // x = prepareTableDataLine(time);
     // createTable(x);
     x = prepareTableDataLine(time);
-    createTable(x, '#theTable'.concat(String(num)), "Date", TitleColumn2);
+    if(pageViewsDone == true && uniqueViewsDone == true){ //if both the unique and page views have been done
+        if(currentLang == "EN"){
+            var TitleColumn2 = "Page Views";
+        }
+        else{
+            var TitleColumn2 = "Pages consultées";
+        }
+        y = uniqueDataPrep(x);
+        createTable(y, '#theTable1', "Date", TitleColumn2, TitleColumn3);
+        pageViewsDone = false;
+        uniqueViewsDone = false;
+    }
+    else if(unique == true && pageViewsDone == false){
+    }
+    else{
+        createTable(x, '#theTable2', "Date", TitleColumn2);
+    }
+    // createTable(x, '#theTable'.concat(String(num)), "Date", TitleColumn2);
     createChartLine(time, '#chart'.concat(String(num)));
+}
+
+var theLooped;
+
+function uniqueDataPrep(data){
+    if(time1 == "daily"){
+        theLooped = uniqueViewsResp.daily.uniquePageviews;
+    }
+    else if(time1 == "monthly"){
+        theLooped = uniqueViewsResp.monthly.uniquePageviews;
+    }
+    console.log("theLooped");
+    console.log(theLooped);
+    for(var i = 0; i < data.length; i++){
+        data[i].push(theLooped[i]);
+    }
+    return data;
 }
 
 function prepareTableDataLine(timeFrame){
@@ -360,50 +406,98 @@ function prepareTableDataLine(timeFrame){
     return dataSet;
 }
 
-function createTable(tableData, tableID, TitleColumn1, TitleColumn2){
-    if ( $.fn.dataTable.isDataTable( tableID ) ) { //check if this is already a datatable
-        console.log("REPLACINGGGGGGGG");
-        $(tableID).DataTable().destroy();              //clear its data
-        $(document).ready(function() {
-            $(tableID).DataTable( {      //initialization of the datatable
-                data: tableData,
-                // "columnDefs": [
-                //     { "width": "20%", "targets": 0 }
-                // ],
-                columns: [
-                    { title: TitleColumn1 },
-                    { title: TitleColumn2 },
-                ],
-                "scrollY": "200px",     //scroll function and the default size of the table
-                "searching": false,     //disabled the search function
-                "paging":   false,      //disabled paging
-                scrollCollapse: true, //shortens the height of the table if there isnt much data to fill up its height
-                "deferRender": true,    //renders one page at a time to speed up intialization if we're using a paginated table(but we're not lol)
-                "processing": true,     //displays a 'processing' indicator while the table is being processed
-                "bInfo": false,         //the table by default states "show 1 to N entries of N entries" so i got rid of that
+function createTable(tableData, tableID, TitleColumn1, TitleColumn2, Column3=false){
+    if(Column3 == "Unique Page Views"){
+        if ( $.fn.dataTable.isDataTable( tableID ) ) { //check if this is already a datatable
+            $(tableID).DataTable().destroy();              //clear its data
+            $(document).ready(function() {
+                $(tableID).DataTable( {      //initialization of the datatable
+                    data: tableData,
+                    // "columnDefs": [
+                    //     { "width": "20%", "targets": 0 }
+                    // ],
+                    columns: [
+                        { title: TitleColumn1 },
+                        { title: TitleColumn2 },
+                        { title: Column3 }
+                    ],
+                    "scrollY": "200px",     //scroll function and the default size of the table
+                    "searching": false,     //disabled the search function
+                    "paging":   false,      //disabled paging
+                    scrollCollapse: true, //shortens the height of the table if there isnt much data to fill up its height
+                    "deferRender": true,    //renders one page at a time to speed up intialization if we're using a paginated table(but we're not lol)
+                    "processing": true,     //displays a 'processing' indicator while the table is being processed
+                    "bInfo": false,         //the table by default states "show 1 to N entries of N entries" so i got rid of that
+                } );
             } );
-        } );
+        }
+        else{
+            $(document).ready(function() {
+                $(tableID).DataTable( {      //initialization of the datatable
+                    data: tableData,
+                    // "columnDefs": [
+                    //     { "width": "20%", "targets": 0 }
+                    // ],
+                    columns: [
+                        { title: TitleColumn1 },
+                        { title: TitleColumn2 },
+                        { title: Column3 }
+                    ],
+                    "scrollY": "200px",     //scroll function and the default size of the table
+                    "searching": false,     //disabled the search function
+                    "paging":   false,      //disabled paging
+                    scrollCollapse: true, //shortens the height of the table if there isnt much data to fill up its height
+                    "deferRender": true,    //renders one page at a time to speed up intialization if we're using a paginated table(but we're not lol)
+                    "processing": true,     //displays a 'processing' indicator while the table is being processed
+                    "bInfo": false,         //the table by default states "show 1 to N entries of N entries" so i got rid of that
+                } );
+            } );
+        }
     }
     else{
-        $(document).ready(function() {
-            $(tableID).DataTable( {      //initialization of the datatable
-                data: tableData,
-                // "columnDefs": [
-                //     { "width": "20%", "targets": 0 }
-                // ],
-                columns: [
-                    { title: TitleColumn1 },
-                    { title: TitleColumn2 },
-                ],
-                "scrollY": "200px",     //scroll function and the default size of the table
-                "searching": false,     //disabled the search function
-                "paging":   false,      //disabled paging
-                scrollCollapse: true, //shortens the height of the table if there isnt much data to fill up its height
-                "deferRender": true,    //renders one page at a time to speed up intialization if we're using a paginated table(but we're not lol)
-                "processing": true,     //displays a 'processing' indicator while the table is being processed
-                "bInfo": false,         //the table by default states "show 1 to N entries of N entries" so i got rid of that
+        if ( $.fn.dataTable.isDataTable( tableID ) ) { //check if this is already a datatable
+            $(tableID).DataTable().destroy();              //clear its data
+            $(document).ready(function() {
+                $(tableID).DataTable( {      //initialization of the datatable
+                    data: tableData,
+                    // "columnDefs": [
+                    //     { "width": "20%", "targets": 0 }
+                    // ],
+                    columns: [
+                        { title: TitleColumn1 },
+                        { title: TitleColumn2 },
+                    ],
+                    "scrollY": "200px",     //scroll function and the default size of the table
+                    "searching": false,     //disabled the search function
+                    "paging":   false,      //disabled paging
+                    scrollCollapse: true, //shortens the height of the table if there isnt much data to fill up its height
+                    "deferRender": true,    //renders one page at a time to speed up intialization if we're using a paginated table(but we're not lol)
+                    "processing": true,     //displays a 'processing' indicator while the table is being processed
+                    "bInfo": false,         //the table by default states "show 1 to N entries of N entries" so i got rid of that
+                } );
             } );
-        } );
+        }
+        else{
+            $(document).ready(function() {
+                $(tableID).DataTable( {      //initialization of the datatable
+                    data: tableData,
+                    // "columnDefs": [
+                    //     { "width": "20%", "targets": 0 }
+                    // ],
+                    columns: [
+                        { title: TitleColumn1 },
+                        { title: TitleColumn2 },
+                    ],
+                    "scrollY": "200px",     //scroll function and the default size of the table
+                    "searching": false,     //disabled the search function
+                    "paging":   false,      //disabled paging
+                    scrollCollapse: true, //shortens the height of the table if there isnt much data to fill up its height
+                    "deferRender": true,    //renders one page at a time to speed up intialization if we're using a paginated table(but we're not lol)
+                    "processing": true,     //displays a 'processing' indicator while the table is being processed
+                    "bInfo": false,         //the table by default states "show 1 to N entries of N entries" so i got rid of that
+                } );
+            } );
+        }
     }
 }
         
@@ -600,7 +694,6 @@ function createChartBar(chartData, chartID){
             dataa[0] = "Pages Consultées"
         }
     }
-    console.log(dataa)
     var str = firstKey;
     var chart = c3.generate({
         bindto: chartID,
@@ -795,11 +888,11 @@ function helperRequestData() {
     // }
     //xmlHttp.abort();
     $('.white-box').show("slow", function(){
+        requestData('uniquePageviews');
         requestData('membersOverTime');
         requestData('departments');
         requestData('topContent');
         requestData('pageViews');
-        requestData('uniquePageviews');
         requestData('avgTimeOnPage');
     })
 }
@@ -1095,7 +1188,6 @@ function requestData(reqType) {
     //console.log(reqStatement);
     //reqStatement = JSON.stringify(reqStatement);
     //var data = {name:"John"}
-    console.log(reqStatement);
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
@@ -1105,21 +1197,21 @@ function requestData(reqType) {
                 case 'membersOverTime':
                     progress1 = false;
                     chartData2 = resp;
-                    console.log(chartData2);
+                    // console.log(chartData2);
                     mainLine(2);
                     $('.loading1').hide();
                     break;
                 case 'departments':
                     p2 = false;
                     barChartData1 = resp;
-                    console.log(barChartData1);
+                    // console.log(barChartData1);
                     mainBar(1, 'departments', resp);
                     $('.loading2').hide();
                     break;
                 case 'topContent':
                     p3 = false;
                     barChartData2 = resp;
-                    console.log(barChartData2);
+                    // console.log(barChartData2);
                     hardCopybcden = $.extend(true, {}, barChartData2);
                     hardCopybcdfr = $.extend(true, {}, barChartData2);
                     for (var i = 0; i < hardCopybcden['urls'].length; i++){
@@ -1139,9 +1231,9 @@ function requestData(reqType) {
                         $('.loading').hide();
                     }
                     chartData1 = resp;
-                    console.log(chartData1);
+                    // console.log(chartData1);
                     document.getElementById("title").innerHTML=replaceAll(chartData1.group_name, "-", " ");
-                    console.log(chartData1.group_name)
+                    // console.log(chartData1.group_name)
                     mainLine(1, chartData1)
                     
                     break;
@@ -1166,10 +1258,9 @@ function requestData(reqType) {
                         finishedLoadingUniqueViews = false;
                         $('.loading').hide();
                     }
+                    var unique = true;
                     uniqueViewsResp = resp;
-                    console.log(chartData1);
-                    mainLine(1, uniqueViewsResp);
-                    // $('.loading').hide();
+                    mainLine(1, uniqueViewsResp, unique);
                     break;
             }
             setTimeout(function() {
