@@ -267,13 +267,13 @@ class LineChart2 extends Component {
             if(nextProps.language == 'FR'){
                 if (nextProps.interval == 'daily'){
                     this.setState({
-                        title: "Pages consultées",
+                        title: "Visionnement de la page",
                         header1: "Date",
-                        header2: "Pages consultées",
+                        header2: "Vues",
                         header3: "Consultées uniques",
-                        frinterval: "Quotidien",
-                        frinterval2: "Mensuel",
-                        downloadCSVmessage: "Télécharger les données au format CSV",
+                        frinterval: "Quotidiennement",
+                        frinterval2: "Mensuellement",
+                        downloadCSVmessage: "Télécharger les données en format CSV",
                         intervalWord: "Intervalle",
                         loading: "Chargement",
                         avgTimeMessage: "Temps moyen sur la page"
@@ -281,13 +281,13 @@ class LineChart2 extends Component {
                 }
                 if (nextProps.interval == 'montly'){
                     this.setState({
-                        title: "Pages consultées",
+                        title: "Visionnement de la page",
                         header1: "Date",
-                        header2: "Pages consultées",
+                        header2: "Vues",
                         header3: "Consultées uniques",
-                        frinterval: "Mensuel",
-                        frinterval2: "Quotidien",
-                        downloadCSVmessage: "Télécharger les données au format CSV",
+                        frinterval: "Mensuellement",
+                        frinterval2: "Quotidiennement",
+                        downloadCSVmessage: "Télécharger les données en format CSV",
                         intervalWord: "Intervalle",
                         loading: "Chargement",
                         avgTimeMessage: "Temps moyen sur la page:"
@@ -295,13 +295,13 @@ class LineChart2 extends Component {
                 }
                 else{
                     this.setState({
-                        title: "Pages consultées",
+                        title: "Visionnement de la page",
                         header2: "Date",
-                        header2: "Pages consultées",
+                        header2: "Vues",
                         header3: "Consultées uniques",
-                        frinterval: "Quotidien",
-                        frinterval2: "Mensuel",
-                        downloadCSVmessage: "Télécharger les données au format CSV",
+                        frinterval: "Quotidiennement",
+                        frinterval2: "Mensuellement",
+                        downloadCSVmessage: "Télécharger les données en format CSV",
                         intervalWord: "Intervalle",
                         loading: "Chargement",
                         avgTimeMessage: "Temps moyen sur la page:"

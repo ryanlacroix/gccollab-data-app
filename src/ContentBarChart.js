@@ -98,7 +98,7 @@ class ContentBarChart extends Component {
     toFrench (typeStr){
         let validTypes = ['file','discussion','event_calendar','groups','blog',
                         'bookmarks','pages',];
-        let validTypesFR = ['fichier','discussion','calendrier des événements','groupes ','blog',
+        let validTypesFR = ['dossier','discussion','calendrier des événements','groupe','blogue',
         'signets','pages',];
         for(var i=0; i<validTypes.length; i++){
             if(typeStr == validTypes[i]){
@@ -272,10 +272,10 @@ class ContentBarChart extends Component {
                         columns: this.state.fixed_data_fr,
                     },
                     fullData: this.state.fullDataFR,
-                    title: "Top contenu du groupe",
+                    title: "Principal contenu du groupe",
                     header1: "Titre",
-                    header2: "Pages consultées",
-                    downloadCSVmessage: "Télécharger les données au format CSV",
+                    header2: "Vues",
+                    downloadCSVmessage: "Télécharger les données en format CSV",
                     contentButton2: "Montrer moins de contenu",
                     contentButton: "Montrer tout le contenu",
                     partialData: this.state.partialDataFR
@@ -337,7 +337,7 @@ class ContentBarChart extends Component {
                                 name: (name, ratio, id, index) => {
                                     return this.state.data.columns[index][0];
                                 },
-                                title: () => {return 'Content'}
+                                title: () => {return this.props.language == "EN" ? "Content" : "Contenu"}
                             }
                         }}
                         className = 'c3chart'
