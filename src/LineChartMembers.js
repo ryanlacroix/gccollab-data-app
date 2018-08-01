@@ -177,34 +177,34 @@ class LineChartMembers extends Component {
             if(nextProps.language == 'FR'){
                 if (nextProps.interval == 'daily'){
                     this.setState({
-                        title: "Appartenance au groupe",
+                        title: "Abonnements au groupe",
                         header2: "Date",
                         header2: "Membres",
-                        frinterval: "Quotidien",
-                        frinterval2: "Mensuel",
-                        downloadCSVmessage: "Télécharger les données au format CSV",
+                        frinterval: "Quotidiennement",
+                        frinterval2: "Mensuellement",
+                        downloadCSVmessage: "Télécharger les données en format CSV",
                         intervalWord: "Intervalle"
                     });
                 }
                 if (nextProps.interval == 'montly'){
                     this.setState({
-                        title: "Appartenance au groupe",
+                        title: "Abonnements au groupe",
                         header2: "Date",
                         header2: "Membres",
-                        frinterval: "Mensuel",
-                        frinterval2: "Quotidien",
-                        downloadCSVmessage: "Télécharger les données au format CSV",
+                        frinterval: "Mensuellement",
+                        frinterval2: "Quotidiennement",
+                        downloadCSVmessage: "Télécharger les données en format CSV",
                         intervalWord: "Intervalle"
                     });
                 }
                 else{
                     this.setState({
-                        title: "Appartenance au groupe",
+                        title: "Abonnements au groupe",
                         header2: "Date",
                         header2: "Membres",
-                        frinterval: "Quotidien",
-                        frinterval2: "Mensuel",
-                        downloadCSVmessage: "Télécharger les données au format CSV",
+                        frinterval: "Quotidiennement",
+                        frinterval2: "Mensuellement",
+                        downloadCSVmessage: "Télécharger les données en format CSV",
                         intervalWord: "Intervalle"
                     });
                 }
@@ -317,7 +317,7 @@ class LineChartMembers extends Component {
                     <tr>
                         <td>
                             <span className = 'outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h3> {this.state.title} </h3>
-                                <IconButton tooltip={this.props.language=="EN" ? "Download data as CSV" : "Télécharger les données au format CSV"} style={{padding: 0, height:'40px', width:'40px', marginLeft: '10px'}} onClick={this.downloadCSV}>
+                                <IconButton tooltip={this.props.language=="EN" ? "Download data as CSV" : "Télécharger les données en format CSV"} style={{padding: 0, height:'40px', width:'40px', marginLeft: '10px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
                                 <IconButton onClick={this.open}>

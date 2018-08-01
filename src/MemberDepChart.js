@@ -275,10 +275,10 @@ class MemberDepChart extends Component {
             if(nextProps.language == 'FR'){
                 try{
                     this.setState({
-                        title: "Membres du groupe par département",
-                        header1: "Département",
+                        title: "Membres du groupe par ministère",
+                        header1: "Ministère",
                         header2: "Membres du groupe",
-                        downloadCSVmessage: "Télécharger les données au format CSV",
+                        downloadCSVmessage: "Télécharger les données en format CSV",
                         contentButton2: "Montrer moins de contenu",
                         contentButton: "Montrer tout le contenu",
                         data: {
@@ -290,10 +290,10 @@ class MemberDepChart extends Component {
                 }
                 catch(err){
                     this.setState({
-                        title: "Membres du groupe par département",
-                        header1: "Département",
+                        title: "Membres du groupe par ministère",
+                        header1: "Ministère",
                         header2: "Membres du groupe",
-                        downloadCSVmessage: "Télécharger les données au format CSV",
+                        downloadCSVmessage: "Télécharger les données en format CSV",
                         contentButton2: "Montrer moins de contenu",
                         contentButton: "Montrer tout le contenu",
                     });
@@ -332,7 +332,7 @@ class MemberDepChart extends Component {
                     <tr>
                         <td>
                             <span className = 'outercsv0 cell-title' style={{float: 'left', verticalAlign: 'top', paddingLeft:'15px'}}> <h3> {this.state.title} </h3>
-                                <IconButton tooltip={this.props.language=="EN" ? "Download data as CSV" : "Télécharger les données au format CSV"} style={{padding: 0, height:'40px', width:'40px', marginLeft: '10px'}} onClick={this.downloadCSV}>
+                                <IconButton tooltip={this.props.language=="EN" ? "Download data as CSV" : "Télécharger les données en format CSV"} style={{padding: 0, height:'40px', width:'40px', marginLeft: '10px'}} onClick={this.downloadCSV}>
                                     <FileFileDownload />
                                 </IconButton> 
                                 <IconButton onClick={this.open}>
@@ -356,7 +356,7 @@ class MemberDepChart extends Component {
                                 name:  (name, ratio, id, index) => {
                                     return this.state.data.columns[index][0];
                                 },
-                                title: () => {return 'Department'}
+                                title: () => {return this.props.language == "EN" ? "Department" : "Ministère"}
                             }
                             }}
                         legend={{show: false}}
