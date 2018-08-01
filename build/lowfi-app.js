@@ -412,8 +412,6 @@ function uniqueDataPrep(data){
     else if(time1 == "monthly"){
         theLooped = uniqueViewsResp.monthly.uniquePageviews;
     }
-    console.log("theLooped");
-    console.log(theLooped);
     for(var i = 0; i < data.length; i++){
         data[i].push(theLooped[i]);
     }
@@ -615,18 +613,25 @@ function createChartLine(timeFrame, chartID){
     }
 
 function downloadCSVLine(timeFrame){
+    console.log("downloadinggg");
     // Shape the data into an acceptable format for parsing
     var thisTime = JSON.parse(JSON.stringify(timeFrame));
+    console.log(thisTime);
     var overall = [];
     valueKey = Object.keys(thisTime)[1];
     dateKey = Object.keys(thisTime)[0];
+    console.log(valueKey);
+    console.log(dateKey);
     thisTime[dateKey].unshift(dateKey); //data formatting to create the chart
     thisTime[valueKey].unshift(valueKey);
+    console.log(thisTime);
     for(var i = 0; i < thisTime[valueKey].length; i++){
         overall.push([thisTime[dateKey][i], thisTime[valueKey][i]]);
     }
+    console.log(overall);
     // Construct the CSV string and start download
     var csv_data = Papa.unparse(overall);
+    console.log(csv_data);
     download(csv_data, 'data_spreadsheet.csv');
 }
 
@@ -1327,9 +1332,4 @@ function requestData(reqType) {
 
 $(document).ready(function(){
     $('.white-box').hide();
-    helper1Copy();
 });
-
-setTimeout(function(){
-    helper1Copy();
-    }, 250);
