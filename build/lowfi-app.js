@@ -789,13 +789,25 @@ function helperRequestData() {
     //     }); 
     // }
     //xmlHttp.abort();
-    $('.white-box').show("slow", function(){
-        requestData('membersOverTime');
-        requestData('departments');
-        requestData('topContent');
-        requestData('pageViews');
-        requestData('avgTimeOnPage')
-    })
+    if(state.groupURL.indexOf('https://gcconnex.gc.ca/') === 0){
+        $('.white-box').show("slow", function(){
+            $('.ui-segment-ind-content-box-first').show();
+            requestData('pageViews');
+            requestData('avgTimeOnPage')
+        })
+    }
+    else{
+        $('.white-box').show("slow", function(){
+            $('.ui-segment-ind-content-box-first').show();
+            $('.ui-segment-ind-content-box').show();
+            $('.ui-segment-ind-content-box-final').show();
+            requestData('membersOverTime');
+            requestData('departments');
+            requestData('topContent');
+            requestData('pageViews');
+            requestData('avgTimeOnPage')
+        })
+    }
 }
 
 document.getElementById('getStatss').title="URLs should be of the format https://gcollab.ca/groups/profile...";
@@ -883,6 +895,8 @@ document.getElementById("getStatss").addEventListener("click", function(){
 // Basic check to make sure the URL is actually a group page
 function URLIsValid(url) {
     if (url.indexOf('https://gccollab.ca/groups/profile') === 0)
+        return true;
+    if (url.indexOf('https://gcconnex.gc.ca/') === 0)
         return true;
     else
         return false;
@@ -1085,4 +1099,7 @@ function requestData(reqType) {
 
 $(document).ready(function(){
     $('.white-box').hide();
+    $('.ui-segment-ind-content-box-first').hide();
+    $('.ui-segment-ind-content-box').hide();
+    $('.ui-segment-ind-content-box-final').hide();
 });
