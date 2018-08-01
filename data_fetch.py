@@ -33,14 +33,20 @@ def get_group_name(urlString, req_obj):
         url4 = url3[url3.find('/')+1:]
         return url4
     except:
-        gc.connect_to_database()
-        gc.create_session()
-        url = req_obj['filter']
-        url2 = url[url.find('profile/'):]
-        url3 = url2[url2.find('/')+1:]
-        group_guid = url3[:url3.find('/')]
-        group_name = gc.groups.name_from_guid(group_guid)
+        return get_group_name_db(req_obj, write=False)
+        
+def get_group_name_db(req_obj, write=True):
+    gc.connect_to_database()
+    gc.create_session()
+    url = req_obj['url']
+    url2 = url[url.find('profile/'):]
+    url3 = url2[url2.find('/')+1:]
+    group_guid = url3[:url3.find('/')]
+    group_name = gc.groups.name_from_guid(group_guid)
+    if write == False:
         return group_name
+    else:
+        print(json.dumps({'name':group_name}))
 
 def get_pageviews(req_obj):
     ga = gcga()
@@ -50,7 +56,14 @@ def get_pageviews(req_obj):
         ga.set_platform('gccollab')
     url = req_obj['url']
     group_name = get_group_name(url, req_obj)
+    # Determine whether request is asking for group name as well
+    get_name = {}
+    try:
+        get_name = req_obj['getName']
+    except:
+        get_name = False
     # Request a dataframe containing pageviews and corresponding dates
+    # Needs parameter that throws in the group name to the return object
     ret = ga.pageviews([req_obj['url'], 'NOToffset'], intervals=True,
                        start_date=req_obj['start_date'], end_date=req_obj['end_date'])
     ret['group_name'] = group_name
@@ -257,6 +270,8 @@ def main(testing=False):
             get_group_members_over_time(req_obj)
         elif req_obj['stat'] == 'membersByDepartment':  # Group members by department
             get_group_members_by_department(req_obj)
+        elif req_obj['stat'] == 'groupName':
+            get_group_name_db(req_obj)
         else:
             print('Query incorrectly formed.')
     elif req_obj['type'] == 'pages':
@@ -269,8 +284,7 @@ def main(testing=False):
 
 # Start process
 if __name__ == '__main__':
-    inStr = '{"type":"pages","stat":"pageviews","url":"https://gccollab.ca//profile/103347/esdc-innovation-lab-lab-dinnovation-demploi-et-developpement-social-canada","start_date":"2018-04-20","end_date":"2018-07-19"}'
-    # inStr = '{"platform": "gcconnex", "type":"pages","stat":"uniquePageviews","url":"https://gcconnex.gc.ca/groups/profile/31045361/temporary-resident-program-delivery-functional-direction-division-de-lexecution-du-programme-des-residents-temporaires-orientation-fonctionelle?language=en","start_date":"2018-04-20","end_date":"2018-07-19"}'
+    inStr = '{"type":"pages","stat":"uniquePageviews","url":"https://gccollab.ca//profile/103347/esdc-innovation-lab-lab-dinnovation-demploi-et-developpement-social-canada","start_date":"2018-04-20","end_date":"2018-07-19"}'
     main()
     # If collab db was used be sure to close the tunnel properly
     try:

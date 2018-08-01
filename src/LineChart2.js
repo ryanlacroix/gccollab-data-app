@@ -144,10 +144,34 @@ class LineChart2 extends Component {
         }
         // Construct JSON object to represent request
         let state = JSON.parse('{"stepIndex":4,"reqType":{"category":1,"filter":"'+ groupURL +'"},"metric":1,"metric2":0,"time":{"startDate":"' + startDate +'","endDate":"' + endDate +'","allTime":true},"errorFlag":false}');
-        // 'previous state' issue is coming from here. It's reading the old prop value
         state.time.startDate = moment(state.time.startDate).format('YYYY-MM-DD');
         state.time.endDate = moment(state.time.endDate).format('YYYY-MM-DD');
 
+        // Request group name
+        fetch('/api', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                type: 'groups',
+                stat: 'groupName',
+                url: groupURL
+            })
+        }).then(response => {
+            return response.json();
+        }).then(nameData => {
+            console.log('NAMEDATA:');
+            console.log(nameData);
+            let names = JSON.parse(nameData['name']);
+            // Store the two names in the state
+            this.setState({
+                backupGroupNameEN: names['en'],
+                backupGroupNameFR: names['fr']
+            });
+        })
+
+        // Request pageview and unique pageview data
         fetch('/api', {
             method: 'POST',
             headers: {
