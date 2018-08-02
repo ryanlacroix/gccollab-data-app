@@ -66,7 +66,7 @@ class Content extends Component {
                     </div>
                     <div className="deps" style={{width: '100%'}}>
                         <MemberDepChart
-                            title="Group Members by Department"
+                            title="Group Members by Institution"
                             superState={this.props.superState}
                             startDate={this.props.startDate}
                             endDate={this.props.endDate}
