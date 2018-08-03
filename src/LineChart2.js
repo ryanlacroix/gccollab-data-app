@@ -475,21 +475,47 @@ class LineChart2 extends Component {
                 />
                 <h4 className={this.state.contentClass}>{this.state.avgTimeMessage} {this.state.pageTime} seconds </h4>
                 <Modal open={this.state.open} onClose={this.close}>
-                    <Modal.Header>Select a Photo</Modal.Header>
-                    <Modal.Content image>
-                    <Image
-                        wrapped
-                        size='medium'
-                        src='https://react.semantic-ui.com/images/avatar/large/rachel.png'
-                    />
+                    <Modal.Header>{this.props.language == "EN" ? "Help Content" : "Contenu d'aide"}</Modal.Header>
+                    <Modal.Content>
                     <Modal.Description>
-                        <Header>Default Profile Image</Header>
-                        <p>We've found the following gravatar image associated with your e-mail address.</p>
-                        <p>Is it okay to use this photo?</p>
+                        <p style={{fontWeight: "bold"}} className="zerosQ">{this.props.language == "EN" ? "Why am I seeing zero page views for my group?" : "Pourquoi est-ce que je vois zéro page vue pour mon groupe?"}</p>
+                        <p className="zerosA">{this.props.language == "EN" ? "We only collect statistics after the last name change of a group because changing the name also changes the URL. If you changed the name of your group, you will see zero pages views before the change." : "Nous recueillons des statistiques seulement après le changement de nom d’un groupe, car un changement de nom change également l’URL. Si vous changez le nom de votre groupe, vous verrez zéro page vue avant le changement."}</p>
+
+                        <p style={{fontWeight: "bold"}} className="DownloadQ">{this.props.language == "EN" ? "How do I download the data to use later?" : "Comment puis-je télécharger les données pour les utiliser plus tard?"}</p>
+                        <p className = "DownloadA1">{this.props.language == "EN" ? "You can download data by clicking the download button" : "Vous pouvez télécharger des données en cliquant sur le bouton de téléchargement"}</p>
+                        <Image src="download.jpg" alt="downwards arrow with line underneath"/>
+                        <p className = "DownloadA2">{this.props.language == "EN" ? ". The file will be automatically saved to your Downloads folder." : ". Le fichier sera automatiquement enregistré dans votre dossier Téléchargements."}</p>
+                        <p className = "DownloadA3">{this.props.language == "EN" ? "The Downloads folder is usually located on the same drive where Windows is installed (for example, C:\\users\\your name\\downloads). You can move downloads from the Downloads folder to other places on your computer." : "Le dossier Téléchargements se trouve habituellement dans le même lecteur où Windows est installé (p. ex., C:\\Utilisateurs\\votre nom\\Téléchargements). Vous pouvez déplacer les téléchargements du dossier Téléchargements vers d’autres emplacements dans votre ordinateur."}</p>
+
+                        <p style={{fontWeight: "bold"}} className="StrtEndQ">{this.props.language == "EN" ? "How do I change the start and end dates for my data?" : "Comment changer les dates de début et de fin de mes données?"}</p>
+                        <p className="StrtEndA1">{this.props.language == "EN" ? "You can change the start and end dates by using the buttons which appear below the green banner that says “GCcollab Group Stats Page” on the left" : "Vous pouvez modifier les dates de début et de fin en utilisant les boutons qui s’affichent sous la bannière verte qui indique « GCcollab Group Stats Page » (page des statistiques de groupe GCcollab) à gauche"}</p>
+                        <Image src="datePickers.jpg" alt="2 buttons, the left says the date 3 months ago, the right says today's date"/>
+                        <p className="StrtEndA2">{this.props.language == "EN" ? ". The button on the left controls the start date and the button on the right controls the end date. To change the date:" : ". Le bouton à gauche sert à sélectionner la date de début et le bouton à droite, la date de fin. Voici comment modifier la date :"}</p>
+                        <ul>
+                            <li className="StrtEndA3">{this.props.language == "EN" ? "Click on the date which you would like to change. A calendar will drop down below the button." : "Cliquez sur la date que vous souhaitez modifier. Un calendrier s’affichera sous le bouton."}</li>
+                            <li className="StrtEndA4">{this.props.language == "EN" ? "Choose a new date by clicking on it. You can change the month by clicking the arrows to the left and right of the month name." : "Choisissez une nouvelle date en cliquant dessus. Vous pouvez modifier le mois en cliquant sur les flèches à gauche et à droite du nom du mois."}</li>
+                        </ul>
+
+                        <p style={{fontWeight: "bold"}} className="pvQ">{this.props.language == "EN" ? "What are page views?" : "Que sont les pages vues?"}</p>
+                        <p className="pvA">{this.props.language == "EN" ? "Page views are the total number of times the URL was loaded. Both reloading the page and navigating to a different page and then returning to the original page count as an addition page view." : "Les pages vues représentent le nombre total de fois que l’URL a été chargée. Le fait de recharger la page et le fait de naviguer vers une page différente, puis de revenir à la page originale comptent comme une vue de page supplémentaire. "}</p>
+
+                        <p style={{fontWeight: "bold"}} className="UniquePVQ">{this.props.language == "EN" ? "What is a unique page view?" : "Qu’est-ce qu’une page vue unique?"}</p>
+                        <p className="UniquePVA1">{this.props.language == "EN" ? "Unique page views are the number of sessions during which the specified page was viewed at least once. A unique page view is counted for each page URL + page Title combination." : "Les pages vues uniques désignent le nombre de sessions pendant lesquelles la page en question a été visualisée au moins une fois. Une page vue unique est dénombrée chaque fois que le titre de la page figure dans l’adresse URL"}</p>
+                        <p className="UniquePVA2">{this.props.language == "EN" ? "Essentially unique page views are the number of sessions per page. If a user views the same page more than once in a session, this will only count as a single unique page view." : "Essentiellement, les pages vues uniques constituent le nombre de sessions par page. Si un utilisateur fait afficher la même page plus d’une fois au cours d’une session, cela comptera comme une seule page vue unique."}</p>
+
+                        <p style={{fontWeight: "bold"}} className="SessionQ">{this.props.language == "EN" ? "What is a session?" : "Qu’est-ce qu’une session?"}</p>
+                        <p className="SessionA1">{this.props.language == "EN" ? "A session is a group of user interactions with your website that take place within a given time frame. User interactions include any action (keypress, mouse click, scrolling etc.) a user makes while on your website. A single session can contain multiple page views, events, or social interactions." : "Une session est un groupe d’interactions des utilisateurs avec votre site Web qui ont lieu dans un délai donné. Les interactions des utilisateurs englobent toute action (touche, clic de souris, défilement, etc.) qu’un utilisateur fait sur votre site Web. Une seule session peut contenir de multiples pages vues, événements ou interactions sociales. "}</p>
+                        <p className="SessionA2">{this.props.language == "EN" ? "A session is like a container for the actions a user takes on your site during a certain amount of time. Typically sessions end after half an hour of inactivity." : "Une session est comme un contenant pour les actions qu’un utilisateur entreprend sur votre site pendant un certain temps. Habituellement, les sessions se terminent après une demi-heure d’inactivité."}</p>
+
+                        <p style={{fontWeight: "bold"}} className="AvgQ">{this.props.language == "EN" ? "What is average time on page?" : "Qu’est-ce que le temps moyen passé sur une page?"}</p>
+                        <p className="AvgA">{this.props.language == "EN" ? "Average time on page is the average time people spend viewing a single page." : "Le temps moyen passé sur une page est le temps moyen que les gens passent à consulter une seule page."}</p>
+
+                        <p style={{fontWeight: "bold"}} className="moreHelpQ">{this.props.language == "EN" ? "Have more questions?" : "Avez-vous d’autres questions?"}</p>
+                        <p className="moreHelpA">{this.props.language == "EN" ? "You can contact us by email at donneesGC2data@tbs-sct.gc.ca" : "Vous pouvez nous joindre par courriel à donneesGC2data@tbs-sct.gc.ca"}</p>
                     </Modal.Description>
                     </Modal.Content>
                     <Modal.Actions>
-                        <Button onClick={this.close}>Nope</Button>
+                        <Button onClick={this.close}>{this.props.language == "EN" ? "Close" : "Fermer"}</Button>
                     </Modal.Actions>
                 </Modal>
             </Segment>
