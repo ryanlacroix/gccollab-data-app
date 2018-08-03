@@ -10,6 +10,7 @@ var uniqueViewsResp;
 
 var currentLang = 'EN'; //var to store current language of page
 
+var mainLineDone = false;
 
 var lineChartViews;
 var lineChartMembers;
@@ -48,6 +49,9 @@ var menu = document.getElementById("select");
 menu.addEventListener("change", helper1);
 
 function helper1(event) {
+    // console.log("helper111111111");
+    // console.log(chartData1);
+    // console.log(uniqueViewsResp);
     if (menu.value == "monthly1"){
         time1 = 'monthly';
     }
@@ -59,6 +63,9 @@ function helper1(event) {
 }
 
 function helper1Copy(){
+    // console.log("helper1Copyyyy");
+    // console.log(chartData1);
+    // console.log(uniqueViewsResp);
     if (menu.value == "monthly1"){
         time1 = 'monthly';
     }
@@ -89,6 +96,9 @@ document.getElementById("DownloadCSVLine1").addEventListener("click", function()
     else if(time1 == 'daily') {
         time = chartData1.daily;
     }
+    console.log(time);
+    time=uniqueDataPrep(time);
+    console.log(time);
     downloadCSVLine(time);
 });
 
@@ -376,6 +386,10 @@ var uniqueViewsDone = false;
 var TitleColumn3;
 
 function mainLine(num, theData, unique) {
+    // console.log("uniqueviewsresppp");
+    // console.log(num);
+    // console.log(unique);
+    // console.log(uniqueViewsResp);
     if (time1 == 'monthly' && num==1) {    //time is changed based on the last button clicked
         time = theData.monthly;
     }
@@ -476,8 +490,6 @@ function uniqueDataPrep(data){
     else if(time1 == "monthly"){
         theLooped = uniqueViewsResp.monthly.uniquePageviews;
     }
-    console.log("theLooped");
-    console.log(theLooped);
     for(var i = 0; i < data.length; i++){
         data[i].push(theLooped[i]);
     }
@@ -660,7 +672,6 @@ function createChartLine(timeFrame, chartID){
         })
     }
     // if (dataa[0]=='Page Views' || dataa[0]=='uniquePageviews' || dataa[0]=='Pages consultées' || dataa[0]=='pageviews'){
-    //     console.log("LOAAAAAAAAAAADDDDDDING");
     //     lineChartViews.load({
     //         columns: [
     //             columnss,
@@ -679,18 +690,26 @@ function createChartLine(timeFrame, chartID){
     }
 
 function downloadCSVLine(timeFrame){
+    console.log("downloadinggg");
+    console.log(timeFrame);
     // Shape the data into an acceptable format for parsing
     var thisTime = JSON.parse(JSON.stringify(timeFrame));
+    console.log(thisTime);
     var overall = [];
     valueKey = Object.keys(thisTime)[1];
     dateKey = Object.keys(thisTime)[0];
+    console.log(valueKey);
+    console.log(dateKey);
     thisTime[dateKey].unshift(dateKey); //data formatting to create the chart
     thisTime[valueKey].unshift(valueKey);
+    console.log(thisTime);
     for(var i = 0; i < thisTime[valueKey].length; i++){
         overall.push([thisTime[dateKey][i], thisTime[valueKey][i]]);
     }
+    console.log(overall);
     // Construct the CSV string and start download
     var csv_data = Papa.unparse(overall);
+    console.log(csv_data);
     download(csv_data, 'data_spreadsheet.csv');
 }
 
@@ -945,6 +964,7 @@ $("#datepicker1").on("change keyup paste", function(){
     state.startDate = year + "-" + month + "-"+day;
     if (state.groupURL != ""){
         helperRequestData();
+        // helper1Copy();
     }
 })
 
@@ -958,6 +978,7 @@ $("#datepicker2").on("change keyup paste", function(){
     state.endDate = year + "-" + month + "-"+day;
     if (state.groupURL != ""){
         helperRequestData();
+        // helper1Copy();
     }
 })
 
@@ -1108,6 +1129,14 @@ document.getElementById("getStatss").addEventListener("click", function(){
         document.getElementById("statsurl").style.borderColor='rgba(34,36,38,.15)';
         document.getElementById("statsurl").style.color='rgba(0,0,0,.87)';
         helperRequestData();
+        // $.when(helperRequestData()).then(helper1Copy());
+        // helperRequestData(function(){
+        //     helper1Copy();
+        // });
+        // setTimeout(function(){
+        //     helper1Copy();
+        //     }, 10000);
+        // helper1Copy();
     }
 });
 
@@ -1368,13 +1397,19 @@ function requestData(reqType) {
                         finishedLoadingUniqueViews = false;
                         $('.loading').hide();
                         $('#chart1').show(); 
+                        // helper1Copy();
                     }
                     chartData1 = resp;
                     // console.log(chartData1);
                     document.getElementById("title").innerHTML=replaceAll(chartData1.group_name, "-", " ");
                     // console.log(chartData1.group_name)
-                    mainLine(1, chartData1, false);
-                    
+                    // mainLine(1, chartData1, false);
+                    $.when(mainLine(1, chartData1, false)).then(function(){
+                        if(mainLineDone == true){
+                            helper1Copy();
+                        }
+                        mainLineDone = true;
+                    });
                     break;
                 case "avgTimeOnPage":
                     p5 = false;
@@ -1390,6 +1425,8 @@ function requestData(reqType) {
                     mainLine(3)
                     break;
                 case 'uniquePageviews':
+                    var unique = true;
+                    uniqueViewsResp = resp;
                     p6 = false;
                     finishedLoadingUniqueViews = true;
                     if(finishedLoadingAvgTimeOnPAge == true && finishedLoadingPageViews == true && finishedLoadingUniqueViews == true){
@@ -1398,10 +1435,15 @@ function requestData(reqType) {
                         finishedLoadingUniqueViews = false;
                         $('.loading').hide();
                         $('#chart1').show(); 
+                        // helper1Copy();
                     }
-                    var unique = true;
-                    uniqueViewsResp = resp;
-                    mainLine(1, uniqueViewsResp, unique);
+                    // mainLine(1, uniqueViewsResp, unique);
+                    $.when(mainLine(1, uniqueViewsResp, unique)).then(function(){
+                        if(mainLineDone == true){
+                            helper1Copy();
+                        }
+                        mainLineDone = true;
+                    });
                     break;
             }
             setTimeout(function() {
@@ -1425,5 +1467,5 @@ $(document).ready(function(){
     $('.ui-segment-ind-content-box-first').hide();
     $('.ui-segment-ind-content-box').hide();
     $('.ui-segment-ind-content-box-final').hide();
-    helper1Copy();
+    // helper1Copy();
 });
