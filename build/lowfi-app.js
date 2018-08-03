@@ -49,9 +49,6 @@ var menu = document.getElementById("select");
 menu.addEventListener("change", helper1);
 
 function helper1(event) {
-    // console.log("helper111111111");
-    // console.log(chartData1);
-    // console.log(uniqueViewsResp);
     if (menu.value == "monthly1"){
         time1 = 'monthly';
     }
@@ -63,9 +60,6 @@ function helper1(event) {
 }
 
 function helper1Copy(){
-    // console.log("helper1Copyyyy");
-    // console.log(chartData1);
-    // console.log(uniqueViewsResp);
     if (menu.value == "monthly1"){
         time1 = 'monthly';
     }
@@ -96,9 +90,7 @@ document.getElementById("DownloadCSVLine1").addEventListener("click", function()
     else if(time1 == 'daily') {
         time = chartData1.daily;
     }
-    console.log(time);
-    time=uniqueDataPrep(time);
-    console.log(time);
+    time=downloadDataPrep(time);
     downloadCSVLine(time);
 });
 
@@ -111,6 +103,16 @@ document.getElementById("DownloadCSVLine2").addEventListener("click", function()
     }
     downloadCSVLine(time);
 });
+
+function downloadDataPrep(data){
+    if(time1 === "daily"){
+        data["uniquePageViews"] = uniqueViewsResp.daily.uniquePageviews;
+    }
+    else if(time1 === "monthly"){
+        data["uniquePageViews"] = uniqueViewsResp.monthly.uniquePageviews;
+    }
+    return data;
+}
 
 function swap(dict){
     var ret = {};
@@ -386,10 +388,6 @@ var uniqueViewsDone = false;
 var TitleColumn3;
 
 function mainLine(num, theData, unique) {
-    // console.log("uniqueviewsresppp");
-    // console.log(num);
-    // console.log(unique);
-    // console.log(uniqueViewsResp);
     if (time1 == 'monthly' && num==1) {    //time is changed based on the last button clicked
         time = theData.monthly;
     }
@@ -481,13 +479,13 @@ function mainLine(num, theData, unique) {
     
 }
 
-var theLooped;
 
 function uniqueDataPrep(data){
-    if(time1 == "daily"){
+    var theLooped;
+    if(time1 === "daily"){
         theLooped = uniqueViewsResp.daily.uniquePageviews;
     }
-    else if(time1 == "monthly"){
+    else if(time1 === "monthly"){
         theLooped = uniqueViewsResp.monthly.uniquePageviews;
     }
     for(var i = 0; i < data.length; i++){
@@ -690,26 +688,27 @@ function createChartLine(timeFrame, chartID){
     }
 
 function downloadCSVLine(timeFrame){
-    console.log("downloadinggg");
-    console.log(timeFrame);
     // Shape the data into an acceptable format for parsing
     var thisTime = JSON.parse(JSON.stringify(timeFrame));
-    console.log(thisTime);
     var overall = [];
-    valueKey = Object.keys(thisTime)[1];
     dateKey = Object.keys(thisTime)[0];
-    console.log(valueKey);
-    console.log(dateKey);
+    valueKey = Object.keys(thisTime)[1];
     thisTime[dateKey].unshift(dateKey); //data formatting to create the chart
     thisTime[valueKey].unshift(valueKey);
-    console.log(thisTime);
-    for(var i = 0; i < thisTime[valueKey].length; i++){
-        overall.push([thisTime[dateKey][i], thisTime[valueKey][i]]);
+    if("uniquePageViews" in thisTime){
+        var valueKey2 = Object.keys(thisTime)[2];
+        thisTime[valueKey2].unshift(valueKey2);
+        for(var i = 0; i < thisTime[valueKey].length; i++){
+            overall.push([thisTime[dateKey][i], thisTime[valueKey][i], thisTime[valueKey2][i]]);
+        }
     }
-    console.log(overall);
+    else{
+        for(var i = 0; i < thisTime[valueKey].length; i++){
+            overall.push([thisTime[dateKey][i], thisTime[valueKey][i]]);
+        }
+    }
     // Construct the CSV string and start download
     var csv_data = Papa.unparse(overall);
-    console.log(csv_data);
     download(csv_data, 'data_spreadsheet.csv');
 }
 
@@ -1397,13 +1396,10 @@ function requestData(reqType) {
                         finishedLoadingUniqueViews = false;
                         $('.loading').hide();
                         $('#chart1').show(); 
-                        // helper1Copy();
                     }
                     chartData1 = resp;
                     // console.log(chartData1);
                     document.getElementById("title").innerHTML=replaceAll(chartData1.group_name, "-", " ");
-                    // console.log(chartData1.group_name)
-                    // mainLine(1, chartData1, false);
                     $.when(mainLine(1, chartData1, false)).then(function(){
                         if(mainLineDone == true){
                             helper1Copy();
