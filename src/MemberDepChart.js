@@ -388,21 +388,33 @@ class MemberDepChart extends Component {
                     </div>
                 </div>
                 <Modal open={this.state.open} onClose={this.close}>
-                    <Modal.Header>Help Content</Modal.Header>
-                    <Modal.Content image>
-                    <Image
-                        wrapped
-                        size='medium'
-                        src='https://react.semantic-ui.com/images/avatar/large/rachel.png'
-                    />
+                    <Modal.Header>{this.props.language == "EN" ? "Help Content" : "Contenu d'aide"}</Modal.Header>
+                    <Modal.Content>
                     <Modal.Description>
-                        <Header>Default Profile Image</Header>
-                        <p>{this.props.language == "EN" ? "ENGLISH" : "FRENCH"}</p>
-                        <p>Is it okay to use this photo?</p>
+                        <p style={{fontWeight: "bold"}} className="DownloadQ">{this.props.language == "EN" ? "How do I download the data to use later?" : "Comment puis-je télécharger les données pour les utiliser plus tard?"}</p>
+                        <p className = "DownloadA1">{this.props.language == "EN" ? "You can download data by clicking the download button" : "Vous pouvez télécharger des données en cliquant sur le bouton de téléchargement"}</p>
+                        <Image src="download.jpg" alt="downwards arrow with line underneath"/>
+                        <p className = "DownloadA2">{this.props.language == "EN" ? ". The file will be automatically saved to your Downloads folder." : ". Le fichier sera automatiquement enregistré dans votre dossier Téléchargements."}</p>
+                        <p className = "DownloadA3">{this.props.language == "EN" ? "The Downloads folder is usually located on the same drive where Windows is installed (for example, C:\\users\\your name\\downloads). You can move downloads from the Downloads folder to other places on your computer." : "Le dossier Téléchargements se trouve habituellement dans le même lecteur où Windows est installé (p. ex., C:\\Utilisateurs\\votre nom\\Téléchargements). Vous pouvez déplacer les téléchargements du dossier Téléchargements vers d’autres emplacements dans votre ordinateur."}</p>
+
+                        <p style={{fontWeight: "bold"}} className="StrtEndQ">{this.props.language == "EN" ? "How do I change the start and end dates for my data?" : "Comment changer les dates de début et de fin de mes données?"}</p>
+                        <p className="StrtEndA1">{this.props.language == "EN" ? "You can change the start and end dates by using the buttons which appear below the green banner that says “GCcollab Group Stats Page” on the left" : "Vous pouvez modifier les dates de début et de fin en utilisant les boutons qui s’affichent sous la bannière verte qui indique « GCcollab Group Stats Page » (page des statistiques de groupe GCcollab) à gauche"}</p>
+                        <Image src="datePickers.jpg" alt="2 buttons, the left says the date 3 months ago, the right says today's date"/>
+                        <p className="StrtEndA2">{this.props.language == "EN" ? ". The button on the left controls the start date and the button on the right controls the end date. To change the date:" : ". Le bouton à gauche sert à sélectionner la date de début et le bouton à droite, la date de fin. Voici comment modifier la date :"}</p>
+                        <ul>
+                            <li className="StrtEndA3">{this.props.language == "EN" ? "Click on the date which you would like to change. A calendar will drop down below the button." : "Cliquez sur la date que vous souhaitez modifier. Un calendrier s’affichera sous le bouton."}</li>
+                            <li className="StrtEndA4">{this.props.language == "EN" ? "Choose a new date by clicking on it. You can change the month by clicking the arrows to the left and right of the month name." : "Choisissez une nouvelle date en cliquant dessus. Vous pouvez modifier le mois en cliquant sur les flèches à gauche et à droite du nom du mois."}</li>
+                        </ul>
+
+                        <p style={{fontWeight: "bold"}} className="pvQ">{this.props.language == "EN" ? "Why didn’t the graph change when I pushed the ‘Show All Content’ button?" : "Pourquoi le graphique n’a-t-il pas changé lorsque j’ai appuyé sur le bouton « Afficher tout le contenu »?"}</p>
+                        <p className="pvA">{this.props.language == "EN" ? "The graph becomes cluttered and hard to read when all of the content is displayed. All of the additional content can be seen in the table, which you can see by scrolling down." : "Le graphique devient encombré et difficile à lire lorsque tout le contenu s’affiche. Tout le contenu supplémentaire se trouve dans le tableau, que vous pouvez voir en faisant défiler vers le bas."}</p>
+
+                        <p style={{fontWeight: "bold"}} className="moreHelpQ">{this.props.language == "EN" ? "Have more questions?" : "Avez-vous d’autres questions?"}</p>
+                        <p className="moreHelpA">{this.props.language == "EN" ? "You can contact us by email at donneesGC2data@tbs-sct.gc.ca" : "Vous pouvez nous joindre par courriel à donneesGC2data@tbs-sct.gc.ca"}</p>
                     </Modal.Description>
                     </Modal.Content>
                     <Modal.Actions>
-                        <Button onClick={this.close}>Nope</Button>
+                        <Button onClick={this.close}>{this.props.language == "EN" ? "Close" : "Fermer"}</Button>
                     </Modal.Actions>
                 </Modal>
             </Segment>

@@ -234,6 +234,38 @@ $("#eng-toggle").on('click', function(event) {
     document.getElementById("topContentTitle").innerHTML="Top Group Content";
     document.getElementById("getStatss").innerHTML="Get Stats";
     document.getElementsByName('pasteURLhere')[0].placeholder='Paste group URL here...';
+    //MODALS
+    document.getElementById("helpContentHeader").innerHTML="Help Content";
+    document.getElementById("zerosQ").innerHTML="Why am I seeing zero page views for my group?";
+    document.getElementById("zerosA").innerHTML="We only collect statistics after the last name change of a group because changing the name also changes the URL. If you changed the name of your group, you will see zero pages views before the change.";
+    document.getElementById("DownloadQ").innerHTML="How do I download the data to use later?";
+    document.getElementById("DownloadA1").innerHTML="You can download data by clicking the download button";
+    document.getElementById("DownloadA2").innerHTML=". The file will be automatically saved your Downloads folder.";
+    document.getElementById("DownloadA3").innerHTML="The Downloads folder is usually located on the same drive where Windows is installed (for example, C:\\users\\your name\\downloads). You can move downloads from the Downloads folder to other places on your computer. ";
+    document.getElementById("pvQ").innerHTML="What are page views?";
+    document.getElementById("pvA").innerHTML="Page views are the total number of times the URL was loaded. Both reloading the page and navigating to a different page and then returning to the original page count as an addition page view.";
+    document.getElementById("UniquePVQ").innerHTML="What is a unique page view?";
+    document.getElementById("UniquePVA1").innerHTML="Unique page views are the number of sessions during which the specified page was viewed at least once. A unique page view is counted for each page URL + page Title combination.";
+    document.getElementById("UniquePVA2").innerHTML="Essentially unique page views are the number of sessions per page. If a user views the same page more than once in a session, this will only count as a single unique page view.";
+    document.getElementById("SessionQ").innerHTML="What is a session? ";
+    document.getElementById("SessionA1").innerHTML="A session is a group of user interactions with your website that take place within a given time frame. User interactions include any action (keypress, mouse click, scrolling etc.) a user makes while on your website. A single session can contain multiple page views, events, or social interactions. ";
+    document.getElementById("SessionA2").innerHTML="A session is like a container for the actions a user takes on your site during a certain amount of time. Typically sessions end after half an hour of inactivity.";
+    document.getElementById("AvgQ").innerHTML="What is average time on page?";
+    document.getElementById("AvgA").innerHTML="Average time on page is the average time people spend viewing a single page.";
+    document.getElementById("groupMembershipQ").innerHTML="What is group membership?";
+    document.getElementById("groupMembershipA").innerHTML="Group membership shows the  number of members of your group over time.";
+    document.getElementById("allContentQ").innerHTML="Why didn’t the graph change when I pushed the ‘Show All Content’ button?";
+    document.getElementById("allContentA").innerHTML="The graph becomes cluttered and hard to read when all of the content is displayed. All of the additional content can be seen in the table, which you can see by scrolling down.";
+    document.getElementById("topQ").innerHTML="What is top group content?";
+    document.getElementById("topA").innerHTML="Top group content is the most viewed content in your group. You can see the type of content in the brackets that appear before the content name.";
+    document.getElementById("moreHelpQ").innerHTML="Have more questions?";
+    document.getElementById("moreHelpA").innerHTML="You can contact us by email at donneesGC2data@tbs-sct.gc.ca";
+    document.getElementById("StrtEndQ").innerHTML="How do I change the start and end dates for my data?";
+    document.getElementById("StrtEndA1").innerHTML="You can change the start and end dates by using the buttons which appear below the green banner that says “GCcollab Group Stats Page” on the left";
+    document.getElementById("StrtEndA2").innerHTML=". The button on the left controls the start date and the button on the right controls the end date. To change the date:";
+    document.getElementById("StrtEndA3").innerHTML="Click on the date which you would like to change. A calendar will drop down below the button.";
+    document.getElementById("StrtEndA4").innerHTML="Choose a new date by clicking on it. You can change the month by clicking the arrows to the left and right of the month name.";
+    document.getElementById("back").innerHTML="Back";
 });
 
 $("#fr-toggle").on('click', function(event) {
@@ -267,6 +299,38 @@ $("#fr-toggle").on('click', function(event) {
     document.getElementById("topContentTitle").innerHTML="Principal contenu du groupe";
     document.getElementById("getStatss").innerHTML="Obtenir des statistiques";
     document.getElementsByName('pasteURLhere')[0].placeholder="Copiez l’URL du groupe ici...";
+    //MODALS
+    document.getElementById("helpContentHeader").innerHTML="Contenu d'aide";
+    document.getElementById("zerosQ").innerHTML="Pourquoi est-ce que je vois zéro page vue pour mon groupe?";
+    document.getElementById("zerosA").innerHTML="Nous recueillons des statistiques seulement après le changement de nom d’un groupe, car un changement de nom change également l’URL. Si vous changez le nom de votre groupe, vous verrez zéro page vue avant le changement.";
+    document.getElementById("DownloadQ").innerHTML="Comment puis-je télécharger les données pour les utiliser plus tard?";
+    document.getElementById("DownloadA1").innerHTML="Vous pouvez télécharger des données en cliquant sur le bouton de téléchargement";
+    document.getElementById("DownloadA2").innerHTML=". Le fichier sera automatiquement enregistré dans votre dossier Téléchargements.";
+    document.getElementById("DownloadA3").innerHTML="Le dossier Téléchargements se trouve habituellement dans le même lecteur où Windows est installé (p. ex., C:\Utilisateurs\votre nom\Téléchargements). Vous pouvez déplacer les téléchargements du dossier Téléchargements vers d’autres emplacements dans votre ordinateur.";
+    document.getElementById("pvQ").innerHTML="Que sont les pages vues?";
+    document.getElementById("pvA").innerHTML="Les pages vues représentent le nombre total de fois que l’URL a été chargée. Le fait de recharger la page et le fait de naviguer vers une page différente, puis de revenir à la page originale comptent comme une vue de page supplémentaire. ";
+    document.getElementById("UniquePVQ").innerHTML="Qu’est-ce qu’une page vue unique?";
+    document.getElementById("UniquePVA1").innerHTML="Les pages vues uniques désignent le nombre de sessions pendant lesquelles la page en question a été visualisée au moins une fois. Une page vue unique est dénombrée chaque fois que le titre de la page figure dans l’adresse URL.";
+    document.getElementById("UniquePVA2").innerHTML="Essentiellement, les pages vues uniques constituent le nombre de sessions par page. Si un utilisateur fait afficher la même page plus d’une fois au cours d’une session, cela comptera comme une seule page vue unique.";
+    document.getElementById("SessionQ").innerHTML="Qu’est-ce qu’une session?";
+    document.getElementById("SessionA1").innerHTML="Une session est un groupe d’interactions des utilisateurs avec votre site Web qui ont lieu dans un délai donné. Les interactions des utilisateurs englobent toute action (touche, clic de souris, défilement, etc.) qu’un utilisateur fait sur votre site Web. Une seule session peut contenir de multiples pages vues, événements ou interactions sociales. ";
+    document.getElementById("SessionA2").innerHTML="Une session est comme un contenant pour les actions qu’un utilisateur entreprend sur votre site pendant un certain temps. Habituellement, les sessions se terminent après une demi-heure d’inactivité.";
+    document.getElementById("AvgQ").innerHTML="Qu’est-ce que le temps moyen passé sur une page?";
+    document.getElementById("AvgA").innerHTML="Le temps moyen passé sur une page est le temps moyen que les gens passent à consulter une seule page.";
+    document.getElementById("groupMembershipQ").innerHTML="Que sont les adhérents à un groupe?";
+    document.getElementById("groupMembershipA").innerHTML="Les adhérents au groupe indiquent le nombre de membres de votre groupe au fil du temps. ";
+    document.getElementById("allContentQ").innerHTML="Pourquoi le graphique n’a-t-il pas changé lorsque j’ai appuyé sur le bouton « Afficher tout le contenu »?";
+    document.getElementById("allContentA").innerHTML="Le graphique devient encombré et difficile à lire lorsque tout le contenu s’affiche. Tout le contenu supplémentaire se trouve dans le tableau, que vous pouvez voir en faisant défiler vers le bas.";
+    document.getElementById("topQ").innerHTML="Qu’est-ce que le contenu le plus consulté?";
+    document.getElementById("topA").innerHTML="Le contenu le plus consulté est le contenu le plus populaire dans votre groupe. Vous pouvez voir le type de contenu dans les parenthèses qui apparaissent avant le nom du contenu.";
+    document.getElementById("moreHelpQ").innerHTML="Avez-vous d’autres questions?";
+    document.getElementById("moreHelpA").innerHTML="Vous pouvez nous joindre par courriel à donneesGC2data@tbs-sct.gc.ca";
+    document.getElementById("StrtEndQ").innerHTML="Comment changer les dates de début et de fin de mes données?";
+    document.getElementById("StrtEndA1").innerHTML="Vous pouvez modifier les dates de début et de fin en utilisant les boutons qui s’affichent sous la bannière verte qui indique « GCcollab Group Stats Page » (page des statistiques de groupe GCcollab) à gauche";
+    document.getElementById("StrtEndA2").innerHTML=". Le bouton à gauche sert à sélectionner la date de début et le bouton à droite, la date de fin. Voici comment modifier la date :";
+    document.getElementById("StrtEndA3").innerHTML="Cliquez sur la date que vous souhaitez modifier. Un calendrier s’affichera sous le bouton.";
+    document.getElementById("StrtEndA4").innerHTML="Choisissez une nouvelle date en cliquant dessus. Vous pouvez modifier le mois en cliquant sur les flèches à gauche et à droite du nom du mois.";
+    document.getElementById("back").innerHTML="Back";
 });
 
 $(function() {
@@ -918,14 +982,32 @@ $("#datepicker2").on("change keyup paste", function(){
     }
 })
 
-$("#helpButtonDiv").on('click', function(event) {
-    $('.ui.modal')
+// $("#helpButtonDiv").on('click', function(event) {
+//     $('.ui.modal')
+//         .modal('show')
+//     ;
+// })
+
+function myFunction1 () {
+    $('.ui.modal.1')
         .modal('show')
     ;
-})
+}
 
-function myFunction () {
-    $('.ui.modal')
+function myFunction2 () {
+    $('.ui.modal.2')
+        .modal('show')
+    ;
+}
+
+function myFunction3 () {
+    $('.ui.modal.3')
+        .modal('show')
+    ;
+}
+
+function myFunction4 () {
+    $('.ui.modal.4')
         .modal('show')
     ;
 }
@@ -945,14 +1027,27 @@ function helperRequestData() {
     //     }); 
     // }
     //xmlHttp.abort();
-    $('.white-box').show("slow", function(){
-        requestData('uniquePageviews');
-        requestData('membersOverTime');
-        requestData('departments');
-        requestData('topContent');
-        requestData('pageViews');
-        requestData('avgTimeOnPage');
-    })
+    if(state.groupURL.indexOf('https://gcconnex.gc.ca/') === 0){
+        $('.white-box').show("slow", function(){
+            $('.ui-segment-ind-content-box-first').show();
+            requestData('pageViews');
+            requestData('avgTimeOnPage');
+            requestData('uniquePageviews');
+        })
+    }
+    else{
+        $('.white-box').show("slow", function(){
+            $('.ui-segment-ind-content-box-first').show();
+            $('.ui-segment-ind-content-box').show();
+            $('.ui-segment-ind-content-box-final').show();
+            requestData('membersOverTime');
+            requestData('departments');
+            requestData('topContent');
+            requestData('pageViews');
+            requestData('avgTimeOnPage');
+            requestData('uniquePageviews');
+        })
+    }
 }
 
 document.getElementById('getStatss').title="URLs should be of the format https://gcollab.ca/groups/profile...";
@@ -1049,6 +1144,8 @@ document.getElementById("getStatss").addEventListener("click", function(){
 function URLIsValid(url) {
     if (url.indexOf('https://gccollab.ca/groups/profile') === 0)
         return true;
+    if (url.indexOf('https://gcconnex.gc.ca/') === 0)
+        return true;
     else
         return false;
 }
@@ -1115,7 +1212,6 @@ var finishedLoadingAvgTimeOnPAge = false;
 var finishedLoadingUniqueViews = false;
 
 function requestData(reqType) {
-    setTimeout(function() {
         lineChartViews = c3.generate({
             bindto: '#chart1',
             size: {
@@ -1188,7 +1284,6 @@ function requestData(reqType) {
         });
         $('#chart1').hide(); 
         $('#chart2').hide();
-    }, 4000);
     
     progress1 = true;
     p2 = true;
@@ -1369,5 +1464,8 @@ function requestData(reqType) {
 
 $(document).ready(function(){
     $('.white-box').hide();
+    $('.ui-segment-ind-content-box-first').hide();
+    $('.ui-segment-ind-content-box').hide();
+    $('.ui-segment-ind-content-box-final').hide();
     // helper1Copy();
 });

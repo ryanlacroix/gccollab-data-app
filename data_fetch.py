@@ -269,7 +269,7 @@ def main(testing=False):
 
 # Start process
 if __name__ == '__main__':
-    inStr = '{"type":"pages","stat":"pageviews","url":"https://gccollab.ca//profile/103347/esdc-innovation-lab-lab-dinnovation-demploi-et-developpement-social-canada","start_date":"2018-04-20","end_date":"2018-07-19"}'
+    inStr = '{"type":"pages","stat":"pageviews","url":"https://gcconnex.gc.ca/groups/profile/31045361/temporary-resident-program-delivery-functional-direction-division-de-lexecution-du-programme-des-residents-temporaires-orientation-fonctionelle?language=en","start_date":"2018-04-20","end_date":"2018-07-19"}'
     # inStr = '{"platform": "gcconnex", "type":"pages","stat":"uniquePageviews","url":"https://gcconnex.gc.ca/groups/profile/31045361/temporary-resident-program-delivery-functional-direction-division-de-lexecution-du-programme-des-residents-temporaires-orientation-fonctionelle?language=en","start_date":"2018-04-20","end_date":"2018-07-19"}'
     main()
     # If collab db was used be sure to close the tunnel properly
