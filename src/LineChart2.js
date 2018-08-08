@@ -137,10 +137,12 @@ class LineChart2 extends Component {
             var startDate = nextProps.startDate.format("YYYY-MM-DD");
             var endDate = nextProps.endDate.format("YYYY-MM-DD");
             var groupURL = nextProps.groupURL;
+            var platform = nextProps.urlType;
         } else {
             var startDate = this.props.startDate.format("YYYY-MM-DD");
             var endDate = this.props.endDate.format("YYYY-MM-DD");
             var groupURL = this.props.groupURL;
+            var platform = this.props.urlType;
         }
         // Construct JSON object to represent request
         let state = JSON.parse('{"stepIndex":4,"reqType":{"category":1,"filter":"'+ groupURL +'"},"metric":1,"metric2":0,"time":{"startDate":"' + startDate +'","endDate":"' + endDate +'","allTime":true},"errorFlag":false}');
@@ -158,7 +160,8 @@ class LineChart2 extends Component {
                 stat: 'pageviews',
                 url: groupURL,
                 start_date: startDate,
-                end_date: endDate
+                end_date: endDate,
+                platform: platform
             })
         }).then(response => {
             return response.json();
@@ -173,7 +176,8 @@ class LineChart2 extends Component {
                     stat: 'uniquePageviews',
                     url: groupURL,
                     start_date: startDate,
-                    end_date: endDate
+                    end_date: endDate,
+                    platform: platform
                 })
             }).then(response => {
                 return response.json();

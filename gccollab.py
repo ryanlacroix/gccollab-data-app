@@ -141,7 +141,6 @@ class users(object):  # Pulls in the entire users database
         entities_table = Base.classes.elggentities
         metadata_table = Base.classes.elggmetadata
         metastrings_table = Base.classes.elggmetastrings
-
         statement = session.query(
             users_table.guid,
             users_table.name,
@@ -153,7 +152,6 @@ class users(object):  # Pulls in the entire users database
             entities_table.time_created,
             metastrings_table.string
         )
-
         statement = statement.filter(metastrings_table.id == metadata_table.value_id)
         #statement = statement.filter(metadata_table.name_id == 14043 )# was 8667
         statement = statement.filter(or_(metadata_table.name_id == v for v in (14043,14046,14048,14047,14079,29630,8870,14439,29629,24785,29631)))
@@ -576,8 +574,11 @@ class micromissions(object):
         statement = statement.filter(metadata_table_2.entity_guid == users_table.guid)
         statement = statement.filter(metastrings_table.id == metadata_table.value_id)
         statement = statement.filter(metastrings_table_2.id == metadata_table_2.value_id)
-        statement = statement.filter(metadata_table_2.name_id == 8667)
-        statement = statement.filter(metadata_table.name_id == 1192767)
+        statement = statement.filter(metadata_table_2.name_id == 14043 or metadata_table_2.name_id == 14046 or metadata_table_2.name_id == 14048 
+                                        or metadata_table_2.name_id == 14047 or metadata_table_2.name_id == 14079 or metadata_table_2.name_id == 29630 
+                                        or metadata_table_2.name_id == 8870 or metadata_table_2.name_id == 14439 or metadata_table_2.name_id == 29629 
+                                        or metadata_table_2.name_id == 24785 or metadata_table_2.name_id == 29631) 
+        statement = statement.filter(metadata_table.name_id == 27142)
 
         statement = statement.statement
         get_it_all = pd.read_sql(statement, conn)
