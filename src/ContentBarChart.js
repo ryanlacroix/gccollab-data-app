@@ -249,7 +249,6 @@ class ContentBarChart extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log("Csrp")
         if(nextProps.language !== this.props.language){
             if(nextProps.language == 'EN'){
                 this.setState({

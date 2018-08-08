@@ -253,14 +253,16 @@ class gcga:
         metric = "ga:avgTimeOnPage"
         dimension="ga:pagePath"
 
+        # print(URL)
         filter_clause = self._construct_filter_clause(metric, dimension, URL)
         response_stats = self._make_report(start_date, end_date, metric, 'ga:PagePath', filter_clause, order='views')
-
+        # print(response_stats)
         df = self._parse_response_into_df(response_stats)
+        # print(df)
         try:
             return df['metric'][0]
         except:
-            return '0'
+            return 0
 
     # Helper function. Returns pageviews on any number of pages
     def pageviews(self, URLs, start_date='30daysAgo', end_date='today', intervals=False):

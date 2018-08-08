@@ -88,6 +88,8 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.state.groupURL)
+    console.log(this.props.groupURL)
     return (
       <div className="App" style={{/*backgroundImage: "url(https://gccollab.ca//mod/gc_splash_page_collab/graphics/Peyto_Lake-Banff_NP-Canada.jpg)",*/backgroundColor: '#f9f9f9', height: "100%", maxWidth: '100%', align: "center"}}>
         <div id="lang-toggle">

@@ -103,16 +103,18 @@ a:hover{
 #box1{
     margin-top: 10px; 
     margin-left: 10px; 
-    margin-right: 10px; 
+    margin-right: 10px;
+    margin-bottom: 10px; 
     display: inline-block; 
     width: 98%; 
     border-radius: 5px; 
     background-color: rgb(249, 249, 249); 
     border: 2px solid lightgray;
     position: relative;
+    min-height: 300px;
 }
 #box2{
-    margin-top: 10px; 
+    margin-top: 0px; 
     margin-left: 10px; 
     margin-right: 10px; 
     display: inline-block; 
@@ -121,6 +123,7 @@ a:hover{
     background-color: rgb(249, 249, 249); 
     border: 2px solid lightgray;
     position: relative;
+    min-height: 300px;
 }
 #box3{
     margin-top: 10px; 
@@ -132,6 +135,7 @@ a:hover{
     background-color: rgb(249, 249, 249); 
     border: 2px solid lightgray;
     position: relative;
+    min-height: 200px;
 }
 #box4{
     margin-top: 10px; 
@@ -144,6 +148,7 @@ a:hover{
     border: 2px solid lightgray;
     margin-bottom: 10px;
     position: relative;
+    min-height: 200px;
 }
 #rangestart, #rangeend{
     display: inline-block;
@@ -361,6 +366,7 @@ div.ui.action.input{
     #box1{
         margin-right: 1.25%;
         margin-left: 1.25%; 
+        /* margin-bottom: 10px; */
         display: inline-block; 
         width: 97%; 
         border-radius: 5px; 
@@ -583,6 +589,7 @@ div.ui.action.input{
         background-color: rgb(249, 249, 249); 
         border: 2px solid lightgray;
         position: relative;
+        margin-top: 0px !important;
     }
     #box3{
         margin-right: 1%;

@@ -270,7 +270,9 @@ def main(testing=False):
 # Start process
 if __name__ == '__main__':
     inStr = '{"type":"pages","stat":"pageviews","url":"https://gcconnex.gc.ca/groups/profile/31045361/temporary-resident-program-delivery-functional-direction-division-de-lexecution-du-programme-des-residents-temporaires-orientation-fonctionelle?language=en","start_date":"2018-04-20","end_date":"2018-07-19"}'
-    # inStr = '{"platform": "gcconnex", "type":"pages","stat":"uniquePageviews","url":"https://gcconnex.gc.ca/groups/profile/31045361/temporary-resident-program-delivery-functional-direction-division-de-lexecution-du-programme-des-residents-temporaires-orientation-fonctionelle?language=en","start_date":"2018-04-20","end_date":"2018-07-19"}'
+    inStr = '{"platform": "gcconnex", "type":"pages","stat":"pageviews","url":"https://gcconnex.gc.ca/groups/profile/31045361/temporary-resident-program-delivery-functional-direction-division-de-lexecution-du-programme-des-residents-temporaires-orientation-fonctionelle","start_date":"2018-04-20","end_date":"2018-08-02"}'
+    inStr = '{"platform": "gcconnex", "type":"pages","stat":"avgTimeOnPage","url":"https://gcconnex.gc.ca/groups/profile/31045361/temporary-resident-program-delivery-functional-direction-division-de-lexecution-du-programme-des-residents-temporaires-orientation-fonctionelle","start_date":"2018-04-20","end_date":"2018-08-02"}'
+    inStr = '{"platform": "gcconnex", "type":"pages","stat":"avgTimeOnPage","url":"https://gcconnex.gc.ca/groups/profile/19980634/welcome-to-gcconnex-bienvenue-a-gcconnex","start_date":"2018-04-20","end_date":"2018-08-02"}'
     main()
     # If collab db was used be sure to close the tunnel properly
     try:
