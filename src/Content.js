@@ -35,6 +35,8 @@ class Content extends Component {
     }
 
     render() {
+        console.log(this.state.groupURL)
+        console.log(this.props.groupURL)
         if(this.props.URLType === 'collab-group')
             return (
                 <div class="bigBox" style={{margin: '0 auto', backgroundColor: '#fff', border: '2px solid lightgray', borderRadius: '5px', width: '95%'}}>
@@ -102,6 +104,24 @@ class Content extends Component {
                             superState={this.props.endDate}
                             language={this.props.language}
                             initLang={this.props.initLang}
+                        />
+                    </div>
+                </div>
+            );
+        if (this.props.URLType === 'connex-page')
+            return (
+                <div class="bigBox" style={{margin: '0 auto', backgroundColor: '#fff', border: '2px solid lightgray', borderRadius: '5px', width: '95%'}}>
+                    <div className="pageviews" style={{width: '100%'}}>
+                        <LineChart2
+                            title="Page views"
+                            className='linechart1'
+                            startDate={this.props.startDate}
+                            endDate={this.props.endDate}
+                            groupURL={this.props.groupURL}
+                            superState={this.props.endDate}
+                            language={this.props.language}
+                            initLang={this.props.initLang}
+                            URLType={'gcconnex'}
                         />
                     </div>
                 </div>

@@ -1,12 +1,12 @@
-var time1 = 'daily'; //var to store value of monthly/daily dropdown
-var time2 = 'daily';
+var time1 = 'daily'; //var to store value of monthly/daily dropdown for first graph (page views)
+var time2 = 'daily'; //var to store value of monthly daily dropdown for second graph (group membership)
 
-var time;
+var time; //var used to store time1/time2 values when downloading csv 
 
-var chartData1;  //var to store data from the json file
-var chartData2;
-var avgTimeOnPageResp;
-var uniqueViewsResp;
+var chartData1; //var to store data for page views of first line chart (page views) that's sent back from data_fetch 
+var chartData2; //var to store data for second line chart (group membership) that's sent back from data_fetch  
+var avgTimeOnPageResp; //var to store data for unique page views of first line chart (page views) that's sent back from data_fetch
+var uniqueViewsResp; //var to store average time on page of first line chart (page views) that's sent back from data_fetch
 
 var currentLang = 'EN'; //var to store current language of page
 
@@ -31,12 +31,12 @@ var lineChartMembers;
 //     }
 // });
 
-var progress1 = false; 
-var p2 = false;
-var p3 = false;
-var p4 = false; 
-var p5 = false;
-var p6 = false;
+var progress1 = false; // var true if membersOverTime request is in progress
+var p2 = false; // var true if departments request is in progress
+var p3 = false; // var true if topContent request is in progress
+var p4 = false; // var true if pageviews request is in progress
+var p5 = false; // var true if avgTimeOnPage request is in progress
+var p6 = false; // var true if uniquePageviews request is in progress
 
 // var beforeSend = function(){
 //     if (progress1 == true && p2 == true && p3 == true && p4 == true && p5 == true){
@@ -44,9 +44,23 @@ var p6 = false;
 //     }
 // }
 
-var menu = document.getElementById("select");
-menu.addEventListener("change", helper1);
+// Removes query string from URLs
+// (String) -> (String)
+// Ex. https://gcconnex.gc.ca/groups/all?filter=yours ->
+//     https://gcconnex.gc.ca/groups/all
+// Still needed: account for accent characters
+function cleanURL (url){
+    if (url.indexOf('?') != -1)
+        url = url.slice(0, url.indexOf('?'));
+    return url;
+}
 
+var menu = document.getElementById("select"); //var to store monthly/daily dropdown choice for first line chart (pageviews)
+menu.addEventListener("change", helper1); 
+
+// Called if changed in monthly/daily dropdown for first line chart (pageviews)
+// Sets time one value and calls mainLine
+// () -> ()
 function helper1(event) {
     if (menu.value == "monthly1"){
         time1 = 'monthly';
@@ -57,6 +71,7 @@ function helper1(event) {
     mainLine(1, uniqueViewsResp, true);
     mainLine(1, chartData1, false);
 }
+
 
 function helper1Copy(){
     if (menu.value == "monthly1"){
@@ -69,7 +84,7 @@ function helper1Copy(){
     mainLine(1, chartData1, false);
 }
 
-var menu2 = document.getElementById("select2");
+var menu2 = document.getElementById("select2"); //var to store monthly/daily dropdown choice for second line chart (group membership)
 menu2.addEventListener("change", helper2);
 
 function helper2(event) {
@@ -1012,6 +1027,8 @@ function helperRequestData() {
             requestData('pageViews');
             requestData('avgTimeOnPage');
             requestData('uniquePageviews');
+            $('.ui-segment-ind-content-box').hide();
+            $('.ui-segment-ind-content-box-final').hide();
         })
     }
     else{
@@ -1073,6 +1090,14 @@ document.getElementById("getStatss").addEventListener("mouseover", function(){
 
 jQuery('#statsurl').on('input', function() {
     state.groupURL = document.getElementById("statsurl").value;
+
+    if (state.groupURL.indexOf('https://gccollab.ca/groups/profile') === 0){
+        state.platform = 'gccollab';
+    }
+    if (state.groupURL.indexOf('https://gcconnex.gc.ca/') === 0){
+        state.platform = 'gcconnex';
+    }
+
     if(!URLIsValid(state.groupURL)){
         document.getElementById('getStatss').title=URLErrorMessage(state.groupURL)
         if(state.groupURL!=""){
@@ -1096,6 +1121,14 @@ jQuery('#statsurl').on('input', function() {
 
 document.getElementById("getStatss").addEventListener("click", function(){
     state.groupURL = document.getElementById("statsurl").value;
+
+    if (state.groupURL.indexOf('https://gccollab.ca/groups/profile') === 0){
+        state.platform = 'gccollab';
+    }
+    if (state.groupURL.indexOf('https://gcconnex.gc.ca/') === 0){
+        state.platform = 'gcconnex';
+    }
+
     if(!URLIsValid(state.groupURL)){
         document.getElementById('getStatss').title=URLErrorMessage(state.groupURL)
         document.getElementById("statsurl").style.backgroundColor='#fff6f6';
@@ -1173,6 +1206,7 @@ d.setMonth(d.getMonth()-3);
 state.startDate = dateConverter(d);
 state.endDate = dateConverter(new Date());
 state.groupURL = "";
+state.platform = '';
 
 function replaceAll(str, find, replace) {
     return str.replace(new RegExp(find, 'g'), replace);
@@ -1261,8 +1295,7 @@ function requestData(reqType) {
     p3 = true;
     p4 = true;
     p5 = true;
-    // Form correct request based on request type
-    // Really ugly, needs back end changes
+
     var reqStatement = ""; // Populate this with the request
     switch (reqType) {
         case 'membersOverTime':
@@ -1271,7 +1304,8 @@ function requestData(reqType) {
                 stat: 'membersOverTime',
                 url: state.groupURL,
                 start_date: state.startDate,
-                end_date: state.endDate
+                end_date: state.endDate,
+                platform: state.platform
             });
             break;
         case 'departments':
@@ -1280,7 +1314,8 @@ function requestData(reqType) {
                 stat: 'membersByDepartment',
                 url: state.groupURL,
                 start_date: state.startDate,
-                end_date: state.endDate
+                end_date: state.endDate,
+                platform: state.platform
             });
             break;
         case 'topContent':
@@ -1289,34 +1324,38 @@ function requestData(reqType) {
                 stat: 'topContent',
                 url: state.groupURL,
                 start_date: state.startDate,
-                end_date: state.endDate
+                end_date: state.endDate,
+                platform: state.platform
             });
             break;
         case 'pageViews':
             reqStatement = JSON.stringify({
                 type: 'groups',
                 stat: 'pageviews',
-                url: state.groupURL,
+                url: cleanURL(state.groupURL),
                 start_date: state.startDate,
-                end_date: state.endDate
+                end_date: state.endDate,
+                platform: state.platform
             });
             break;
         case 'uniquePageviews':
             reqStatement = JSON.stringify({
                 type: 'pages',
                 stat: 'uniquePageviews',
-                url: state.groupURL,
+                url: cleanURL(state.groupURL),
                 start_date: state.startDate,
-                end_date: state.endDate
+                end_date: state.endDate,
+                platform: state.platform
             });
             break;
         case 'avgTimeOnPage':
             reqStatement = JSON.stringify({
                 type: 'pages',
                 stat: 'avgTimeOnPage',
-                url: state.groupURL,
+                url: cleanURL(state.groupURL),
                 start_date: state.startDate,
-                end_date: state.endDate
+                end_date: state.endDate,
+                platform: state.platform
             });
             break;
         }
