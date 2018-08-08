@@ -10,6 +10,7 @@ var uniqueViewsResp; //var to store average time on page of first line chart (pa
 
 var currentLang = 'EN'; //var to store current language of page
 
+var mainLineDone = false;
 
 var lineChartViews;
 var lineChartMembers;
@@ -104,6 +105,7 @@ document.getElementById("DownloadCSVLine1").addEventListener("click", function()
     else if(time1 == 'daily') {
         time = chartData1.daily;
     }
+    time=downloadDataPrep(time);
     downloadCSVLine(time);
 });
 
@@ -116,6 +118,16 @@ document.getElementById("DownloadCSVLine2").addEventListener("click", function()
     }
     downloadCSVLine(time);
 });
+
+function downloadDataPrep(data){
+    if(time1 === "daily"){
+        data["uniquePageViews"] = uniqueViewsResp.daily.uniquePageviews;
+    }
+    else if(time1 === "monthly"){
+        data["uniquePageViews"] = uniqueViewsResp.monthly.uniquePageviews;
+    }
+    return data;
+}
 
 function swap(dict){
     var ret = {};
@@ -482,17 +494,15 @@ function mainLine(num, theData, unique) {
     
 }
 
-var theLooped;
 
 function uniqueDataPrep(data){
-    if(time1 == "daily"){
+    var theLooped;
+    if(time1 === "daily"){
         theLooped = uniqueViewsResp.daily.uniquePageviews;
     }
-    else if(time1 == "monthly"){
+    else if(time1 === "monthly"){
         theLooped = uniqueViewsResp.monthly.uniquePageviews;
     }
-    console.log("theLooped");
-    console.log(theLooped);
     for(var i = 0; i < data.length; i++){
         data[i].push(theLooped[i]);
     }
@@ -675,7 +685,6 @@ function createChartLine(timeFrame, chartID){
         })
     }
     // if (dataa[0]=='Page Views' || dataa[0]=='uniquePageviews' || dataa[0]=='Pages consultées' || dataa[0]=='pageviews'){
-    //     console.log("LOAAAAAAAAAAADDDDDDING");
     //     lineChartViews.load({
     //         columns: [
     //             columnss,
@@ -697,12 +706,21 @@ function downloadCSVLine(timeFrame){
     // Shape the data into an acceptable format for parsing
     var thisTime = JSON.parse(JSON.stringify(timeFrame));
     var overall = [];
-    valueKey = Object.keys(thisTime)[1];
     dateKey = Object.keys(thisTime)[0];
+    valueKey = Object.keys(thisTime)[1];
     thisTime[dateKey].unshift(dateKey); //data formatting to create the chart
     thisTime[valueKey].unshift(valueKey);
-    for(var i = 0; i < thisTime[valueKey].length; i++){
-        overall.push([thisTime[dateKey][i], thisTime[valueKey][i]]);
+    if("uniquePageViews" in thisTime){
+        var valueKey2 = Object.keys(thisTime)[2];
+        thisTime[valueKey2].unshift(valueKey2);
+        for(var i = 0; i < thisTime[valueKey].length; i++){
+            overall.push([thisTime[dateKey][i], thisTime[valueKey][i], thisTime[valueKey2][i]]);
+        }
+    }
+    else{
+        for(var i = 0; i < thisTime[valueKey].length; i++){
+            overall.push([thisTime[dateKey][i], thisTime[valueKey][i]]);
+        }
     }
     // Construct the CSV string and start download
     var csv_data = Papa.unparse(overall);
@@ -960,6 +978,7 @@ $("#datepicker1").on("change keyup paste", function(){
     state.startDate = year + "-" + month + "-"+day;
     if (state.groupURL != ""){
         helperRequestData();
+        // helper1Copy();
     }
 })
 
@@ -973,6 +992,7 @@ $("#datepicker2").on("change keyup paste", function(){
     state.endDate = year + "-" + month + "-"+day;
     if (state.groupURL != ""){
         helperRequestData();
+        // helper1Copy();
     }
 })
 
@@ -1141,6 +1161,14 @@ document.getElementById("getStatss").addEventListener("click", function(){
         document.getElementById("statsurl").style.borderColor='rgba(34,36,38,.15)';
         document.getElementById("statsurl").style.color='rgba(0,0,0,.87)';
         helperRequestData();
+        // $.when(helperRequestData()).then(helper1Copy());
+        // helperRequestData(function(){
+        //     helper1Copy();
+        // });
+        // setTimeout(function(){
+        //     helper1Copy();
+        //     }, 10000);
+        // helper1Copy();
     }
 });
 
@@ -1411,9 +1439,12 @@ function requestData(reqType) {
                     chartData1 = resp;
                     // console.log(chartData1);
                     document.getElementById("title").innerHTML=replaceAll(chartData1.group_name, "-", " ");
-                    // console.log(chartData1.group_name)
-                    mainLine(1, chartData1, false);
-                    
+                    $.when(mainLine(1, chartData1, false)).then(function(){
+                        if(mainLineDone == true){
+                            helper1Copy();
+                        }
+                        mainLineDone = true;
+                    });
                     break;
                 case "avgTimeOnPage":
                     p5 = false;
@@ -1429,6 +1460,8 @@ function requestData(reqType) {
                     mainLine(3)
                     break;
                 case 'uniquePageviews':
+                    var unique = true;
+                    uniqueViewsResp = resp;
                     p6 = false;
                     finishedLoadingUniqueViews = true;
                     if(finishedLoadingAvgTimeOnPAge == true && finishedLoadingPageViews == true && finishedLoadingUniqueViews == true){
@@ -1437,10 +1470,15 @@ function requestData(reqType) {
                         finishedLoadingUniqueViews = false;
                         $('.loading').hide();
                         $('#chart1').show(); 
+                        // helper1Copy();
                     }
-                    var unique = true;
-                    uniqueViewsResp = resp;
-                    mainLine(1, uniqueViewsResp, unique);
+                    // mainLine(1, uniqueViewsResp, unique);
+                    $.when(mainLine(1, uniqueViewsResp, unique)).then(function(){
+                        if(mainLineDone == true){
+                            helper1Copy();
+                        }
+                        mainLineDone = true;
+                    });
                     break;
             }
             setTimeout(function() {
@@ -1464,5 +1502,5 @@ $(document).ready(function(){
     $('.ui-segment-ind-content-box-first').hide();
     $('.ui-segment-ind-content-box').hide();
     $('.ui-segment-ind-content-box-final').hide();
-    helper1Copy();
+    // helper1Copy();
 });
