@@ -1,7 +1,7 @@
 var time1 = 'daily'; //var to store value of monthly/daily dropdown
 var time2 = 'daily';
 
-var time;
+var time; //var to hold data that will be manipulated for table and chart creation
 
 var chartData1;  //var to store data from the json file
 var chartData2;
@@ -12,25 +12,8 @@ var currentLang = 'EN'; //var to store current language of page
 
 var mainLineDone = false;
 
-var lineChartViews;
-var lineChartMembers;
-// $.ajax({
-//     dataType: "json",
-//     url: 'lineChartData1.json',
-//     success: function(data){
-//         chartData1 = data;
-//         mainLine(1);
-//     }
-// });
-
-// $.ajax({
-//     dataType: "json",
-//     url: 'lineChartData2.json',
-//     success: function(data){
-//         chartData2 = data;
-//         mainLine(2);
-//     }
-// });
+var lineChartViews; //a variable to store the line chart containing page views
+var lineChartMembers; //a variable to store the line chart containing number of members
 
 var progress1 = false; 
 var p2 = false;
@@ -39,27 +22,10 @@ var p4 = false;
 var p5 = false;
 var p6 = false;
 
-// var beforeSend = function(){
-//     if (progress1 == true && p2 == true && p3 == true && p4 == true && p5 == true){
-//         xmlHttp.abort();
-//     }
-// }
-
 var menu = document.getElementById("select");
 menu.addEventListener("change", helper1);
 
 function helper1(event) {
-    if (menu.value == "monthly1"){
-        time1 = 'monthly';
-    }
-    if (menu.value == "daily1"){
-        time1 = 'daily';
-    }
-    mainLine(1, uniqueViewsResp, true);
-    mainLine(1, chartData1, false);
-}
-
-function helper1Copy(){
     if (menu.value == "monthly1"){
         time1 = 'monthly';
     }
@@ -83,7 +49,7 @@ function helper2(event) {
         mainLine(2);
     }
 }
-document.getElementById("DownloadCSVLine1").addEventListener("click", function(){
+document.getElementById("DownloadCSVLine1").addEventListener("click", function(){ //Event listener in for the download button of the page views line chart
     if (time1 == 'monthly') {    //time is changed based on the last button clicked
         time = chartData1.monthly;
     }
@@ -94,7 +60,7 @@ document.getElementById("DownloadCSVLine1").addEventListener("click", function()
     downloadCSVLine(time);
 });
 
-document.getElementById("DownloadCSVLine2").addEventListener("click", function(){
+document.getElementById("DownloadCSVLine2").addEventListener("click", function(){ //Event listener in for the download button of the members line chart
     if (time2 == 'monthly') {    //time is changed based on the last button clicked
         time = chartData2.monthly;
     }
@@ -105,6 +71,9 @@ document.getElementById("DownloadCSVLine2").addEventListener("click", function()
 });
 
 function downloadDataPrep(data){
+    // takes a set of data  in the form of an object and appends to it a new key containing the data for the unique page views
+    // takes an object
+    // modifies this object and returns it
     if(time1 === "daily"){
         data["uniquePageViews"] = uniqueViewsResp.daily.uniquePageviews;
     }
@@ -212,11 +181,16 @@ function updatedTitle (){
 
 $("#eng-toggle").on('click', function(event) {
     currentLang = "EN";
-    try{ 
+    try{
         updatedTitle();
         document.getElementById("avgTimeOnPage").innerHTML="Average time on page: " + parseFloat(Math.round(avgTimeOnPageResp["avgTime"] * 100)/100).toString() + " seconds" ;
         var enHelper = $.extend(true, {}, hardCopybcden);
-        mainLine(1)
+        generateLineCharts();
+        $.when(mainLine(1, chartData1, false)).then(function(){
+            $.when(mainLine(1, uniqueViewsResp, true)).then(function(){
+                helper1();
+            });
+        });
         mainLine(2)
         mainBar(2, 'topContent', enHelper)
         mainBar(1, 'departments', barChartData1);
@@ -268,6 +242,8 @@ $("#eng-toggle").on('click', function(event) {
     document.getElementById("StrtEndA3").innerHTML="Click on the date which you would like to change. A calendar will drop down below the button.";
     document.getElementById("StrtEndA4").innerHTML="Choose a new date by clicking on it. You can change the month by clicking the arrows to the left and right of the month name.";
     document.getElementById("back").innerHTML="Back";
+
+    updateDownloadTippys()
 });
 
 $("#fr-toggle").on('click', function(event) {
@@ -281,9 +257,14 @@ $("#fr-toggle").on('click', function(event) {
         barChartData1[firstKey].shift();
         frenchDepartments = departmentsToFrench(barChartData1);
         var frHelper = $.extend(true, {}, hardCopybcdfr);
-        mainLine(1)
-        mainLine(2)
-        mainBar(2, 'topContent', frHelper)
+        generateLineCharts();
+        $.when(mainLine(1, chartData1, false)).then(function(){
+            $.when(mainLine(1, uniqueViewsResp, true)).then(function(){
+                helper1();
+            });
+        });
+        mainLine(2);
+        mainBar(2, 'topContent', frHelper);
         mainBar(1, 'departments', frenchDepartments);
     }
     catch(err){}
@@ -333,6 +314,8 @@ $("#fr-toggle").on('click', function(event) {
     document.getElementById("StrtEndA3").innerHTML="Cliquez sur la date que vous souhaitez modifier. Un calendrier s’affichera sous le bouton.";
     document.getElementById("StrtEndA4").innerHTML="Choisissez une nouvelle date en cliquant dessus. Vous pouvez modifier le mois en cliquant sur les flèches à gauche et à droite du nom du mois.";
     document.getElementById("back").innerHTML="Back";
+
+    updateDownloadTippys();
 });
 
 $(function() {
@@ -383,26 +366,30 @@ $(function() {
 } );
 
 var tester; 
-var pageViewsDone = false;
-var uniqueViewsDone = false;
-var TitleColumn3;
+var pageViewsDone = false; //a boolean variable to indicate whether the page views data has loaded
+var uniqueViewsDone = false; // a boolean variable to indicate whether the unique page views data has loaded
+var TitleColumn3; // the title of the third column in the page views table
 
 function mainLine(num, theData, unique) {
-    if (time1 == 'monthly' && num==1) {    //time is changed based on the last button clicked
+    //this is the main function for all the line charts. It created the charts and the tables
+    //it takes an integer variable, num, which specifies which line chart or data is being worked with. 1 is for page views and unique page views, 2 is for members, 3 is for average time on page
+    //theData is a variable containing the data from the response of the data request from the backend
+    //the boolean unique indicates whether the data coming in is for unique pageviews(true) or normal pageviews(false) assuming num is 1
+    if (time1 === 'monthly' && num==1) {    //time is changed based on the last button clicked
         time = theData.monthly;
     }
-    else if(time1 == 'daily' && num==1) {
+    else if(time1 === 'daily' && num==1) {
         time = theData.daily;
     }
-    else if (time2 == 'monthly' && num==2) {  
+    else if (time2 === 'monthly' && num==2) {
         time = chartData2.monthly;
     }
-    else if (time2 == 'daily' && num==2) {
+    else if (time2 === 'daily' && num==2) {
         time = chartData2.daily;
     }
     if (num == 1 && unique == false){
         pageViewsDone = true;
-        if(currentLang == "EN"){
+        if(currentLang === "EN"){
             var TitleColumn2 = "Page Views";
         }
         else{
@@ -410,7 +397,7 @@ function mainLine(num, theData, unique) {
         }
     }
     else if(num == 2){
-        if(currentLang == "EN"){
+        if(currentLang === "EN"){
             var TitleColumn2 = "Members";
         }
         else{
@@ -419,7 +406,7 @@ function mainLine(num, theData, unique) {
     }
     if(unique == true){
         uniqueViewsDone = true;
-        if(currentLang == "EN"){
+        if(currentLang === "EN"){
             TitleColumn3 = "Unique Page Views"
         }
         else{
@@ -437,17 +424,7 @@ function mainLine(num, theData, unique) {
         }
     }
     
-    // x = prepareTableDataLine(time);
-    // createTable(x);
     x = prepareTableDataLine(time);
-    if(pageViewsDone == true && uniqueViewsDone == true){
-        if (time1 == 'monthly') {    //time is changed based on the last button clicked
-            time = chartData1.monthly;
-        }
-        else if(time1 == 'daily') {
-            time = chartData1.daily;
-        }
-    }
     
     if(pageViewsDone == true && uniqueViewsDone == true){ //if both the unique and page views have been done
         if(currentLang == "EN"){
@@ -458,29 +435,26 @@ function mainLine(num, theData, unique) {
         }
         y = uniqueDataPrep(x);
         createTable(y, '#theTable1', "Date", TitleColumn2, TitleColumn3);
-        pageViewsDone = false;
+        pageViewsDone = false; //reset these variables for the next time a data request is done
         uniqueViewsDone = false;
         if (time1 == 'monthly' && num==1) {    //time is changed based on the last button clicked
-            time = theData.monthly;
+            createChartLine(uniqueViewsResp.monthly, '#chart'.concat(String(num))); //everytime createChartLine is called with num == 1, one of the unique page views or normal pageviews is loaded on to the chart
+            createChartLine(chartData1.monthly, '#chart'.concat(String(num)));
         }
         else if(time1 == 'daily' && num==1) {
-            time = theData.daily;
+            createChartLine(uniqueViewsResp.daily, '#chart'.concat(String(num))); //everytime createChartLine is called with num == 1, one of the unique page views or normal pageviews is loaded on to the chart
+            createChartLine(chartData1.daily, '#chart'.concat(String(num)));
         }
-        createChartLine(time, '#chart'.concat(String(num)));
     }
-    else if(unique == true && pageViewsDone == false){
-        createChartLine(time, '#chart'.concat(String(num)));
-    }
-    else{
+    else if(num == 2){
         createTable(x, '#theTable2', "Date", TitleColumn2);
         createChartLine(time, '#chart'.concat(String(num)));
     }
-    // createTable(x, '#theTable'.concat(String(num)), "Date", TitleColumn2);
-    
 }
 
-
 function uniqueDataPrep(data){
+    // takes a set of data in a var, data, in the form of an array containing a bunch of arrays that have a date in the 0th index and the corresponding value for page views in the first index
+    // and appends to each array within data the corresponding value of unique page views for eac date
     var theLooped;
     if(time1 === "daily"){
         theLooped = uniqueViewsResp.daily.uniquePageviews;
@@ -495,6 +469,7 @@ function uniqueDataPrep(data){
 }
 
 function prepareTableDataLine(timeFrame){
+    //takes in an object, timeFrame, with two keys each containing an array. The first key is to an array of the dates and the second key is to an array 
     valueKey = Object.keys(timeFrame)[1];
     if(timeFrame.dates[0] == 'Dates'){      //formatting the data to be used for making the table
         timeFrame.dates.splice(0,1);
@@ -518,7 +493,7 @@ function prepareTableDataLine(timeFrame){
 }
 
 function createTable(tableData, tableID, TitleColumn1, TitleColumn2, Column3){
-    if(Column3 == "Unique Page Views"){
+    if(Column3 == "Unique Page Views" || Column3 == "Consultées uniques"){
         if ( $.fn.dataTable.isDataTable( tableID ) ) { //check if this is already a datatable
             $(tableID).DataTable().destroy();              //clear its data
             $(document).ready(function() {
@@ -963,7 +938,6 @@ $("#datepicker1").on("change keyup paste", function(){
     state.startDate = year + "-" + month + "-"+day;
     if (state.groupURL != ""){
         helperRequestData();
-        // helper1Copy();
     }
 })
 
@@ -977,15 +951,8 @@ $("#datepicker2").on("change keyup paste", function(){
     state.endDate = year + "-" + month + "-"+day;
     if (state.groupURL != ""){
         helperRequestData();
-        // helper1Copy();
     }
 })
-
-// $("#helpButtonDiv").on('click', function(event) {
-//     $('.ui.modal')
-//         .modal('show')
-//     ;
-// })
 
 function myFunction1 () {
     $('.ui.modal.1')
@@ -1050,6 +1017,43 @@ function helperRequestData() {
 }
 
 document.getElementById('getStatss').title="URLs should be of the format https://gcollab.ca/groups/profile...";
+
+function updateDownloadTippys(){
+    createTippy("#DownloadCSVLine1");
+    createTippy("#DownloadCSVLine2");
+    createTippy("#DownloadCSVBar1");
+    createTippy("#DownloadCSVBar2");
+}
+
+function createTippy(buttonID){
+    try{
+        document.getElementById(buttonID.slice(1))._tippy.destroy();
+    }
+    catch(err){
+        console.log('error destroying tippys');
+    }
+    tippy(buttonID, {
+        createPopperInstanceOnInit: true,
+        hideOnClick: false,
+        // trigger: 'click',
+        trigger: 'mouseenter focus',
+        dynamicTitle: true,
+        // animateFill: true,
+        animation: 'fade',
+        arrow: true,
+        arrowType: 'round',
+        // theme: 'dark custom',
+    })
+
+    if(buttonID.slice(0,12) === "#DownloadCSV"){
+        if(currentLang === "EN"){
+            document.getElementById(buttonID.slice(1)).title = "Download data as CSV";
+        }
+        else if(currentLang === "FR"){
+            document.getElementById(buttonID.slice(1)).title = "Télécharger les données en format CSV";
+        }
+    }
+}
 
 tippy('.ui button', {
     createPopperInstanceOnInit: false,
@@ -1127,15 +1131,10 @@ document.getElementById("getStatss").addEventListener("click", function(){
         document.getElementById("statsurl").style.backgroundColor='#fff';
         document.getElementById("statsurl").style.borderColor='rgba(34,36,38,.15)';
         document.getElementById("statsurl").style.color='rgba(0,0,0,.87)';
+        createTippy("#helpButton1");
+        createTippy("#helpButton");
+        updateDownloadTippys();
         helperRequestData();
-        // $.when(helperRequestData()).then(helper1Copy());
-        // helperRequestData(function(){
-        //     helper1Copy();
-        // });
-        // setTimeout(function(){
-        //     helper1Copy();
-        //     }, 10000);
-        // helper1Copy();
     }
 });
 
@@ -1210,79 +1209,83 @@ var finishedLoadingPageViews = false;
 var finishedLoadingAvgTimeOnPAge = false;
 var finishedLoadingUniqueViews = false;
 
+function generateLineCharts(){
+    lineChartViews = c3.generate({
+        bindto: '#chart1',
+        size: {
+            height: 200,    //size set same the datatable
+            //width: 480    //default size is full width of page
+        },
+        data: {
+            x: 'dates',
+            xFormat: '%Y-%m-%d',
+            columns: [
+                // columnss,   // example of what is being passed ['x', "20170831", "20170930", "20171031", "20171130", "20171231", "20180131", "20180228", "20180331", "20180430", "20180531"],
+                // dataa,      // example of what is being passed ['users', 20, 26, 26, 27, 27, 31, 34, 34, 34, 43]
+            ],
+            // color: function (color, d) {
+            //     // d will be 'id' when called for legends
+            //     return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
+            //     },
+        },
+        legend: {
+            show: false
+        },
+        axis: {
+            x: {
+                type: 'timeseries',
+            tick: {
+                format: '%Y-%m-%d'
+                }
+            }
+        },
+        groupName: '',
+        onrendered: function() {
+            d3.selectAll(".c3-axis.c3-axis-x .tick text")
+                .style("display", "none");
+        }
+    });
+    lineChartMembers = c3.generate({
+        bindto: '#chart2',
+        size: {
+            height: 200,    //size set same the datatable
+            //width: 480    //default size is full width of page
+        },
+        data: {
+            x: 'dates',
+            xFormat: '%Y-%m-%d',
+            columns: [
+                // columnss,   // example of what is being passed ['x', "20170831", "20170930", "20171031", "20171130", "20171231", "20180131", "20180228", "20180331", "20180430", "20180531"],
+                // dataa,      // example of what is being passed ['users', 20, 26, 26, 27, 27, 31, 34, 34, 34, 43]
+            ],
+            // color: function (color, d) {
+            //     // d will be 'id' when called for legends
+            //     return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
+            //     },
+        },
+        legend: {
+            show: false
+        },
+        axis: {
+            x: {
+                type: 'timeseries',
+            tick: {
+                format: '%Y-%m-%d'
+                }
+            }
+        },
+        groupName: '',
+        onrendered: function() {
+            d3.selectAll(".c3-axis.c3-axis-x .tick text")
+                .style("display", "none");
+        }
+    });
+}
+
 function requestData(reqType) {
-        lineChartViews = c3.generate({
-            bindto: '#chart1',
-            size: {
-                height: 200,    //size set same the datatable
-                //width: 480    //default size is full width of page
-            },
-            data: {
-                x: 'dates',
-                xFormat: '%Y-%m-%d',
-                columns: [
-                    // columnss,   // example of what is being passed ['x', "20170831", "20170930", "20171031", "20171130", "20171231", "20180131", "20180228", "20180331", "20180430", "20180531"],
-                    // dataa,      // example of what is being passed ['users', 20, 26, 26, 27, 27, 31, 34, 34, 34, 43]
-                ],
-                // color: function (color, d) {
-                //     // d will be 'id' when called for legends
-                //     return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
-                //     },
-            },
-            legend: {
-                show: false
-            },
-            axis: {
-                x: {
-                    type: 'timeseries',
-                tick: {
-                    format: '%Y-%m-%d'
-                    }
-                }
-            },
-            groupName: '',
-            onrendered: function() {
-                d3.selectAll(".c3-axis.c3-axis-x .tick text")
-                    .style("display", "none");
-            }
-        });
-        lineChartMembers = c3.generate({
-            bindto: '#chart2',
-            size: {
-                height: 200,    //size set same the datatable
-                //width: 480    //default size is full width of page
-            },
-            data: {
-                x: 'dates',
-                xFormat: '%Y-%m-%d',
-                columns: [
-                    // columnss,   // example of what is being passed ['x', "20170831", "20170930", "20171031", "20171130", "20171231", "20180131", "20180228", "20180331", "20180430", "20180531"],
-                    // dataa,      // example of what is being passed ['users', 20, 26, 26, 27, 27, 31, 34, 34, 34, 43]
-                ],
-                // color: function (color, d) {
-                //     // d will be 'id' when called for legends
-                //     return d.id && d.id === valueKey ? d3.rgb(color).darker(d.value / 30) : color;
-                //     },
-            },
-            legend: {
-                show: false
-            },
-            axis: {
-                x: {
-                    type: 'timeseries',
-                tick: {
-                    format: '%Y-%m-%d'
-                    }
-                }
-            },
-            groupName: '',
-            onrendered: function() {
-                d3.selectAll(".c3-axis.c3-axis-x .tick text")
-                    .style("display", "none");
-            }
-        });
-        $('#chart1').hide(); 
-        $('#chart2').hide();
+    generateLineCharts();
+    $('#chart1').hide(); 
+    $('#chart2').hide();
     
     progress1 = true;
     p2 = true;
@@ -1348,11 +1351,6 @@ function requestData(reqType) {
             });
             break;
         }
-    // Send the request
-    //reqStatement = JSON.parse('{"stepIndex":4,"reqType":{"category":1,"filter":"https://gccollab.ca/groups/profile/718/canada-indigenous-relations-creating-awareness-fostering-reconciliation-and-contributing-to-a-shared-future-relations-canada-et-peuples-indigenes-promouvoir-la-sensibilisation-favoriser-la-reconciliation-et-contribuer-a-un-avenir-partager"},"metric":2,"metric2":0,"time":{"startDate":"2017-02-12","endDate":"2018-02-12","allTime":true},"errorFlag":false}');
-    //console.log(reqStatement);
-    //reqStatement = JSON.stringify(reqStatement);
-    //var data = {name:"John"}
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
@@ -1402,7 +1400,7 @@ function requestData(reqType) {
                     document.getElementById("title").innerHTML=replaceAll(chartData1.group_name, "-", " ");
                     $.when(mainLine(1, chartData1, false)).then(function(){
                         if(mainLineDone == true){
-                            helper1Copy();
+                            helper1();
                         }
                         mainLineDone = true;
                     });
@@ -1431,12 +1429,10 @@ function requestData(reqType) {
                         finishedLoadingUniqueViews = false;
                         $('.loading').hide();
                         $('#chart1').show(); 
-                        // helper1Copy();
                     }
-                    // mainLine(1, uniqueViewsResp, unique);
                     $.when(mainLine(1, uniqueViewsResp, unique)).then(function(){
                         if(mainLineDone == true){
-                            helper1Copy();
+                            helper1();
                         }
                         mainLineDone = true;
                     });
@@ -1463,5 +1459,4 @@ $(document).ready(function(){
     $('.ui-segment-ind-content-box-first').hide();
     $('.ui-segment-ind-content-box').hide();
     $('.ui-segment-ind-content-box-final').hide();
-    // helper1Copy();
 });
