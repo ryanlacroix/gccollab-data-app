@@ -473,11 +473,11 @@ class LineChart2 extends Component {
                 </div>
                 <DataTable
                     data={spreadsheetData}
-                    id="tablePageviews"
+                    id="tablePageview"
                     className={this.state.contentClass + ' ' + scrollTable}
                     headers={[this.state.header1, this.state.header2, this.state.header3]}
                 />
-                <h4 className={this.state.contentClass}>{this.state.avgTimeMessage} {this.state.pageTime} seconds </h4>
+                <h4 className={this.state.contentClass} id = "avgTime">{this.state.avgTimeMessage} {this.state.pageTime} seconds </h4>
                 <Modal open={this.state.open} onClose={this.close}>
                     <Modal.Header>{this.props.language == "EN" ? "Help Content" : "Contenu d'aide"}</Modal.Header>
                     <Modal.Content>

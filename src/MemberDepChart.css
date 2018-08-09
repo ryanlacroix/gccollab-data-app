@@ -5,9 +5,6 @@
 .hide {
     display: none;
 }
-.c3chart{
-    /* height: 2400px !important; */
-}
 #chart3{
     /* display: inline-block !important;  */
     width: 500px !important; 
@@ -132,8 +129,6 @@
         bottom: 5px;
         left: 37%;
     }
-    #memberBox{
-    }
 }
 
 @media only screen and (max-width: 559px) and (min-width: 475px){
@@ -159,8 +154,6 @@
         bottom: 5px;
         left: 35%;
     }
-    #memberBox{
-    }
 }
 
 @media only screen and (max-width: 475px) and (min-width: 375px){
@@ -185,9 +178,6 @@
         bottom: 5px;
         left: 30%;
         margin-top: 10px !important;
-    }
-    #memberBox{
-        /* background-color: black !important; */
     }
 }
 

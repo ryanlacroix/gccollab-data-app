@@ -288,6 +288,10 @@ class ContentBarChart extends Component {
         }
     }
     componentDidMount() {
+        console.log("CDM")
+        if(this.props.URLType != this.props.PrevURLType && (this.props.PrevURLType == 'collab-page' || this.props.PrevURLType == "connex-page")){
+            this.requestData()
+        }
         this.setState({loaderClass: '', contentClass: 'hidden'});
         //this.requestData();
     }

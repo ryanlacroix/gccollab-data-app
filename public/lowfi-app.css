@@ -6,6 +6,9 @@
 a:hover{
     color: blue;
 }
+.c3-line {
+    stroke-width: 2px;
+}
 #title{
     font-size: 100%;
     font-family: Roboto, sans-serif;
