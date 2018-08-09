@@ -88,6 +88,9 @@ function helper1Copy(){
 var menu2 = document.getElementById("select2"); //var to store monthly/daily dropdown choice for second line chart (group membership)
 menu2.addEventListener("change", helper2);
 
+// Called if changed in monthly/daily dropdown for first line chart (pageviews)
+// Sets time one value and calls mainLine
+// () -> ()
 function helper2(event) {
     if (menu2.value == "monthly2"){
         time2 = 'monthly';
@@ -129,6 +132,10 @@ function downloadDataPrep(data){
     return data;
 }
 
+//Given a dictionary, returns inverse of that dictionary
+//(object) -> (object)
+//Ex. {A : 1, B : 2, C : 3, D : 4} ->
+//    {1 : A, 2 : B, 3 : C, 4 : D}
 function swap(dict){
     var ret = {};
     for(var key in dict){
@@ -137,14 +144,15 @@ function swap(dict){
     return ret;
 }
  
-var fr_dict = {};
-var fr_list = [];
+var fr_dict = {}; //french ministries dictionary (see fr_dict) 
+var fr_list = []; //french 
 var inverse_fr_dict = {};
 $.getJSON("fr_dict.json", function(result){
     fr_dict = result;
     var values = $.map(fr_dict, function(value,key) {return value});
     var keys = $.map(fr_dict, function(value, key) {return key});
     fr_list = Array(values);
+    console.log(fr_list)
     inverse_fr_dict = swap(fr_dict);
 });
 
