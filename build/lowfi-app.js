@@ -59,6 +59,9 @@ function helper1(event) {
 var menu2 = document.getElementById("select2");
 menu2.addEventListener("change", helper2);
 
+// Called if changed in monthly/daily dropdown for first line chart (pageviews)
+// Sets time one value and calls mainLine
+// () -> ()
 function helper2(event) {
     if (menu2.value == "monthly2"){
         time2 = 'monthly';
@@ -103,6 +106,10 @@ function downloadDataPrep(data){
     return data;
 }
 
+//Given a dictionary, returns inverse of that dictionary
+//(object) -> (object)
+//Ex. {A : 1, B : 2, C : 3, D : 4} ->
+//    {1 : A, 2 : B, 3 : C, 4 : D}
 function swap(dict){
     var ret = {};
     for(var key in dict){
@@ -111,9 +118,11 @@ function swap(dict){
     return ret;
 }
  
-var fr_dict = {};
-var fr_list = [];
-var inverse_fr_dict = {};
+var fr_dict = {}; //French departments dictionary (see fr_dict) 
+var fr_list = []; //French list departments
+var inverse_fr_dict = {}; //inverse of fr_dict (see swap for example of inverse dictionary)
+
+//gets fr_dict.json file and instantiates fr_dict, fr_list, inverse_fr_dict
 $.getJSON("fr_dict.json", function(result){
     fr_dict = result;
     var values = $.map(fr_dict, function(value,key) {return value});
@@ -122,9 +131,11 @@ $.getJSON("fr_dict.json", function(result){
     inverse_fr_dict = swap(fr_dict);
 });
 
-var en_dict = {};
-var en_list = [];
-var inverse_en_dict = {};
+var en_dict = {}; //English departments dictionary (see en_dict) 
+var en_list = []; //English list departments
+var inverse_en_dict = {}; //inverse of en_dict (see swap for example of inverse dictionary)
+
+//gets en_dict.json file and instantiates en_dict, en_list, inverse_en_dict
 $.getJSON("en_dict.json", function(result){
     en_dict = result;
     var values = $.map(en_dict, function(value,key) {return value});
@@ -133,7 +144,10 @@ $.getJSON("en_dict.json", function(result){
     inverse_en_dict = swap(en_dict);
 });
 
-//Returns the bilingual version of the name given
+//Returns the bilingual version of given deptartment
+//(String)->(String)
+//Ex 'Canada Revenue Agency' -> 'Agence du revenu du Canada'
+//Ex 'Agence du revenu du Canada' -> 'Canada Revenue Agency'
 function get_bilingual_name (dept){
     try{
         return fr_dict[inverse_en_dict[String(dept)]]
@@ -143,23 +157,32 @@ function get_bilingual_name (dept){
     }
 }
 
+//Translates the departments in the given bar chart object to French
+//(object) -> (object)
+//Ex {"departments": ["Indigenous and Northern Affairs Canada", "Employment 
+//    and Social Development Canada" ...], "members": [98, 96, 55, ...]} ->
+//   {"departments": ["Affaires autochtones et du Nord Canada",
+//    "Emploi et Développement social Canada" ...], "members": [98, 96, 55, ...]}        
 function departmentsToFrench (barchartData1){
-    var barChartData1FR = $.extend(true, {}, barChartData1);
-    for(var i=0; i<barchartData1["departments"].length; i++){
+    var barChartData1FR = $.extend(true, {}, barChartData1); //makes hard copy of barchartData1
+    for(var i=0; i<barchartData1["departments"].length; i++){ //translates departments to French
         barChartData1FR["departments"][i] = fr_dict[inverse_en_dict[barChartData1FR["departments"][i]]];
-        if (barChartData1FR["departments"][i] === undefined){
+        if (barChartData1FR["departments"][i] === undefined){ //if not in dictionary, reverts to English name
             barChartData1FR["departments"][i] = barChartData1["departments"][i];
         }
     }
     return barChartData1FR;
 }
 
+//Translates content type to French
+//(String) -> (String)
+//EX 'file' -> 'dossier'
 function toFrench (typeStr){
     let validTypes = ['file','discussion','event_calendar','groups','blog',
-                    'bookmarks','pages',];
+                    'bookmarks','pages',]; //array English content types
     let validTypesFR = ['dossier','discussion','calendrier des événements','groupe','blogue',
-    'signets','pages',];
-    for(var i=0; i<validTypes.length; i++){
+    'signets','pages',]; //array French content types
+    for(var i=0; i<validTypes.length; i++){ //translates type to French
         if(typeStr == validTypes[i]){
             typeStr = validTypesFR[i];
         }
@@ -167,10 +190,12 @@ function toFrench (typeStr){
     return typeStr;
 }
 
-var groupNameEN;
-var groupNameFR;
-var hardCopyURLTitle;
+var groupNameEN; //stores the group name in English
+var groupNameFR; //stores the group name in French  
 
+//Updates groupNameEN and groupNameFR, first using info returned from database then
+//using URL
+//() -> ()
 function updatedTitle (){
     hardCopyBarChart2 = $.extend(true, {}, barChartData2);
     groupNameEN = JSON.parse(hardCopyBarChart2["group_name"]).en
@@ -287,7 +312,9 @@ $("#fr-toggle").on('click', function(event) {
         mainBar(2, 'topContent', frHelper);
         mainBar(1, 'departments', frenchDepartments);
     }
-    catch(err){}
+    catch(err){
+        console.log("ERROR")
+    }
     $.datepicker.setDefaults($.datepicker.regional['fr']);
     document.getElementById("h11").innerHTML="Page de statistiques du groupe <strong>GC</strong>collab";
     document.getElementById("url-message").innerHTML="Copiez l’URL du groupe ci-dessus et spécifiez les dates de début et de fin souhaitées pour extraire les données pertinentes.";
@@ -727,23 +754,8 @@ document.getElementById("DownloadCSVBar2").addEventListener("click", function(){
     downloadCSVBar(barChartData2);
 });
 
-// $.ajax({
-//     dataType: "json",
-//     url: 'barChartData1.json',
-//     success: function(d){
-//         mainBar(1, 'department', d);
-//     }
-// });
-
-// $.ajax({
-//     dataType: "json",
-//     url: 'barChartData2.json',
-//     success: function(d){
-//         mainBar(2, 'topContent', d)
-//     }
-// });
-
 function mainBar(num, stringy, barChartData){
+    console.log(barChartData)
     if(stringy == 'departments'){
         x = prepareTableDataBar(barChartData)
     }
@@ -759,6 +771,7 @@ function mainBar(num, stringy, barChartData){
     }
     else if(stringy == 'topContent'){
         x = prepareTableDataBar2(barChartData);
+        console.log(x)
     }
     if(num==2){
         if(currentLang == "EN"){
@@ -786,6 +799,7 @@ function prepareTableDataBar(chartData){
 }
 
 function createChartBar(chartData, chartID){
+    console.log(chartData)
     zeroethKey = Object.keys(chartData)[0]; //name of first column ie "departments"
     firstKey = Object.keys(chartData)[1]; //name of second column ie "members"
     chartData[zeroethKey].unshift(zeroethKey); //adds "department" to start of department array 

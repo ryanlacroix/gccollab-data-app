@@ -473,7 +473,7 @@ class LineChart2 extends Component {
                 </div>
                 <DataTable
                     data={spreadsheetData}
-                    id="tablePageviews"
+                    id="tablePageview"
                     className={this.state.contentClass + ' ' + scrollTable}
                     headers={[this.state.header1, this.state.header2, this.state.header3]}
                 />

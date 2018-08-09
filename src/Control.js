@@ -168,6 +168,7 @@ class Control extends Component {
                             (event, data) => {
                                 if (this.state.validURL) {
                                     this.props.setGroupUrl(this.state.currUrl);
+                                    this.props.setPrevURLType(this.props.URLType)
                                     this.props.setURLType(this.getURLType(this.state.currUrl)); 
                                 }
                         }} />

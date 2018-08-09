@@ -2,6 +2,11 @@
     overflow: hidden;
 }
 
+/* prevents unnecessary horizontal scrolling */
+.wtHider{
+    width: auto !important; 
+}
+
 .chartss{
     height: 240px;
     width: 500px;
