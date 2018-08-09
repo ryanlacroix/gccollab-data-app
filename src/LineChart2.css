@@ -21,6 +21,9 @@
 .cellName{
     margin-bottom: 0px !important;
 }
+.ind-content-box{
+    min-height: 300px;
+}
 
 .content-box-heading{
     width: 100%;
@@ -33,6 +36,11 @@
     width: 90%;
     margin-left: 5%;
 }
+#avgTime{
+    position: absolute;
+    bottom: 5px;
+    right: 110px;
+}
 @media only screen and (max-width: 1175px) and (min-width: 990px){
     #lineChartPageviews{
         float: right !important;
@@ -41,6 +49,16 @@
     .chartss{
         float: none !important;
         margin-right: 00px !important;
+    }
+    #avgTime{
+        position: static;
+        bottom: 5px;
+        right: 110px;
+    }
+    #avgTime{
+        position: static;
+        bottom: 5px;
+        right: 110px;
     }
   }
 
@@ -52,6 +70,11 @@
     .chartss{
         float: none !important;
         margin-left: auto !important;
+    }
+    #avgTime{
+        position: static;
+        bottom: 5px;
+        right: 110px;
     }
   }
   
@@ -68,6 +91,11 @@
     .title{
         font-size: 23px;
     }
+    #avgTime{
+        position: static;
+        bottom: 5px;
+        right: 110px;
+    }
   }
   
   @media only screen and (max-width: 559px) and (min-width: 475px){
@@ -81,6 +109,11 @@
     .title{
         font-size: 18px;
     }
+    #avgTime{
+        position: static;
+        bottom: 5px;
+        right: 110px;
+    }
   }
   
   @media only screen and (max-width: 475px) and (min-width: 375px){
@@ -93,6 +126,11 @@
     .title{
         font-size: 14px;
     }
+    #avgTime{
+        position: static;
+        bottom: 5px;
+        right: 110px;
+    }
   }  
   
   @media only screen and (max-width: 375px){
@@ -104,5 +142,10 @@
     }
     .title{
         font-size: 13px;
+    }
+    #avgTime{
+        position: static;
+        bottom: 5px;
+        right: 110px;
     }
   }
