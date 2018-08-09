@@ -14,13 +14,48 @@ import sqlalchemy
 
 
 def get_group_guid(urlString):
+    group_guid = ''
     url2 = urlString[urlString.find('profile/'):]
     url3 = url2[url2.find('/')+1:]
-    return url3[:url3.find('/')]
+    # Account for urls without trailing forward slash
+    if url3.find('/') != -1:
+        group_guid = url3[:url3.find('/')]
+    else:
+        group_guid = url3
+    return group_guid
+
+def get_group_guid_from_subpage(urlString):
+    guid = ''
+    # These pages include the group guid in the url
+    simple_pages = [
+        '/file/group/',
+        '/event_calendar/group/',
+        '/bookmarks/group/',
+        '/blog/group/',
+        '/discussion/owner/',
+        '/event_calendar/group/',
+        '/docs/group/',
+        '/polls/group/',
+        '/photos/group/',
+        '/ideas/group/',
+        '/groups/related/'
+    ]
+    # Remove the domain
+    guid = urlString.replace('https://gccollab.ca', '').replace('https://gcconnex.ca', '')
+    complex_page = True # This switches off if the page is found to be simple
+    for type_url in simple_pages:
+        if type_url in guid:
+            complex_page = False
+            guid = guid.replace(type_url,'')
+    if complex_page == True:
+        # Extract this content's guid and hit the db for containing group guid
+        pass # For now. Will add this after front end for this feature is good
+    if guid.find('/all') != -1:
+        guid = guid[:guid.find('/all')]
+    guid = guid.replace('/top','').replace('/','')
+    return guid
 
 # Read data from stdin
-
-
 def read_in():
     lines = sys.stdin.readlines()
     # Since our input would only be having one line, parse our JSON data from that
@@ -83,13 +118,9 @@ def get_group_top_content(req_obj):
     # Establish database connection
     gc.connect_to_database()
     gc.create_session()
-
-    # Figure out group guid from url
-    url = req_obj['url']
-    url2 = url[url.find('profile/'):]
-    url3 = url2[url2.find('/')+1:]
-    group_guid = url3[:url3.find('/')]
-
+    
+    group_guid = get_group_guid(req_obj['url'])
+    
     # Get the guids of all content within group
     guid_list = gc.content.get_top_content(group_guid)
 
