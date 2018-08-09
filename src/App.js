@@ -42,6 +42,7 @@ class App extends Component {
     this.setStartDate = this.setStartDate.bind(this);
     this.setGroupUrl = this.setGroupUrl.bind(this);
     this.setURLType = this.setURLType.bind(this);
+    this.setPrevURLType = this.setPrevURLType.bind(this);
     this.setLanguage = this.setLanguage.bind(this);
     this.setInitLanguage = this.setInitLanguage.bind(this);
 
@@ -53,6 +54,7 @@ class App extends Component {
       groupURL: '',
       onIntro: true,
       URLType: 'collab-group',
+      PrevURLType: "",
       helpmessage: "Paste the group URL above and set your desired start and end dates to retrieve relevant statistics.",
       initLang: 'EN',
       title: "GCcollab Group Stats Page"
@@ -80,6 +82,9 @@ class App extends Component {
   setURLType = (URLType) => {
     this.setState({URLType: URLType});
   }
+  setPrevURLType = (PrevURLType) => {
+    this.setState({PrevURLType: PrevURLType})
+  }
   setLanguage = (l) => {
     this.setState({language: l});
   }
@@ -88,6 +93,10 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.state.groupURL)
+    console.log(this.props.groupURL)
+    console.log(this.state.URLType)
+    console.log(this.state.PrevURLType)
     return (
       <div className="App" style={{/*backgroundImage: "url(https://gccollab.ca//mod/gc_splash_page_collab/graphics/Peyto_Lake-Banff_NP-Canada.jpg)",*/backgroundColor: '#f9f9f9', height: "100%", maxWidth: '100%', align: "center"}}>
         <div id="lang-toggle">
@@ -113,11 +122,13 @@ class App extends Component {
             setEndDate={this.setEndDate}
             setGroupUrl={this.setGroupUrl}
             setURLType={this.setURLType}
+            setPrevURLType={this.setPrevURLType}
             setLanguage ={this.setLanguage}
             setInitLanguage={this.setInitLanguage}
             initLang={this.state.initLang}
             language={this.state.language}
             groupURL={this.state.groupURL} 
+            URLType={this.state.URLType}
           />
           <div className={this.state.onIntro ? 'hidden' : ''}>
             <Content
@@ -126,8 +137,10 @@ class App extends Component {
               endDate={this.state.endDate}
               groupURL={this.state.groupURL}
               URLType={this.state.URLType}
+              PrevURLType={this.state.PrevURLType}
               language={this.state.language}
               initLang={this.state.initLang}
+              PrevURLType={this.state.PrevURLType}
             />
           </div>
           <div className={this.state.onIntro ? '' : 'hidden'} style={{paddingBottom: '10px', fontFamily: "'Nunito Sans', sans-serif"}} id="container2">

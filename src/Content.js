@@ -22,11 +22,9 @@ class Content extends Component {
     }
 
     myCallBack = (dataFromChild) =>{
-        console.log("ATCONTENT")
         console.log(dataFromChild[0])
         console.log(this.state.groupNameEN)
         if (this.state.groupNameEN != dataFromChild[0]){
-            console.log("INCONTENTIF")
             this.setState({
                 groupNameEN: dataFromChild[0],
                 groupNameFR: dataFromChild[1]
@@ -61,7 +59,9 @@ class Content extends Component {
                             endDate={this.props.endDate}
                             groupURL={this.props.groupURL}  
                             language={this.props.language}
-                            initLang={this.props.initLang}  
+                            initLang={this.props.initLang}
+                            URLType={this.props.URLType}
+                            PrevURLType={this.props.PrevURLType}  
                         />
                     </div>
                     <div className="deps" style={{width: '100%'}}>
@@ -73,6 +73,8 @@ class Content extends Component {
                             groupURL={this.props.groupURL} 
                             language={this.props.language}
                             initLang={this.props.initLang}
+                            URLType={this.props.URLType}
+                            PrevURLType={this.props.PrevURLType}
                         />
                     </div>
                     <div className="top-content" style={{width: '100%'}}>
@@ -85,6 +87,8 @@ class Content extends Component {
                             language={this.props.language}
                             initLang={this.props.initLang}
                             callbackFromParent = {this.myCallBack}
+                            URLType={this.props.URLType}
+                            PrevURLType={this.props.PrevURLType}
                         />
                     </div>
                 </div>
@@ -102,6 +106,24 @@ class Content extends Component {
                             superState={this.props.endDate}
                             language={this.props.language}
                             initLang={this.props.initLang}
+                        />
+                    </div>
+                </div>
+            );
+        if (this.props.URLType === 'connex-page')
+            return (
+                <div class="bigBox" style={{margin: '0 auto', backgroundColor: '#fff', border: '2px solid lightgray', borderRadius: '5px', width: '95%'}}>
+                    <div className="pageviews" style={{width: '100%'}}>
+                        <LineChart2
+                            title="Page views"
+                            className='linechart1'
+                            startDate={this.props.startDate}
+                            endDate={this.props.endDate}
+                            groupURL={this.props.groupURL}
+                            superState={this.props.endDate}
+                            language={this.props.language}
+                            initLang={this.props.initLang}
+                            URLType={'gcconnex'}
                         />
                     </div>
                 </div>

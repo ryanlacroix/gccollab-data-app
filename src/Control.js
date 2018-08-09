@@ -45,6 +45,9 @@ class Control extends Component {
             return ('collab-group')
         else if (url.indexOf('https://gccollab.ca/') === 0)
             return ('collab-page')
+        else if (url.indexOf('https://gcconnex.gc.ca/') === 0)
+            console.log("connex-page")
+            return ('connex-page')
     }
 
     // Basic check to make sure the URL is actually a group page
@@ -53,6 +56,9 @@ class Control extends Component {
             return true;
         }
         else if (url.indexOf('https://gccollab.ca/') === 0) {
+            return true;
+        }
+        else if (url.indexOf('https://gcconnex.gc.ca/') === 0) {
             return true;
         }
         else
@@ -103,6 +109,8 @@ class Control extends Component {
     }
 
     render() {
+        console.log(this.state.groupURL)
+        console.log(this.props.groupURL)
         if(this.props.initLang == "EN"){
             moment.locale('en-ca');
         }
@@ -160,7 +168,8 @@ class Control extends Component {
                             (event, data) => {
                                 if (this.state.validURL) {
                                     this.props.setGroupUrl(this.state.currUrl);
-                                    this.props.setURLType(this.getURLType(this.state.currUrl));
+                                    this.props.setPrevURLType(this.props.URLType)
+                                    this.props.setURLType(this.getURLType(this.state.currUrl)); 
                                 }
                         }} />
                     } content={this.props.language == "EN" ? this.state.errorMessageEN : this.state.errorMessageFR} 
