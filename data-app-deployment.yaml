@@ -25,6 +25,7 @@ spec:
       containers:
         - name: data-app
           image: index.docker.io/ryanlacroix/gccollab-data-app:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 2112
           env:
