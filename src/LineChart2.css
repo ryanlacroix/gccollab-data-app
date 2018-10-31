@@ -12,6 +12,10 @@
     width: 500px;
 }
 
+.hidden {
+    display: none;
+}
+
 .outercsv0{
     position: relative;
     left: 0px;
@@ -37,7 +41,7 @@
     margin-left: 5%;
 }
 #avgTime{
-    position: absolute;
+    /*position: absolute;*/
     bottom: 5px;
     right: 110px;
 }

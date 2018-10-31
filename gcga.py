@@ -310,7 +310,6 @@ class gcga:
             df_month['date'] = df_month['date'].apply(lambda x: x.strftime('%Y%m%d'))
             
         df.reset_index(inplace=True)
-        #code.interact(local=locals()) 
         df.rename(columns={'index':'date'}, inplace=True)
         df[metric] = df[metric].astype(str)
         df['date'] = df['date'].apply(lambda x: x.strftime('%Y%m%d'))

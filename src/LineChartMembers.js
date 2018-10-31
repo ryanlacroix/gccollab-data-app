@@ -217,9 +217,10 @@ class LineChartMembers extends Component {
 
     componentDidMount() {
         console.log("CDM")
-        if(this.props.URLType != this.props.PrevURLType && (this.props.PrevURLType == 'collab-page' || this.props.PrevURLType == "connex-page")){
+        //if(this.props.URLType != this.props.PrevURLType && (this.props.PrevURLType == 'collab-page' || this.props.PrevURLType == "connex-page")){
+            // Needs to be replaced with something. Protects component from issues with swapping betwene connex and collab pages
             this.requestData()
-        }
+        //}
         // Turn on the loading indicator
         this.setState({loaderClass: '', contentClass:'hidden'});
     }
@@ -252,7 +253,7 @@ class LineChartMembers extends Component {
         }
         // Construct the CSV string and start download
         let csv_data = Papa.unparse(overall);
-        fileDownloader(csv_data, 'data_spreadsheet.csv');
+        fileDownloader(csv_data, 'membersOverTime.csv');
     }
 
     reformatForSpreadsheet = (data) => {

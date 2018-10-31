@@ -48,6 +48,7 @@ class Content extends Component {
                             initLang={this.props.initLang}
                             groupNameEN={this.state.groupNameEN}
                             groupNameFR={this.state.groupNameFR}
+                            setGroupUrl={this.props.setGroupUrl}
                             stat='pageviews'
                         />
                     </div>
@@ -66,7 +67,7 @@ class Content extends Component {
                     </div>
                     <div className="deps" style={{width: '100%'}}>
                         <MemberDepChart
-                            title="Group Members by Department"
+                            title="Group Members by Institution"
                             superState={this.props.superState}
                             startDate={this.props.startDate}
                             endDate={this.props.endDate}
@@ -106,6 +107,8 @@ class Content extends Component {
                             superState={this.props.endDate}
                             language={this.props.language}
                             initLang={this.props.initLang}
+                            setGroupUrl={this.props.setGroupUrl}
+                            setURLType={this.props.setURLType}
                         />
                     </div>
                 </div>
