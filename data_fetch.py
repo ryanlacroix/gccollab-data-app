@@ -10,9 +10,22 @@ import sqlalchemy
 
 # This script returns data by printing to stdout
 
+# Group subpage urls containing group guid
+simple_pages = [
+    '/file/group/',
+    '/event_calendar/group/',
+    '/bookmarks/group/',
+    '/blog/group/',
+    '/discussion/owner/',
+    '/event_calendar/group/',
+    '/docs/group/',
+    '/polls/group/',
+    '/photos/group/',
+    '/ideas/group/',
+    '/groups/related/'
+]
+
 # Get the group's guid from the URL
-
-
 def get_group_guid(urlString):
     group_guid = ''
     url2 = urlString[urlString.find('profile/'):]
@@ -23,6 +36,13 @@ def get_group_guid(urlString):
     else:
         group_guid = url3
     return group_guid
+
+def check_for_subpage(url):
+    subpage = False
+    for type_url in simple_pages:
+        if type_url in url:
+            subpage = True
+    print(json.dumps({'subpage': subpage, 'guid': get_group_guid_from_subpage(url)}))
 
 def get_group_guid_from_subpage(urlString):
     guid = ''
@@ -293,7 +313,9 @@ def main(testing=False):
 
     # Start parsing the request.
     if req_obj['type'] == 'groups':
-        if req_obj['stat'] == 'pageviews':
+        if req_obj['stat'] == 'is_subpage':
+            check_for_subpage(req_obj['url'])
+        elif req_obj['stat'] == 'pageviews':
             get_pageviews(req_obj)
         elif req_obj['stat'] == 'topContent':
             get_group_top_content(req_obj)

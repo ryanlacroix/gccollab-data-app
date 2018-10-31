@@ -289,9 +289,10 @@ class ContentBarChart extends Component {
     }
     componentDidMount() {
         console.log("CDM")
-        if(this.props.URLType != this.props.PrevURLType && (this.props.PrevURLType == 'collab-page' || this.props.PrevURLType == "connex-page")){
+        //if(this.props.URLType != this.props.PrevURLType && (this.props.PrevURLType == 'collab-page' || this.props.PrevURLType == "connex-page")){
+            // Needs to be replaced with something. Protects component from issues with swapping betwene connex and collab pages
             this.requestData()
-        }
+        //}
         this.setState({loaderClass: '', contentClass: 'hidden'});
         //this.requestData();
     }
@@ -300,7 +301,7 @@ class ContentBarChart extends Component {
     downloadCSV = () => {
         // Convert data to a CSV string and download file
         let csv_data = Papa.unparse(this.state.showAll? this.state.fullData : this.state.partialData);
-        fileDownloader(csv_data, 'data_spreadsheet.csv');
+        fileDownloader(csv_data, 'topContent.csv');
     }
 
     render() {

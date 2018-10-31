@@ -48,6 +48,7 @@ class Content extends Component {
                             initLang={this.props.initLang}
                             groupNameEN={this.state.groupNameEN}
                             groupNameFR={this.state.groupNameFR}
+                            setGroupUrl={this.props.setGroupUrl}
                             stat='pageviews'
                         />
                     </div>
@@ -106,6 +107,8 @@ class Content extends Component {
                             superState={this.props.endDate}
                             language={this.props.language}
                             initLang={this.props.initLang}
+                            setGroupUrl={this.props.setGroupUrl}
+                            setURLType={this.props.setURLType}
                         />
                     </div>
                 </div>

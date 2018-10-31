@@ -75,7 +75,9 @@ class LineChart2 extends Component {
             avgTimeMessage: "Average time on page:",
             backupGroupNameEN: "",
             backupGroupNameFR: "",
-            open: false
+            open: false,
+            subpage: false,
+            guid: 0
         }
     }
 
@@ -148,7 +150,27 @@ class LineChart2 extends Component {
         let state = JSON.parse('{"stepIndex":4,"reqType":{"category":1,"filter":"'+ groupURL +'"},"metric":1,"metric2":0,"time":{"startDate":"' + startDate +'","endDate":"' + endDate +'","allTime":true},"errorFlag":false}');
         state.time.startDate = moment(state.time.startDate).format('YYYY-MM-DD');
         state.time.endDate = moment(state.time.endDate).format('YYYY-MM-DD');
+        console.log('ABOUT TO SEND OUT REQUEST. URL REQUESTED IS:');
+        console.log(groupURL);
 
+        fetch('/api', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                type: 'groups',
+                stat: 'is_subpage',
+                url: groupURL
+            })
+        }).then(response => {
+            return response.json();
+        }).then(data => {
+            this.setState({
+                subpage: data.subpage,
+                guid: data.guid
+            });
+        })
         // Request group name
         fetch('/api', {
             method: 'POST',
@@ -165,7 +187,14 @@ class LineChart2 extends Component {
         }).then(nameData => {
             console.log('NAMEDATA:');
             console.log(nameData);
-            let names = JSON.parse(nameData['name']);
+            let names = {};
+            try {
+                names = JSON.parse(nameData['name']);
+            } catch (e) {
+                names['en'] = '';
+                names['fr'] = '';
+            }
+            
             // Store the two names in the state
             this.setState({
                 backupGroupNameEN: names['en'],
@@ -380,7 +409,7 @@ class LineChart2 extends Component {
         }
         // Construct the CSV string and start download
         let csv_data = Papa.unparse(overall);
-        fileDownloader(csv_data, 'data_spreadsheet.csv');
+        fileDownloader(csv_data, 'pageAnalytics.csv');
     }
 
     reformatForSpreadsheet = (data) => {
@@ -502,6 +531,16 @@ class LineChart2 extends Component {
                     headers={[this.state.header1, this.state.header2, this.state.header3]}
                 />
                 <h4 className={this.state.contentClass} id = "avgTime">{this.state.avgTimeMessage} {this.state.pageTime} seconds </h4>
+                <div style={{clear: 'both'}}>
+                    <Button content='Get main group stats'
+                        style={this.state.subpage? {} : {display: 'none'}}
+                        onClick={(event, data) => {
+                            // need function to generate main page url from subpage
+                            this.props.setGroupUrl('https://gccollab.ca/groups/profile/' + String(this.state.guid));
+                            this.props.setURLType('collab-group');
+                        }}
+                    />
+                </div>
                 <Modal open={this.state.open} onClose={this.close}>
                     <Modal.Header>{this.props.language == "EN" ? "Help Content" : "Contenu d'aide"}</Modal.Header>
                     <Modal.Content>

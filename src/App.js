@@ -93,10 +93,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state.groupURL)
-    console.log(this.props.groupURL)
-    console.log(this.state.URLType)
-    console.log(this.state.PrevURLType)
     return (
       <div className="App" style={{/*backgroundImage: "url(https://gccollab.ca//mod/gc_splash_page_collab/graphics/Peyto_Lake-Banff_NP-Canada.jpg)",*/backgroundColor: '#f9f9f9', height: "100%", maxWidth: '100%', align: "center"}}>
         <div id="lang-toggle">
@@ -141,6 +137,8 @@ class App extends Component {
               language={this.state.language}
               initLang={this.state.initLang}
               PrevURLType={this.state.PrevURLType}
+              setGroupUrl={this.setGroupUrl}
+              setURLType={this.setURLType}
             />
           </div>
           <div className={this.state.onIntro ? '' : 'hidden'} style={{paddingBottom: '10px', fontFamily: "'Nunito Sans', sans-serif"}} id="container2">

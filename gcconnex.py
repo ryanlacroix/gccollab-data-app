@@ -671,7 +671,7 @@ class content(object):
         return top_content
     
     def content_ga_query(group_guid):
-        guid_df = get_top_content(group_guid)
+        guid_df = content.get_top_content(group_guid)
         regex_str = ''
         l = content.values.astype(str).tolist()
         for i in range(len(l)):

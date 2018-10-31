@@ -40,7 +40,7 @@ class MemberDepChart extends Component {
             loaderClass: '',
             showAll: false,
             title: 'Group Members By Institution',
-            header1: 'Date',
+            header1: 'Department',
             header2: 'Members',
             downloadCSVmessage: "Download Data as CSV",
             contentButton: "Show all content",
@@ -106,9 +106,7 @@ class MemberDepChart extends Component {
             var endDate = this.props.endDate.format("YYYY-MM-DD");
             var groupURL = this.props.groupURL;
         }
-        // Create a deep copy of the state
-        let state = JSON.parse('{"stepIndex":4,"reqType":{"category":1,"filter":"'+ groupURL +'"},"metric":4,"metric2":0,"time":{"startDate":"2017-02-12","endDate":"2018-02-12","allTime":true},"errorFlag":false}');
-
+        
         // Send a request for the data
         fetch('/api', {
             method: 'POST',
@@ -243,7 +241,6 @@ class MemberDepChart extends Component {
      }
 
     componentWillReceiveProps(nextProps) {
-        console.log("cwrp")
         if(nextProps.language !== this.props.language){
             if(nextProps.language == 'EN'){
                 try{
@@ -305,9 +302,12 @@ class MemberDepChart extends Component {
         }
     }
     componentDidMount() {
-        if(this.props.URLType != this.props.PrevURLType && (this.props.PrevURLType == 'collab-page' || this.props.PrevURLType == "connex-page")){
+        console.log('memberdepchart mounted')
+        //if(this.props.URLType != this.props.PrevURLType && (this.props.PrevURLType == 'collab-page' || this.props.PrevURLType == "connex-page")){
+            // Needs to be replaced with something. Protects component from issues with swapping betwene connex and collab pages
+            console.log('requesting data in memberdepchart');
             this.requestData()
-        }
+        //}
         this.setState({loaderClass: '', contentClass: 'hidden'});
     }
 
@@ -316,7 +316,7 @@ class MemberDepChart extends Component {
         // Convert data to a CSV string and download file
         //let csv_data = Papa.unparse(this.state.data.columns);// Should be pulling this in same was as hottable below
         let csv_data = Papa.unparse(this.state.showAll? this.state.fullData : this.state.partialData);
-        fileDownloader(csv_data, 'data_spreadsheet.csv');
+        fileDownloader(csv_data, 'membersByDepartment.csv');
     }
 
     render() {

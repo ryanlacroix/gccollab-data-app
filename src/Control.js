@@ -163,7 +163,7 @@ class Control extends Component {
                 </div>
                 <Input className="searchBar" action={
                     <Popup trigger={
-                        <Button content={this.props.language=="EN" ? "Get stats" : "Obtenir des statistiques"}
+                        <Button content={this.props.language=="EN" ? "Get Stats" : "Obtenir des statistiques"}
                         onClick={
                             (event, data) => {
                                 if (this.state.validURL) {
