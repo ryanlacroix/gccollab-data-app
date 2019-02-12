@@ -92,7 +92,6 @@ def get_group_name(urlString, req_obj):
         
 def get_group_name_db(req_obj, write=True):
     gc.connect_to_database()
-    gc.create_session()
     url = req_obj['url']
     url2 = url[url.find('profile/'):]
     url3 = url2[url2.find('/')+1:]
@@ -150,7 +149,6 @@ def get_avg_time_on_page(req_obj):
 def get_group_top_content(req_obj):
     # Establish database connection
     gc.connect_to_database()
-    gc.create_session()
     
     group_guid = get_group_guid(req_obj['url'])
     
@@ -186,8 +184,7 @@ def get_group_top_content(req_obj):
 def get_group_members_over_time(req_obj):
     # Establish database connection
     gc.connect_to_database()
-    gc.create_session()
-
+    
     # Determine group guid
     group_guid = get_group_guid(req_obj['url'])
 
@@ -286,7 +283,6 @@ def get_group_members_over_time(req_obj):
 
 def get_group_members_by_department(req_obj):
     gc.connect_to_database()
-    gc.create_session()
 
     # Determine group guid
     group_guid = get_group_guid(req_obj['url'])

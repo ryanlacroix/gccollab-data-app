@@ -1,3 +1,6 @@
+import mysql.connector
+from mysql.connector import errorcode
+
 import sqlalchemy as sq
 import time
 import sys
@@ -25,9 +28,6 @@ import os
 
 import json
 
-server= {} # Placeholder for server object created on connect_to_database()
-
-
 def convert_unixtime(stamp):
 
     return dt.datetime.fromtimestamp(
@@ -45,14 +45,18 @@ def convert_if_time(y):
 
 # Run this after making requests to close the SSH tunnel
 def close_tunnel():
-    global server
-    server.stop()
+    global conn
+    global cursor
+    try:
+        cursor.close()
+        conn.close()
+    except:
+        pass
 
 def connect_to_database():
-    global engine
     global conn
-    global server
-
+    global cursor
+    
     creds = {}
     try:
         # If running locally, grab the creds from a file
@@ -60,69 +64,44 @@ def connect_to_database():
     except:
         # If running from within a kubernetes environment, use an env variable
         creds = json.loads(os.environ['DB-SECRETS'])
-    
-    # Set up SSH tunnel for db connection
-    server = SSHTunnelForwarder(
-        ('52.242.31.127', 22),
-        ssh_password=creds['password_ssh'],
-        ssh_username=creds['username_ssh'],
-        remote_bind_address=("52.232.129.202", creds['port_ssh']))
-    server.start()
 
-    db_connection = "mysql+pymysql://{}:{}@localhost:{}/{}".format(
-        creds['username'], creds['password'], server.local_bind_port,creds['database'])
+    config = {
+      'host':creds['host'],
+      'user':creds['username'],
+      'password':creds['password'],
+      'database':creds['database'],
+      'port':creds['port']
+    }
 
-    # Connection to db once inside is broken
-    engine = sq.create_engine(db_connection)
-    conn = {}
     try:
-        conn = engine.connect()
-    except:
-        server.stop()
+       conn = mysql.connector.connect(**config)
+    except mysql.connector.Error as err:
+      if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+        print("Something is wrong with the user name or password")
+      elif err.errno == errorcode.ER_BAD_DB_ERROR:
+        print("Database does not exist")
+      else:
+        print(err)
+    else:
+      cursor = conn.cursor()
 
-    return engine, conn
-
-
-def create_session():
-
-    global session
-    global Base
-
-    Session = sessionmaker(bind=engine)
-    Session.configure(bind=engine)
-    session = Session()
-
-    # Maps the relationships
-    Base = automap_base()
-    Base.prepare(engine, reflect=True)
-
-    return session, Base
+    return conn, cursor
 
 
 class users(object):  # Pulls in the entire users database
 
     def get_all():  # Grabs user data and account creation data
 
-        users_table = Base.classes.elggusers_entity
-        metadata_table = Base.classes.elggmetadata
-        statement = session.query(
-            users_table.guid,
-            users_table.name,
-            users_table.email,
-            users_table.last_action,
-            users_table.prev_last_action,
-            users_table.last_login,
-            users_table.prev_last_login,
-            metadata_table.time_created
-        )
+        cursor.execute("""SELECT eu.guid, eu.name, eu.email, eu.last_action, eu.prev_last_action, eu.last_login, eu.prev_last_login, md.time_created
+            FROM elggusers_entity eu 
+            JOIN elggmetadata md on md.owner_guid = eu.guid
+            WHERE md.name_id = 3""")
 
-        statement = statement.filter(metadata_table.name_id == 3)
-        statement = statement.filter(users_table.guid == metadata_table.owner_guid)
-        statement = statement.statement
-
-        users = pd.read_sql(statement, conn)
+        users = pd.DataFrame(cursor.fetchall())  
+        users.columns = ["guid", "name", "email", "last_action", "prev_last_action", "last_login", "prev_last_login", "time_created"]
 
         users = users.apply(convert_if_time)
+
         return users
 
     def filter_(filter_condition):
@@ -181,7 +160,7 @@ class groups(object):
     # Use cleaned=False when not looking for departments
     def get_group_members(guid, cleaned=True):
         if cleaned == True:
-            statement_str = """SELECT t1.guid, t1.string AS department, t1.email, t1.last_login, t1.name AS user_name, t2.time_created FROM (SELECT DISTINCT(u.guid), ms.string, u.email, u.last_login, u.name FROM elggmetadata md
+            cursor.execute("""SELECT t1.guid, t1.string AS department, t1.email, t1.last_login, t1.name AS user_name, t2.time_created FROM (SELECT DISTINCT(u.guid), ms.string, u.email, u.last_login, u.name FROM elggmetadata md
             INNER JOIN elggmetastrings ms ON md.value_id = ms.id
             INNER JOIN elggusers_entity u ON md.entity_guid = u.guid
             WHERE md.name_id IN (14043,14046,14048,14047,14079,29630,8870,14439,29629,24785,29631)
@@ -189,32 +168,37 @@ class groups(object):
             INNER JOIN (SELECT * FROM elggentity_relationships r
             WHERE r.relationship = 'member'
             AND r.guid_two =""" + str(guid) + """ ) t2
-            ON t1.guid = t2.guid_one"""
+            ON t1.guid = t2.guid_one""")
         else:
-            statement_str = """SELECT t1.guid, t1.email, t1.last_login, t1.name AS user_name, t2.time_created FROM (SELECT DISTINCT(u.guid), u.email, u.last_login, u.name FROM elggmetadata md
+            cursor.execute("""SELECT t1.guid, t1.email, t1.last_login, t1.name AS user_name, t2.time_created FROM (SELECT DISTINCT(u.guid), u.email, u.last_login, u.name FROM elggmetadata md
             INNER JOIN elggusers_entity u ON md.entity_guid = u.guid) t1
             INNER JOIN (SELECT * FROM elggentity_relationships r
             WHERE r.relationship = 'member'
             AND r.guid_two = """ + str(guid) + """) t2
-            ON t1.guid = t2.guid_one"""
+            ON t1.guid = t2.guid_one""")
 
-        get_data = pd.read_sql(statement_str, conn)
+        get_data = pd.DataFrame(cursor.fetchall()) 
+        if cleaned == True:
+            get_data.columns = ["guid", "department", "email", "last_login", "user_name", "time_created"]
+        else:
+            get_data.columns = ["guid", "email", "last_login", "user_name", "time_created"]
+        
         get_data = get_data.apply(convert_if_time)
 
         return get_data
         
     def name_from_guid(guid):
-        groups_table = Base.classes.elgggroups_entity
-        statement = session.query(groups_table)
-        statement = statement.filter(groups_table.guid == guid)
-        statement = statement.statement
+            cursor.execute("""SELECT *
+                FROM elgggroups_entity eg
+                WHERE guid = """ + str(guid))
 
-        group_row = pd.read_sql(statement, conn)
-
-        try:
-            return group_row['name'].tolist()[0]
-        except:
-            return ''
+            group_row = pd.DataFrame(cursor.fetchall()) 
+            group_row.columns = ['guid','name','description']
+                
+            try:
+                return group_row['name'].tolist()[0]
+            except:
+                return ''
 
     def get_all(tags=False):
 
@@ -651,31 +635,18 @@ class micromissions(object):
 class content(object):
 
     def get_top_content(group_guid):
-        # This needs to be revised: returning random stuff? numbers seem right though
-        """ Base query on this
-        SELECT e.guid FROM elggentities e, elgggroups_entity g
-        WHERE e.container_guid = g.guid
-        AND g.name LIKE '%Business Number Adoption%' <- can use guid from url instead i think
-        """
-
-        entities_table = Base.classes.elggentities
-        groupsentities_table = Base.classes.elgggroups_entity
-
-        statement = session.query(entities_table, groupsentities_table)
-
-        statement = statement.filter(entities_table.container_guid == groupsentities_table.guid)
-        statement = statement.filter(groupsentities_table.guid == group_guid)
-
-        statement = statement.statement
-
-        top_content = pd.read_sql(statement, conn)
-        top_content = top_content.apply(convert_if_time)
-        top_content.columns = ['guid', 'type', 'subtype', 'owner_guid', 'site_guid', 'container_guid',
-                'access_id', 'time_created', 'time_updated', 'last_action', 'enabled',
-                'duplicate_check', 'group_guid', 'name', 'description']
-        #code.interact(local=locals())
-        top_content = top_content[['guid']]
-        return top_content
+        cursor.execute("""SELECT e.guid
+            FROM elggentities e, elgggroups_entity g
+            WHERE e.container_guid = g.guid
+            AND g.guid =""" + str(group_guid))
+        
+        top_content = pd.DataFrame(cursor.fetchall()) 
+        top_content.columns = ['guid']
+        
+        try: 
+            return top_content[['guid']]
+        except:
+            return ''
     
     def content_ga_query(group_guid):
         guid_df = get_top_content(group_guid)
