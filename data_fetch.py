@@ -92,7 +92,6 @@ def get_group_name(urlString, req_obj):
         
 def get_group_name_db(req_obj, write=True):
     gc.connect_to_database()
-    gc.create_session()
     url = req_obj['url']
     url2 = url[url.find('profile/'):]
     url3 = url2[url2.find('/')+1:]
@@ -150,7 +149,6 @@ def get_avg_time_on_page(req_obj):
 def get_group_top_content(req_obj):
     # Establish database connection
     gc.connect_to_database()
-    gc.create_session()
     
     group_guid = get_group_guid(req_obj['url'])
     
@@ -186,8 +184,7 @@ def get_group_top_content(req_obj):
 def get_group_members_over_time(req_obj):
     # Establish database connection
     gc.connect_to_database()
-    gc.create_session()
-
+    
     # Determine group guid
     group_guid = get_group_guid(req_obj['url'])
 
@@ -286,7 +283,6 @@ def get_group_members_over_time(req_obj):
 
 def get_group_members_by_department(req_obj):
     gc.connect_to_database()
-    gc.create_session()
 
     # Determine group guid
     group_guid = get_group_guid(req_obj['url'])
@@ -337,7 +333,7 @@ def main(testing=False):
 
 # Start process
 if __name__ == '__main__':
-    inStr = '{"type":"pages","stat":"uniquePageviews","url":"https://gccollab.ca//profile/103347/esdc-innovation-lab-lab-dinnovation-demploi-et-developpement-social-canada","start_date":"2018-04-20","end_date":"2018-07-19"}'
+    inStr = '{"type":"groups","stat":"groupName","url":"https://gccollab.ca//profile/103347/esdc-innovation-lab-lab-dinnovation-demploi-et-developpement-social-canada","start_date":"2019-01-01","end_date":"2019-02-01"}'
     main()
     # If collab db was used be sure to close the tunnel properly
     try:
