@@ -333,7 +333,7 @@ def main(testing=False):
 
 # Start process
 if __name__ == '__main__':
-    inStr = '{"type":"pages","stat":"uniquePageviews","url":"https://gccollab.ca//profile/103347/esdc-innovation-lab-lab-dinnovation-demploi-et-developpement-social-canada","start_date":"2018-04-20","end_date":"2018-07-19"}'
+    inStr = '{"type":"groups","stat":"groupName","url":"https://gccollab.ca//profile/103347/esdc-innovation-lab-lab-dinnovation-demploi-et-developpement-social-canada","start_date":"2019-01-01","end_date":"2019-02-01"}'
     main()
     # If collab db was used be sure to close the tunnel properly
     try:
