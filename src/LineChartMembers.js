@@ -137,7 +137,6 @@ class LineChartMembers extends Component {
     }
     
     componentWillReceiveProps(nextProps) {
-        console.log("cwrp")
         if(nextProps.language !== this.props.language){
             if(nextProps.language == 'EN'){
                 if (nextProps.interval == 'daily'){
@@ -216,7 +215,6 @@ class LineChartMembers extends Component {
     }
 
     componentDidMount() {
-        console.log("CDM")
         //if(this.props.URLType != this.props.PrevURLType && (this.props.PrevURLType == 'collab-page' || this.props.PrevURLType == "connex-page")){
             // Needs to be replaced with something. Protects component from issues with swapping betwene connex and collab pages
             this.requestData()
@@ -340,7 +338,7 @@ class LineChartMembers extends Component {
                     </tr>
                 </table>
                 <div>
-                    <Loader size='huge' active className={this.state.loaderClass} >{this.props.language=="EN" ? "Loading" : "Chargement"}</Loader>
+                    <Loader size='huge' active className={this.state.loaderClass} >{this.props.language=="EN" ? "This will take 15 to 30 seconds to load. Thank you for your patience!" : "Ceci prendra 15 à 30 secondes à charger. Merci de votre patience !"}</Loader>
                 </div>
                 <div className={this.state.contentClass} style={{float: 'left'}} id="lineChartMembers">
                     <C3Chart data={this.state.data}

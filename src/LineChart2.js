@@ -69,7 +69,7 @@ class LineChart2 extends Component {
             header3: 'Unique views',
             downloadCSVmessage: "Download Data as CSV",
             intervalWord: "Interval",
-            loading: "Loading",
+            loading: "This will take 15 to 30 seconds to load. Thank you for your patience!",
             language: "EN",
             pageTime: 0,
             avgTimeMessage: "Average time on page:",
@@ -150,8 +150,6 @@ class LineChart2 extends Component {
         let state = JSON.parse('{"stepIndex":4,"reqType":{"category":1,"filter":"'+ groupURL +'"},"metric":1,"metric2":0,"time":{"startDate":"' + startDate +'","endDate":"' + endDate +'","allTime":true},"errorFlag":false}');
         state.time.startDate = moment(state.time.startDate).format('YYYY-MM-DD');
         state.time.endDate = moment(state.time.endDate).format('YYYY-MM-DD');
-        console.log('ABOUT TO SEND OUT REQUEST. URL REQUESTED IS:');
-        console.log(groupURL);
 
         fetch('/api', {
             method: 'POST',
@@ -185,8 +183,6 @@ class LineChart2 extends Component {
         }).then(response => {
             return response.json();
         }).then(nameData => {
-            console.log('NAMEDATA:');
-            console.log(nameData);
             let names = {};
             try {
                 names = JSON.parse(nameData['name']);
@@ -235,7 +231,6 @@ class LineChart2 extends Component {
             }).then(response => {
                 return response.json();
             }).then(uniqueData => {
-                console.log(uniqueData)
                 this.handleIncomingData(viewData, uniqueData);
             });
         });
@@ -288,7 +283,7 @@ class LineChart2 extends Component {
                         frinterval2: "Monthly",
                         downloadCSVmessage: "Download Data as CSV",
                         intervalWord: "Interval",
-                        loading: "Loading",
+                        loading: "This will take 15 to 30 seconds to load. Thank you for your patience!",
                         avgTimeMessage: "Average time on page:"
                     });
                 }
@@ -302,7 +297,7 @@ class LineChart2 extends Component {
                         frinterval2: "Daily",
                         downloadCSVmessage: "Download Data as CSV",
                         intervalWord: "Interval",
-                        loading: "Loading",
+                        loading: "This will take 15 to 30 seconds to load. Thank you for your patience!",
                         avgTimeMessage: "Average time on page:"
                     });
                 }
@@ -316,7 +311,7 @@ class LineChart2 extends Component {
                         frinterval2: "Monthly",
                         downloadCSVmessage: "Download Data as CSV",
                         intervalWord: "Interval",
-                        loading: "Loading",
+                        loading: "This will take 15 to 30 seconds to load. Thank you for your patience!",
                         avgTimeMessage: "Average time on page:"
                     });
                 }
@@ -332,7 +327,7 @@ class LineChart2 extends Component {
                         frinterval2: "Mensuellement",
                         downloadCSVmessage: "Télécharger les données en format CSV",
                         intervalWord: "Intervalle",
-                        loading: "Chargement",
+                        loading: "Ceci prendra 15 à 30 secondes à charger. Merci de votre patience !",
                         avgTimeMessage: "Temps moyen sur la page"
                     });
                 }
@@ -346,7 +341,7 @@ class LineChart2 extends Component {
                         frinterval2: "Quotidiennement",
                         downloadCSVmessage: "Télécharger les données en format CSV",
                         intervalWord: "Intervalle",
-                        loading: "Chargement",
+                        loading: "Ceci prendra 15 à 30 secondes à charger. Merci de votre patience !",
                         avgTimeMessage: "Temps moyen sur la page:"
                     });
                 }
@@ -360,7 +355,7 @@ class LineChart2 extends Component {
                         frinterval2: "Mensuellement",
                         downloadCSVmessage: "Télécharger les données en format CSV",
                         intervalWord: "Intervalle",
-                        loading: "Chargement",
+                        loading: "Ceci prendra 15 à 30 secondes à charger. Merci de votre patience !",
                         avgTimeMessage: "Temps moyen sur la page:"
                     });
                 }
@@ -485,7 +480,6 @@ class LineChart2 extends Component {
         catch(err){
             console.log("Nope")
         }
-        console.log(this.state.data)
         return (
             <Segment className="ind-content-box" style={{marginTop: '10px', padding: '0 0', display: 'inline-block', width: '98%', borderRadius: '5px', backgroundColor: '#f9f9f9', border: '2px solid lightgray'}}>
                 <div className = 'title'> <h2> {this.getGroupName(this.props.language)} </h2> </div>

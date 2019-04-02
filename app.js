@@ -7,7 +7,7 @@ var spawn = require('child_process').spawn
 var browserDetector = require('./browser-detector.js');
 
 var app = express();
-var PORT = 2112;
+var PORT = 2113;
 
 // Write all incoming requests to the terminal
 app.use("*", (req, res, next) => {
