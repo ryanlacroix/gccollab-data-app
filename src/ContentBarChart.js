@@ -288,7 +288,6 @@ class ContentBarChart extends Component {
         }
     }
     componentDidMount() {
-        console.log("CDM")
         //if(this.props.URLType != this.props.PrevURLType && (this.props.PrevURLType == 'collab-page' || this.props.PrevURLType == "connex-page")){
             // Needs to be replaced with something. Protects component from issues with swapping betwene connex and collab pages
             this.requestData()
@@ -331,7 +330,7 @@ class ContentBarChart extends Component {
                     </tr>
                 </table>
                 <div>
-                    <Loader size='huge' active className={this.state.loaderClass} >{this.props.initLang=="EN" ? "Loading" : "Chargement"}</Loader>
+                    <Loader size='huge' active className={this.state.loaderClass} >{this.props.initLang=="EN" ? "This will take 15 to 30 seconds to load. Thank you for your patience!" : "Ceci prendra 15 à 30 secondes à charger. Merci de votre patience !"}</Loader>
                 </div>
                 <div id = 'chart4' className={this.state.barChartClass} style={{float: 'left'}}>
                     <C3Chart data={{columns: [chartData], labels: true, type: 'bar'}}

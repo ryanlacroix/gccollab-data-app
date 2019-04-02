@@ -302,11 +302,9 @@ class MemberDepChart extends Component {
         }
     }
     componentDidMount() {
-        console.log('memberdepchart mounted')
         //if(this.props.URLType != this.props.PrevURLType && (this.props.PrevURLType == 'collab-page' || this.props.PrevURLType == "connex-page")){
             // Needs to be replaced with something. Protects component from issues with swapping betwene connex and collab pages
-            console.log('requesting data in memberdepchart');
-            this.requestData()
+        this.requestData()
         //}
         this.setState({loaderClass: '', contentClass: 'hidden'});
     }
@@ -349,7 +347,7 @@ class MemberDepChart extends Component {
                     </tr>
                 </table>
                 <div>
-                    <Loader style={{}} size='huge' active className={this.state.loaderClass} >{this.props.initLang=="EN" ? "Loading" : "Chargement"}</Loader>
+                    <Loader style={{}} size='huge' active className={this.state.loaderClass} >{this.props.initLang=="EN" ? "This will take 15 to 30 seconds to load. Thank you for your patience!" : "Ceci prendra 15 à 30 secondes à charger. Merci de votre patience !"}</Loader>
                 </div>
                 <div id = 'chart3' className={this.state.barChartClass} style={{float: 'left'}}>
                     <C3Chart data={{columns: [chartData], labels: true, type: 'bar'}}
