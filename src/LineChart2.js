@@ -478,7 +478,7 @@ class LineChart2 extends Component {
             }
         }
         catch(err){
-            console.log("Nope")
+            console.log(err)
         }
         return (
             <Segment className="ind-content-box" style={{marginTop: '10px', padding: '0 0', display: 'inline-block', width: '98%', borderRadius: '5px', backgroundColor: '#f9f9f9', border: '2px solid lightgray'}}>

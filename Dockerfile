@@ -27,6 +27,7 @@ RUN pip3 install cffi
 RUN pip3 install sshtunnel
 RUN pip3 install oauth2client
 RUN pip3 install pymysql
+RUN pip3 install mysql-connector-python
 
 RUN npm install -g forever
 
@@ -36,4 +37,4 @@ ADD . /app
 EXPOSE 3000
 
 # Start the app
-cmd ["./start.sh"]
+CMD ["forever", "-c",  "node", "app.js"]

@@ -61,17 +61,22 @@ def connect_to_database():
     try:
         # If running locally, grab the creds from a file
         creds = pickle.load(open('creds_collab.pkl', 'rb'))
+        config = {
+            'host':creds['host'],
+            'user':creds['username'],
+            'password':creds['password'],
+            'database':creds['database'],
+            'port':creds['port']
+        }
     except:
         # If running from within a kubernetes environment, use an env variable
-        creds = json.loads(os.environ['DB-SECRETS'])
-
-    config = {
-      'host':creds['host'],
-      'user':creds['username'],
-      'password':creds['password'],
-      'database':creds['database'],
-      'port':creds['port']
-    }
+        config = {
+            'host':os.environ['COLLAB_DB_HOST'],
+            'user':os.environ['COLLAB_DB_USERNAME'],
+            'password':os.environ['COLLAB_DB_PASSWORD'],
+            'database':os.environ['COLLAB_DB_NAME'],
+            'port':os.environ['COLLAB_DB_PORT']
+        }
 
     try:
        conn = mysql.connector.connect(**config)
